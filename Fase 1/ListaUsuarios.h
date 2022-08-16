@@ -9,12 +9,13 @@ class listaUsuarios{
     private:            
         Usuario* primero;
         Usuario* ultimo;    
+
         int size_ = 0;  
     public:
         void insertarNuevo(string&,string&,string&,string&);
         void mostrarUsuarios(); 
-
-        void modificarInformacion(string&,string&,string&);
+        int login(string&,string&);
+        void modificarInformacion(string&,string&);
 
         void eliminarCuenta(string&,string&);
 
@@ -85,6 +86,112 @@ void listaUsuarios::mostrarUsuarios(){
 
 };
 
+void listaUsuarios::modificarInformacion(string& name, string& pass){
+    
+    Usuario* actual = new Usuario(); //Auxiliar
+
+    actual = primero;
+    bool encontrado = false;
+
+    string nName="";
+    string nEdad="";
+    string nPass="";
+    char opMod;    
+
+
+    cout<<"-------- Editar informacion --------\n";
+    cout<<"1. Editar nombre\n";
+    cout<<"2. Editar edad\n";
+    cout<<"3. Editar password\n";
+    cout<<"4. Regresar\n";
+    cout<<"--> Ingrese el numero de opcion: ";
+    cin>>opMod;
+
+
+    if (primero!=NULL){
+        do{
+			
+			if(actual->nombre==name && actual->password==pass){
+				//Modificación de información
+                switch (opMod)
+                {
+                case '1':
+                    cin.ignore();
+                    cout<<"--> Ingrese el nuevo nombre: ";
+                    getline(cin,nName);
+
+                    actual->nombre=nName;
+                    name = nName;
+                    cout<<"Informacion modificada\n";
+                    break;
+
+                case '2':
+                    cin.ignore();
+                    cout<<"--> Ingrese nueva edad: ";
+                    getline(cin,nEdad);
+                    actual->edad=nEdad;
+                    cout<<"Informacion modificada\n";
+                    break;
+                
+                case '3':
+                    cin.ignore();
+                    cout<<"--> Ingrese nueva password: ";
+                    getline(cin,nPass);
+                    actual->password=nPass;
+                    pass=nPass;
+                    cout<<"Informacion modificada\n";
+                    break;
+                
+                case '4':
+                    cout<<"-->Regresando...";
+                    break;
+                
+                default:
+                    break;
+                }
+
+				encontrado = true;		
+			}
+			
+			actual = actual->siguiente;
+		}while(actual!=primero && encontrado != true);
+
+        if (encontrado==false)
+        {
+            cout<<"No se encuentra el usuario\n";
+        }
+    }else{
+        cout<<"No hay datos\n";
+    }
+}
+
+int listaUsuarios::login(string& name, string& pass){
+    Usuario* actual = new Usuario(); //Auxiliar
+
+    actual = primero;
+    bool encontrado = false;
+
+    if (primero!=NULL){
+        do{
+			
+			if(actual->nombre==name && actual->password==pass){
+				
+				encontrado = true;		
+			}
+			
+			actual = actual->siguiente;
+		}while(actual!=primero && encontrado != true);
+
+        if (encontrado==false)
+        {
+            return 0;
+        }else{
+           return 1;
+        }
+    }
+    return 3;
+}    
+
 void listaUsuarios::eliminarCuenta(string& nameBuscar,string& passB){
     
     Usuario* actual = new Usuario();
@@ -97,7 +204,7 @@ void listaUsuarios::eliminarCuenta(string& nameBuscar,string& passB){
     if(primero!=NULL){
         do{
             if((actual->nombre==nameBuscar)&&(actual->password==passB)){
-                cout<<"\n Eliminando:"<<actual->nombre<<"\n";
+                cout<<"\n Eliminando cuenta...\n";
 
                 //Si solo hay un nodo
                 if ((actual==primero)&&(primero==ultimo))
@@ -117,7 +224,7 @@ void listaUsuarios::eliminarCuenta(string& nameBuscar,string& passB){
                     actual->siguiente->anterior = aux;
                 }
                 size_--;
-                cout<<"\n Nodo Eliminado \n";
+                cout<<"\n Cuenta Eliminada \n";
                 encontrado=true;
             }
             aux = actual; //Aux almacena el anterior del actual
