@@ -241,24 +241,23 @@ void listaUsuarios::eliminarCuenta(string& nameBuscar,string& passB){
 
 };
 
-// void listaUsuarios::eliminarLista(){
-    
-//     while (primero != NULL)
-//     {
-//         Nodo *actual = new Nodo(); //Nodo actual y el que se debe eliminar al final
-//         actual = ultimo;
+/* void listaUsuarios::eliminarLista(){
+         while (primero != NULL)
+     {
+         Nodo *actual = new Nodo(); //Nodo actual y el que se debe eliminar al final
+         actual = ultimo;
 
-//         if (primero == ultimo) //Si solo hay uno
-//         {
-//             primero = NULL;
-//             ultimo = NULL;
-//         }else{
-//             ultimo = ultimo->anterior;
-//         }
-//         delete actual;
-//     }    
+         if (primero == ultimo) //Si solo hay uno
+         {
+             primero = NULL;
+             ultimo = NULL;
+         }else{
+             ultimo = ultimo->anterior;
+         }
+         delete actual;
+     }    
 
-//     cout<<"Datos eliminados correctamente"<<endl;
-//     size_ = 0;
+     cout<<"Datos eliminados correctamente"<<endl;
+     size_ = 0;
     
-// };
+ };*/

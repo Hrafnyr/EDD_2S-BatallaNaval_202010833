@@ -1,6 +1,10 @@
 #include <iostream>
 #include <string>
-#include "ListaUsuarios.h"
+#include <fstream>
+#include "sha256.h" //Permite cifrar contraseñas
+#include "json/json.h" //Permite manipular JSON
+#include "jsoncpp.cpp"
+#include "ListaUsuarios.h" //Llamada a lista de usuarios
 
 using namespace std;
 
@@ -10,6 +14,7 @@ listaUsuarios usuario_;
 
 //Prototipos
 void menuUsuario(string&,string&);
+void cargarJSON();
 
 int main(){
 
@@ -19,6 +24,7 @@ int main(){
     bool flag = true;
 
     //Nuevo usuario
+    string auxPass;
     string name,pass,ed,mon;
 
     //Login
@@ -44,6 +50,8 @@ int main(){
         switch (op)
         {
         case '1':
+            cargarJSON();
+            usuario_.mostrarUsuarios(); 
             break;
         case '2': 
             
@@ -53,7 +61,11 @@ int main(){
             cout<<"Ingrese su nombre de usuario:\n";
             getline(cin,name);
             cout<<"Password:\n";
-            getline(cin,pass);
+            getline(cin,auxPass);
+
+            //Cifrar contraseña
+            pass = SHA256::cifrar(auxPass);
+
             cout<<"Ingrese su edad:\n";
             getline(cin,ed);
 
@@ -71,7 +83,8 @@ int main(){
             cout<<"Ingrese su nombre de usuario:\n";
             getline(cin,logName);
             cout<<"Password:\n";
-            getline(cin,logPass);
+            getline(cin,auxPass);
+            logPass = SHA256::cifrar(auxPass);
 
             log=usuario_.login(logName,logPass);
             
@@ -198,6 +211,37 @@ void menuUsuario(string& logName,string& logPass){
             break;
         }
 
+    }
+    
+}
+
+void cargarJSON(){
+    string nombre,pass,mon,ed;
+    string auxPass;
+
+    ifstream file("carga.json"); //fstream para obtener el puntero del archivo
+    Json::Value datos;
+    Json::Reader reader; 
+
+    //Con reader parseamos el json
+    reader.parse(file,datos);
+
+    //Ahora datos ya contienen la informacion
+
+    //Accediendo a usuarios
+    for (int i = 0; i < datos["usuarios"].size(); i++)
+    {
+        //Accediendo a sus atributos y convirtiendo a string
+        nombre = datos["usuarios"][i]["nick"].asString();
+        auxPass = datos["usuarios"][i]["password"].asString();
+        //Cifrar contraseña
+        pass = SHA256::cifrar(auxPass);
+
+        mon = datos["usuarios"][i]["monedas"].asString();
+        ed = datos["usuarios"][i]["edad"].asString();
+        
+        //Guardando usuarios
+        usuario_.insertarNuevo(nombre,pass,mon,ed);
     }
     
 }
