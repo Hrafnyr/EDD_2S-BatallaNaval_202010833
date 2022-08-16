@@ -80,11 +80,13 @@ int main(){
                 menuUsuario(logName,logPass);
 
             }else if (log==0)
-            {
+            {   
+                system("cls");
                 cout<<"Usuario no encontrado\n";
                 cout<<"->Verifique sus datos o cree una cuenta nueva\n";
             }else if (log==3)
             {
+                system("cls");
                 cout<<"No hay usuarios regristrados\n";
             }
             
@@ -98,14 +100,17 @@ int main(){
             
             if ((e=='s')||(e=='S'))
             {
+                
                 cout<<"->Saliendo..."<<endl;
                 flag = false;
                 exit(5);
             }else{
+                system("cls");
                 cout<<"->Cancelado\n";
             }
             break;    
         default:
+            system("cls");
             cout<<"-> Error, debe ingresar el numero de opcion\n";
             break;
         }
@@ -148,12 +153,11 @@ void menuUsuario(string& logName,string& logPass){
             if ((r=='s')||(r=='S'))
             {   
                 system("cls");
-                cout<<"->Eliminando..."<<endl;
                 flag = false;
-                
+     
+                usuario_.eliminarCuenta(logName,logPass);
                 logName="";
                 logPass="";
-                usuario_.eliminarCuenta(logName,logPass);
 
             }else{
                 system("cls");
