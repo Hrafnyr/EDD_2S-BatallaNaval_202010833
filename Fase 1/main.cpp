@@ -5,11 +5,13 @@
 #include "json/json.h" //Permite manipular JSON
 #include "jsoncpp.cpp"
 #include "ListaUsuarios.h" //Llamada a lista de usuarios
+#include "ColaTutorial.h" //Llamada a la cola del tutorial
 
 using namespace std;
 
 //Declaraciones globales
 listaUsuarios usuario_;
+cola tutorial;
 
 
 //Prototipos
@@ -50,8 +52,8 @@ int main(){
         switch (op)
         {
         case '1':
+            system("cls");
             cargarJSON();
-            usuario_.mostrarUsuarios(); 
             break;
         case '2': 
             
@@ -178,7 +180,7 @@ void menuUsuario(string& logName,string& logPass){
             }
             break;    
         case 'c':
-            
+            tutorial.mostrarTutorial();
             break;
         case 'd':
             
@@ -216,8 +218,12 @@ void menuUsuario(string& logName,string& logPass){
 }
 
 void cargarJSON(){
+    //variables usuarios
     string nombre,pass,mon,ed;
     string auxPass;
+
+    //variables tutorial
+    string ancho,alto,cX,cY;
 
     ifstream file("carga.json"); //fstream para obtener el puntero del archivo
     Json::Value datos;
@@ -243,5 +249,23 @@ void cargarJSON(){
         //Guardando usuarios
         usuario_.insertarNuevo(nombre,pass,mon,ed);
     }
-    
+
+    //Accediendo a tutorial
+    ancho = datos["tutorial"]["ancho"].asString();
+    alto = datos["tutorial"]["alto"].asString();
+    tutorial.queue(ancho,alto,cX="",cY="");
+
+    //Accediento a movimientos
+    for (int i = 0; i < datos["tutorial"]["movimientos"].size(); i++)
+    {
+        //Accediendo a atributos y convirtiendo a string
+
+        cX = datos["tutorial"]["movimientos"][i]["x"].asString();
+        cY = datos["tutorial"]["movimientos"][i]["y"].asString();
+        
+        //Guardando datos
+        tutorial.queue(ancho="",alto="",cX,cY);
+    }
+
+    cout<<"-> Informacion cargada exitosamente\n";
 }
