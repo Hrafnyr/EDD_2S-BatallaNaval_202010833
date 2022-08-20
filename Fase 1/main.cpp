@@ -6,12 +6,14 @@
 #include "jsoncpp.cpp"
 #include "ListaUsuarios.h" //Llamada a lista de usuarios
 #include "ColaTutorial.h" //Llamada a la cola del tutorial
+#include "ListaCategoria.h"
 
 using namespace std;
 
 //Declaraciones globales
 listaUsuarios usuario_;
 cola tutorial;
+listaCategoria categoria_;
 
 
 //Prototipos
@@ -19,7 +21,6 @@ void menuUsuario(string&,string&);
 void cargarJSON();
 
 int main(){
-
     //Menú principal
     char op;
     char e;
@@ -139,6 +140,9 @@ void menuUsuario(string& logName,string& logPass){
 
     char op;
     char r;
+    string auxMonedas;
+    string nameJugada,cX,cY;
+    bool flag2 = false;
 
     system("cls");
     while (flag)
@@ -183,10 +187,45 @@ void menuUsuario(string& logName,string& logPass){
             tutorial.mostrarTutorial();
             break;
         case 'd':
-            
+            system("cls");
+            auxMonedas = usuario_.getMonedas(logName,logPass);
+            cout<<"Tienda\t\t\tMonedas Disponibles: "<<auxMonedas<<endl;
+            categoria_.mostrarLista();
+            system("pause");
             break;
         case 'e':
-            
+            system("cls");
+            cin.ignore();
+            cout<<"Ingrese el nombre de la jugada: \n";
+            getline(cin,nameJugada);
+
+            //Jurgando Nodo Jugada
+            usuario_.insertarJugada(logName,logPass,nameJugada);
+
+            //Asignando Movimientos a la Pila
+            while (flag2==false)
+            {
+                cout<<"->Ingrese C para terminar\n";
+                cout<<"Ingrese coordenada en X:\n";
+                getline(cin,cX);
+
+                if (cX=="C"||cX=="c")
+                {
+                    break;
+                }
+
+                cout<<"Ingrese coordenada en Y:\n";
+                getline(cin,cY);
+
+                if (cY=="C"||cY=="c")
+                {
+                    break;
+                }
+
+                //Ingreso de nuevo movimiento
+                usuario_.nuevoMovimiento(logName,logPass,nameJugada,cX,cY);   
+            }
+            usuario_.mostrarJugadasUsuario(logName,logPass);
             break;
         case 'f':
             cout<<"Regresar [S/N]\n";
@@ -225,7 +264,9 @@ void cargarJSON(){
     //variables tutorial
     string ancho,alto,cX,cY;
 
-    ifstream file("carga.json"); //fstream para obtener el puntero del archivo
+    //variables articulos
+    string categoria,id,nom,precio,src;
+    ifstream file("naval.json"); //fstream para obtener el puntero del archivo
     Json::Value datos;
     Json::Reader reader; 
 
@@ -267,5 +308,18 @@ void cargarJSON(){
         tutorial.queue(ancho="",alto="",cX,cY);
     }
 
+    //Articulos
+    for (int i = 0; i < datos["articulos"].size(); i++)
+    {
+        //->primero verificar si la categoria ya se guardo
+        categoria = datos["articulos"][i]["categoria"].asString();
+        id = datos["articulos"][i]["id"].asString();
+        nom = datos["articulos"][i]["nombre"].asString();
+        precio = datos["articulos"][i]["precio"].asString();
+        src = datos["articulos"][i]["src"].asString();
+
+        categoria_.insertarInicio(categoria);
+        categoria_.insertarNuevoArticulo(categoria,id,nom,precio,src);
+    }
     cout<<"-> Informacion cargada exitosamente\n";
 }

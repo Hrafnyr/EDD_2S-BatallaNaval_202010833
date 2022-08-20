@@ -13,11 +13,15 @@ class listaUsuarios{
         int size_ = 0;  
     public:
         void insertarNuevo(string&,string&,string&,string&);
+        void insertarJugada(string&,string&,string&);
+        void nuevoMovimiento(string&,string&,string&,string&,string&);
         void mostrarUsuarios(); 
+        void mostrarJugadasUsuario(string&,string&);
         int login(string&,string&);
         void modificarInformacion(string&,string&);
 
         void eliminarCuenta(string&,string&);
+        string getMonedas(string& name, string& pass);
 
         //Falta ordenar por edad
 
@@ -190,7 +194,32 @@ int listaUsuarios::login(string& name, string& pass){
         }
     }
     return 3;
-}    
+}   
+
+void listaUsuarios::mostrarJugadasUsuario(string& name, string& pass){
+    Usuario* actual = new Usuario(); //Auxiliar
+
+    actual = primero;
+    bool encontrado = false;
+
+    if (primero!=NULL){
+        do{
+			
+			if(actual->nombre==name && actual->password==pass){
+				
+				encontrado = true;
+                actual->jugadas->mostrarLista();		
+			}
+			
+			actual = actual->siguiente;
+		}while(actual!=primero && encontrado != true);
+
+        if (encontrado==false)
+        {
+            "No existe esa jugada con ese nombre";
+        }
+    }
+}   
 
 void listaUsuarios::eliminarCuenta(string& nameBuscar,string& passB){
     
@@ -240,6 +269,71 @@ void listaUsuarios::eliminarCuenta(string& nameBuscar,string& passB){
     }
 
 };
+
+string listaUsuarios::getMonedas(string& name, string& pass){
+    Usuario* actual = new Usuario(); //Auxiliar
+
+    actual = primero;
+    bool encontrado = false;
+
+    if (primero!=NULL){
+        do{
+			
+			if(actual->nombre==name && actual->password==pass){
+				
+				encontrado = true;
+                return actual->monedas;		
+			}
+			
+			actual = actual->siguiente;
+		}while(actual!=primero && encontrado != true);
+
+        if (encontrado==false)
+        {
+            return "0";
+        }
+    }
+    return "0";
+}    
+
+void listaUsuarios::insertarJugada(string& name, string& pass,string& nomJ){
+    Usuario* actual = new Usuario(); //Auxiliar
+
+    actual = primero;
+    
+    while (actual!=NULL){
+
+        if (actual->nombre!=name && actual->password!=pass)
+        {
+            actual = actual->siguiente;
+        }else{
+
+            actual->jugadas->nuevaJugada(nomJ);
+            break;
+        }
+    }
+
+};
+
+void listaUsuarios::nuevoMovimiento(string& name, string& pass,string& nomJ,string& X, string& Y){
+    Usuario* actual = new Usuario(); //Auxiliar
+    Usuario* aux = new Usuario();
+
+    actual = primero;
+    
+    while (actual!=NULL){
+
+        if (actual->nombre!=name && actual->password!=pass)
+        {
+            actual = actual->siguiente;
+        }else{
+            actual->jugadas->nuevoMovimiento(nomJ,X,Y);
+            break;
+        }
+    }
+
+};
+
 
 /* void listaUsuarios::eliminarLista(){
          while (primero != NULL)

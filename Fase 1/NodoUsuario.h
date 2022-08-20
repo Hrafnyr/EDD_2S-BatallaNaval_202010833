@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include "ListaJugadas.h"
 using namespace std;
 
 
@@ -9,6 +10,8 @@ class Usuario{
         string password;
         string monedas;
         string edad;
+
+        listaJugadas* jugadas;
 
         //Defina apuntadores Lista doble -> anterior y siguiente siguiente
         Usuario* anterior;
@@ -25,6 +28,7 @@ Usuario::Usuario() {    //Inicialización
     this->password = "";
     this->monedas = "";
     this->edad = "";
+    this->jugadas = new listaJugadas();
     this->anterior=NULL;
     this->siguiente=NULL;
 }
@@ -34,6 +38,7 @@ Usuario::Usuario(string name,string pass,string mon,string ed) { //asignación
     this->password = pass;
     this->monedas = mon;
     this->edad = ed;
+    this->jugadas = new listaJugadas();
     this->anterior=NULL;
     this->siguiente=NULL;
 }
