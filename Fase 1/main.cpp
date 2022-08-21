@@ -10,6 +10,7 @@
 
 using namespace std;
 
+
 //Declaraciones globales
 listaUsuarios usuario_;
 cola tutorial;
@@ -18,6 +19,7 @@ listaCategoria categoria_;
 
 //Prototipos
 void menuUsuario(string&,string&);
+void menuReportes();
 void cargarJSON();
 
 int main(){
@@ -25,7 +27,8 @@ int main(){
     char op;
     char e;
     bool flag = true;
-
+    bool flag4;
+    
     //Nuevo usuario
     string auxPass;
     string name,pass,ed,mon;
@@ -61,8 +64,20 @@ int main(){
             system("cls");
             cin.ignore();
             cout<<"----- Crear cuenta -----\n";
-            cout<<"Ingrese su nombre de usuario:\n";
-            getline(cin,name);
+            do
+            {
+                cout<<"Ingrese su nombre de usuario:\n";
+                getline(cin,name);
+
+                flag4=usuario_.verificarNombre(name);
+
+                if (flag4==true)
+                {
+                    cout<<"El nombre ya existe\n";
+                }
+
+            } while (flag4==true);
+            
             cout<<"Password:\n";
             getline(cin,auxPass);
 
@@ -72,12 +87,8 @@ int main(){
             cout<<"Ingrese su edad:\n";
             getline(cin,ed);
 
-            //Falta Encriptacion sha256
-
-
             //Nuevo usuario
             usuario_.insertarNuevo(name,pass,mon="0",ed);
-            usuario_.mostrarUsuarios(); //Metodo de prueba para ver la correcta insercion
             break;
         case '3':
 
@@ -108,6 +119,7 @@ int main(){
             
             break;
         case '4':
+            menuReportes();
             break;
         case '5':
             cout<<"Salir del juego [S/N]\n";
@@ -199,8 +211,9 @@ void menuUsuario(string& logName,string& logPass){
             cout<<"Ingrese el nombre de la jugada: \n";
             getline(cin,nameJugada);
 
-            //Jurgando Nodo Jugada
+            //guardar Nodo Jugada
             usuario_.insertarJugada(logName,logPass,nameJugada);
+            usuario_.sumarPunto(logName,logPass);
 
             //Asignando Movimientos a la Pila
             while (flag2==false)
@@ -225,7 +238,6 @@ void menuUsuario(string& logName,string& logPass){
                 //Ingreso de nuevo movimiento
                 usuario_.nuevoMovimiento(logName,logPass,nameJugada,cX,cY);   
             }
-            usuario_.mostrarJugadasUsuario(logName,logPass);
             break;
         case 'f':
             cout<<"Regresar [S/N]\n";
@@ -256,10 +268,54 @@ void menuUsuario(string& logName,string& logPass){
     
 }
 
+void menuReportes(){
+    bool flag=false;
+    char op;
+    while (flag==false)
+    {
+        cout<<"----------- Reportes -----------\n";
+        cout<<"1. Reporte de Usuarios\n";
+        cout<<"2. Reporte de Articulos\n";
+        cout<<"3. Reporte de Tuturial\n";
+        cout<<"4. Reporte de jugadas\n";
+        cout<<"5. Regresar\n";
+        cout<<"--------------------------------------\n";
+        cout<<"--> Ingrese el numero de opcion: ";
+        cin>>op;
+
+        switch (op)
+        {
+        case '1':
+            /* code */
+            break;
+        case '2':
+            /* code */
+            break;
+        case '3':
+            tutorial.generarReporte();
+            break;
+        case '4':
+            /* code */
+            break;
+        case '5':
+            system("cls");
+            cout<<"--> Regresando...\n";
+            flag = true;
+            break;
+        default:
+            system("cls");
+            cout<<"Error, debe ingresar el numero de opcion\n";
+            break;
+        }
+    }
+    
+}
+
 void cargarJSON(){
     //variables usuarios
     string nombre,pass,mon,ed;
     string auxPass;
+    bool verificador;
 
     //variables tutorial
     string ancho,alto,cX,cY;
@@ -280,15 +336,22 @@ void cargarJSON(){
     {
         //Accediendo a sus atributos y convirtiendo a string
         nombre = datos["usuarios"][i]["nick"].asString();
-        auxPass = datos["usuarios"][i]["password"].asString();
-        //Cifrar contraseña
-        pass = SHA256::cifrar(auxPass);
 
-        mon = datos["usuarios"][i]["monedas"].asString();
-        ed = datos["usuarios"][i]["edad"].asString();
-        
-        //Guardando usuarios
-        usuario_.insertarNuevo(nombre,pass,mon,ed);
+        //Validar nombre
+        verificador = usuario_.verificarNombre(nombre);
+        if (verificador==false)
+        {
+            auxPass = datos["usuarios"][i]["password"].asString();
+            //Cifrar contraseña
+            pass = SHA256::cifrar(auxPass);
+
+            mon = datos["usuarios"][i]["monedas"].asString();
+            ed = datos["usuarios"][i]["edad"].asString();
+            
+            //Guardando usuarios
+            usuario_.insertarNuevo(nombre,pass,mon,ed);
+        }
+
     }
 
     //Accediendo a tutorial

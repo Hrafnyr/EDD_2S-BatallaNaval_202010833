@@ -19,9 +19,12 @@ class listaUsuarios{
         void mostrarJugadasUsuario(string&,string&);
         int login(string&,string&);
         void modificarInformacion(string&,string&);
+        void sumarPunto(string&,string&);
+        bool verificarNombre(string&);
 
         void eliminarCuenta(string&,string&);
         string getMonedas(string& name, string& pass);
+
 
         //Falta ordenar por edad
 
@@ -194,6 +197,26 @@ int listaUsuarios::login(string& name, string& pass){
         }
     }
     return 3;
+} 
+
+bool listaUsuarios::verificarNombre(string& name){
+    Usuario* actual = new Usuario(); //Auxiliar
+
+    actual = primero;
+    bool encontrado = false;
+
+    if (primero!=NULL){
+        do{
+			
+			if(actual->nombre==name){
+				encontrado = true;
+                return true;		
+			}
+			
+			actual = actual->siguiente;
+		}while(actual!=primero && encontrado != true);
+    }
+    return false;
 }   
 
 void listaUsuarios::mostrarJugadasUsuario(string& name, string& pass){
@@ -314,6 +337,30 @@ void listaUsuarios::insertarJugada(string& name, string& pass,string& nomJ){
     }
 
 };
+
+void listaUsuarios::sumarPunto(string& name, string& pass){
+    Usuario* actual = new Usuario(); //Auxiliar
+
+    actual = primero;
+    bool encontrado = false;
+    string mon_ = getMonedas(name,pass);
+    int aux = stoi(mon_);
+
+    if (primero!=NULL){
+        do{
+			
+			if(actual->nombre==name && actual->password==pass){
+				
+				encontrado = true;
+                aux++;
+                actual->monedas=to_string(aux);		
+			}
+			
+			actual = actual->siguiente;
+		}while(actual!=primero && encontrado != true);
+
+    }  
+}
 
 void listaUsuarios::nuevoMovimiento(string& name, string& pass,string& nomJ,string& X, string& Y){
     Usuario* actual = new Usuario(); //Auxiliar
