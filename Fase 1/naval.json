@@ -32,9 +32,7 @@
     }
   ],
   "articulos": [
-    {
-      "id": "1",
-      "categoria": "Comun",
+    {"id": "1","categoria": "Comun",
       "precio": "200",
       "nombre": "Barco naval rojo",
       "src": "cadena"
@@ -56,6 +54,19 @@
     {
       "id": "4",
       "categoria": "Legendaria",
+      "precio": "600",
+      "nombre": "Barco naval lux",
+      "src": ""
+    },{
+      "id": "88",
+      "categoria": "Legendaria",
+      "precio": "600",
+      "nombre": "Barco naval lux",
+      "src": ""
+    },
+    {
+      "id": "5",
+      "categoria": "Categoria",
       "precio": "600",
       "nombre": "Barco naval lux",
       "src": ""

@@ -271,6 +271,7 @@ void menuUsuario(string& logName,string& logPass){
 void menuReportes(){
     bool flag=false;
     char op;
+    system("cls");
     while (flag==false)
     {
         cout<<"----------- Reportes -----------\n";
@@ -289,7 +290,7 @@ void menuReportes(){
             /* code */
             break;
         case '2':
-            /* code */
+            categoria_.generarReporte();
             break;
         case '3':
             tutorial.generarReporte();
@@ -322,7 +323,7 @@ void cargarJSON(){
 
     //variables articulos
     string categoria,id,nom,precio,src;
-    ifstream file("naval.json"); //fstream para obtener el puntero del archivo
+    ifstream file("carga.json"); //fstream para obtener el puntero del archivo
     Json::Value datos;
     Json::Reader reader; 
 

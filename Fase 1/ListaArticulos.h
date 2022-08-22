@@ -12,7 +12,8 @@ class listaArticulos{
     public:
         nodoArticulos* primero;  
         void insertarInicio(string&,string&,string&,string&);
-        void mostrarLista(); 
+        void mostrarLista();
+        string generarReporte(int&); 
 
         // void eliminarnodoArticulos(int&); 
         // void eliminarLista();
@@ -81,6 +82,49 @@ void listaArticulos::mostrarLista(){
         cout<<"No hay datos"<<endl;
     }
 };
+
+string listaArticulos::generarReporte(int& contCate){
+    nodoArticulos* actual = new nodoArticulos(); //Auxiliar
+    actual = primero;
+
+    int contAux = 0;
+    int aux=0;
+
+    string nodo;
+    string NodoR="",ApuntadorR="";
+
+    if (primero!=NULL){
+        while (actual!=NULL){
+
+            NodoR+="NodoC"+to_string(contCate)+"_"+to_string(contAux)+"[label=";
+            NodoR+="\"ID: "+actual->Id+"\\nNombre: "+actual->nombre+"\\nPrecio: "+actual->precio+"\" fillcolor=\"lemonchiffon\"];\n";
+
+            //Apuntador
+            if(actual->siguiente!=NULL){
+                if (aux==0)
+                {
+                    ApuntadorR+="NodoC"+to_string(contCate)+" -> NodoC"+to_string(contCate)+"_"+to_string(contAux)+";\n";
+                    aux = 1;
+                }
+                
+                ApuntadorR+="NodoC"+to_string(contCate)+"_"+to_string(contAux)+" -> NodoC"+to_string(contCate)+"_"+to_string(contAux+1)+";\n";
+            }
+            else{
+                if (aux==0)
+                {
+                   ApuntadorR+="NodoC"+to_string(contCate)+" -> NodoC"+to_string(contCate)+"_"+to_string(contAux)+";\n";
+                }
+        
+            }
+            actual = actual->siguiente;
+            contAux++;
+        }
+    }else{
+        return "";
+    }
+
+    return NodoR+ApuntadorR;
+} 
 
 /*
 void listaArticulos::eliminarLista(){
