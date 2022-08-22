@@ -3,6 +3,7 @@
 #include "nodoTutorial.h" //Llamada al archivo nodoTutorial.h 
 #include <filesystem>
 #include <unistd.h>
+#include <string>
 using std::filesystem::current_path;
 using namespace std;
 

@@ -1,7 +1,7 @@
 
 #include <iostream>
 #include "NodoUsuario.h" 
-
+#include <string>
 using namespace std;
 
 //Declaramos clase lista
@@ -16,17 +16,14 @@ class listaUsuarios{
         void insertarJugada(string&,string&,string&);
         void nuevoMovimiento(string&,string&,string&,string&,string&);
         void ReporteUsuarios(); 
-        void mostrarJugadasUsuario(string&,string&);
         int login(string&,string&);
         void modificarInformacion(string&,string&);
         void sumarPunto(string&,string&);
         bool verificarNombre(string&);
+        void reporteJugadas();
 
         void eliminarCuenta(string&,string&);
         string getMonedas(string& name, string& pass);
-
-
-        //Falta ordenar por edad
 
         //void eliminarLista(); 
         listaUsuarios();
@@ -271,28 +268,56 @@ bool listaUsuarios::verificarNombre(string& name){
     return false;
 }   
 
-void listaUsuarios::mostrarJugadasUsuario(string& name, string& pass){
+void listaUsuarios::reporteJugadas(){
     Usuario* actual = new Usuario(); //Auxiliar
-
     actual = primero;
-    bool encontrado = false;
+
+    string cabecera="",subGU="", jugada="";
+    int contUser = 0;
+    //cabecera
+    cabecera+="digraph G {\nrankdir=LR;\ngraph [fontsize=15 fontname=\"Verdana\" compound=true];\n";
+    cabecera+="node[shape=box fontsize=12 fillcolor=\"darkseagreen1\" style=\"filled\"];\n";
 
     if (primero!=NULL){
         do{
-			
-			if(actual->nombre==name && actual->password==pass){
-				
-				encontrado = true;
-                actual->jugadas->mostrarLista();		
-			}
-			
-			actual = actual->siguiente;
-		}while(actual!=primero && encontrado != true);
+			//Cada usuario será un subgrafo
+            subGU+="subgraph cluster_"+to_string(contUser)+"{\nlabel=\"Usuario: "+actual->nombre+"\";\n";
+            subGU+="style=filled;\ncolor=aliceblue;\n";
 
-        if (encontrado==false)
-        {
-            "No existe esa jugada con ese nombre";
+            //Llamada a las jugadas de usuario -> lista jugadas
+            jugada = actual->jugadas->reporte(contUser);	
+
+            subGU+=jugada+"}\n";
+            contUser++;
+			actual = actual->siguiente;
+		}while(actual!=primero);
+
+        //Unir todo
+        cabecera+=subGU+"}\n";
+
+        //Generar archivo
+        try {
+            string path = "Pilas";
+
+            ofstream file;
+            file.open(path + "Reporte.dot",std::ios::out);
+
+            if(file.fail()){
+                exit(1);
+            }
+
+            file<<cabecera;
+            file.close();
+            string command = "dot -Tpng " + path + "Reporte.dot -o  " + path + "Reporte.png";
+            system(command.c_str());
+            system(("PilasReporte.png"));//Abrir archivo
+        }catch (exception e){
+            cout << "Error detectado, no se pudo generar el Reporte solicitado";
         }
+        cout<<"--> Reporte generado\n";
+
+    }else{
+        cout<<"No hay datos\n";
     }
 }   
 
@@ -432,7 +457,6 @@ void listaUsuarios::nuevoMovimiento(string& name, string& pass,string& nomJ,stri
     }
 
 };
-
 
 /* void listaUsuarios::eliminarLista(){
          while (primero != NULL)

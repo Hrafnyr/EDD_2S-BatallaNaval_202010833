@@ -11,7 +11,7 @@ class listaJugadas{
     public:
 
         void nuevaJugada(string& nombre);
-        void mostrarLista();
+        string reporte(int& contU);
         void nuevoMovimiento(string& nombre,string&X,string&Y);
         listaJugadas();
 
@@ -37,22 +37,40 @@ void listaJugadas::nuevaJugada(string& nombre){
     }    
 };
 
-void listaJugadas::mostrarLista(){
+string listaJugadas::reporte(int& contU){
     nodoJugada* actual = new nodoJugada(); //Auxiliar
-
     actual = primero;
+
+    string c1="",pila="",apt="";
+    int contJ=1;
+    int contM = 0;
 
     if (primero!=NULL){
         while (actual!=NULL){
+            
+            //Cabecera del subgrafo jugada
+            c1+="subgraph cluster_"+to_string(contU)+to_string(contJ)+"{\nlabel=\"Jugada: "+actual->nombreJugada+"\";\ncolor=lightyellow;\n";
 
-            cout<<"Nombre Jugada: "<<actual->nombreJugada<<endl;
-            actual->coordenadas->mostrarPila();
+            //Se llama a los nodos de la pila de movimiento
+            pila=actual->coordenadas->mostrarPila(contU,contJ,contM);
+
+            c1+=pila+"}\n"; //Se cierra el subgrafo
+
+            //apuntador hacie subgrafos
+            if (actual->siguiente!=NULL)
+            {
+                apt+="Nodo"+to_string(contU)+to_string(contJ)+"_J"+to_string(contJ)+"_1 -> Nodo"+to_string(contU)+to_string(contJ+1)+"_J"+to_string(contJ+1)+"_1 [ltail=cluster_"+to_string(contU)+to_string(contJ)+" lhead=cluster_"+to_string(contU)+to_string(contJ+1)+"];\n";
+                contJ++;
+            }
+    
             actual = actual->siguiente;
         }
-    }else{
-        cout<<"No hay datos"<<endl;
+        return c1+apt; 
     }
+    return "";
 };
+
+
 
 void listaJugadas::nuevoMovimiento(string& nombre,string& X, string& Y){
     nodoJugada* actual = new nodoJugada(); //Auxiliar

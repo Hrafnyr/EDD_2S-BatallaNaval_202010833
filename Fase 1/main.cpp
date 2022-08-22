@@ -296,7 +296,7 @@ void menuReportes(){
             tutorial.generarReporte();
             break;
         case '4':
-            /* code */
+            usuario_.reporteJugadas();
             break;
         case '5':
             system("cls");

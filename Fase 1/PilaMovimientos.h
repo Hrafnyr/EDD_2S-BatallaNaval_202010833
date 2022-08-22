@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <string>
 #include "NodoMovimiento.h" //Llamada al archivo nodo.h 
 
 using namespace std;
@@ -10,7 +11,7 @@ class pila{
         NodoDisparo* ultimo;    
     public:
         void push(string&,string&); //ultimo en entrar primero en salir 1,2,3,4->NULL
-        void mostrarPila(); 
+        string mostrarPila(int&,int&,int&); 
         void pop(); //elimina el ultimo elemento apilado
         void top(); //Devuelve el ultimo elemento apilado
         //void eliminarPila();
@@ -44,21 +45,35 @@ void pila::push(string& nX,string& nY){
     ultimo = nuevo;
 };
 
-void pila::mostrarPila(){
+string pila::mostrarPila(int& cont_U, int& cont_J, int& cM){
     NodoDisparo* actual = new NodoDisparo(); //Auxiliar
-
     actual = primero;
+    string Nodo="",apunt="";
+    int contM=1;
+
+    apunt+="{\nrank=same\n";
 
     if (primero!=NULL){
         while (actual!=NULL){
 
-            cout<<"Coordenadas: ("<<actual->X<<","<<actual->Y<<")"<<endl;
-            
+            //nodos de la pila
+            Nodo+="Nodo"+to_string(cont_U)+to_string(cont_J)+"_J"+to_string(cont_J)+"_"+to_string(contM);
+            Nodo+="[label=\"X: "+actual->X+"\\nY: "+actual->Y+"\"];\n";
+
+            //Apuntadores
+            if (actual->siguiente!=NULL)
+            {
+                apunt+="Nodo"+to_string(cont_U)+to_string(cont_J)+"_J"+to_string(cont_J)+"_"+to_string(contM)+" -> "+"Nodo"+to_string(cont_U)+to_string(cont_J)+"_J"+to_string(cont_J)+"_"+to_string(contM+1)+";\n";
+                contM++;
+            }
+
             actual = actual->siguiente;
         }
-    }else{
-        cout<<"No hay datos"<<endl;
+        apunt+="}\n";
+        cM=contM;
+        return Nodo+apunt;
     }
+    return "";
 };
 
 void pila::top(){
