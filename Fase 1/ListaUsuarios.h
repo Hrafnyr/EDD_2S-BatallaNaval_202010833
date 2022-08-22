@@ -15,7 +15,7 @@ class listaUsuarios{
         void insertarNuevo(string&,string&,string&,string&);
         void insertarJugada(string&,string&,string&);
         void nuevoMovimiento(string&,string&,string&,string&,string&);
-        void mostrarUsuarios(); 
+        void ReporteUsuarios(); 
         void mostrarJugadasUsuario(string&,string&);
         int login(string&,string&);
         void modificarInformacion(string&,string&);
@@ -68,25 +68,65 @@ void listaUsuarios::insertarNuevo(string& nickname, string& pass, string& mon, s
 
 };
 
-//Metodo de prueba para verifica la correcta insercion de usuarios
-void listaUsuarios::mostrarUsuarios(){
+//Metodo de reporte
+void listaUsuarios::ReporteUsuarios(){
     Usuario* actual = new Usuario(); //Auxiliar
-
     actual = primero;
 
-    if (primero!=NULL){
+    string cabecera="",apuntador="",Nodo="",apUnion="";
+    int contU = 1;
+
+    cabecera+="digraph G {\nrankdir=LR;\ngraph [fontsize=15 fontname=\"Verdana\"];\n";
+    cabecera+="node[shape=box fontsize=12 fillcolor=\"darkseagreen1\" style=\"filled\"];\nlabel=\"Usuarios\";\n";
+
+    if (primero!=NULL){        
         do
         {
-            cout<<"-------------------"<<endl;
-            cout<<actual->nombre<<endl;
-            cout<<actual->password<<endl;
-            cout<<actual->monedas<<endl;
-            cout<<actual->edad<<endl;
-            cout<<"-------------------"<<endl;
+            //Si solo hay un nodo se referencia a sí mismo
+            //Creacion de nodos
+            Nodo+="NodoU"+to_string(contU)+"[label=\"Nombre: "+actual->nombre+"\\n";
+            Nodo+="Contraseña: "+actual->password+"\\n";
+            Nodo+="Monedas: "+actual->monedas+"\\n";
+            Nodo+="Edad: "+actual->edad+"\"];\n";
 
+            //Apuntadores
+            if (actual->siguiente!=primero)
+            {
+                apuntador+="NodoU"+to_string(contU)+"-> NodoU"+to_string(contU+1)+";\n";
+                contU++;
+            }
+            
             actual = actual->siguiente;
         } while (actual!=primero);
         
+        //Union
+        apUnion+="NodoU1:s -> NodoU"+to_string(contU)+";\n";
+        apUnion+="NodoU"+to_string(contU)+":n -> NodoU1;}\n";
+
+        //Unir todo
+        cabecera+=Nodo+apuntador+apUnion;
+
+        //Generar archivo
+        try {
+            string path = "Usuarios";
+
+            ofstream file;
+            file.open(path + "Reporte.dot",std::ios::out);
+
+            if(file.fail()){
+                exit(1);
+            }
+
+            file<<cabecera;
+            file.close();
+            string command = "dot -Tpng " + path + "Reporte.dot -o  " + path + "Reporte.png";
+            system(command.c_str());
+            system(("UsuariosReporte.png")); //abrir archivo
+        }catch (exception e){
+            cout << "Error detectado, no se pudo generar el Reporte solicitado";
+        }
+        cout<<"--> Reporte generado\n";
+
     }else{
         cout<<"No hay datos"<<endl;
     }
@@ -99,6 +139,7 @@ void listaUsuarios::modificarInformacion(string& name, string& pass){
 
     actual = primero;
     bool encontrado = false;
+    bool flag4=false;
 
     string nName="";
     string nEdad="";
@@ -124,8 +165,19 @@ void listaUsuarios::modificarInformacion(string& name, string& pass){
                 {
                 case '1':
                     cin.ignore();
-                    cout<<"--> Ingrese el nuevo nombre: ";
-                    getline(cin,nName);
+                    do
+                    {
+                        cout<<"Ingrese su nombre de usuario:\n";
+                        getline(cin,nName);
+
+                        flag4=verificarNombre(nName);
+
+                        if (flag4==true)
+                        {
+                            cout<<"El nombre ya existe\n";
+                        }
+
+                    } while (flag4==true);
 
                     actual->nombre=nName;
                     name = nName;
@@ -150,7 +202,7 @@ void listaUsuarios::modificarInformacion(string& name, string& pass){
                     break;
                 
                 case '4':
-                    cout<<"-->Regresando...";
+                    cout<<"-->Regresando...\n";
                     break;
                 
                 default:

@@ -3,7 +3,12 @@
         { "nick": "us1", "password": "123", "monedas": "0", "edad": "18" },
         { "nick": "us2", "password": "123S", "monedas": "5", "edad": "20" },
         { "nick": "us3", "password": "123v", "monedas": "10", "edad": "21" },
-        { "nick": "us4", "password": "124", "monedas": "14", "edad": "19" }
+        { "nick": "us4", "password": "124", "monedas": "14", "edad": "19" },
+        { "nick": "us5", "password": "123", "monedas": "0", "edad": "18" },
+        { "nick": "us6", "password": "123S", "monedas": "5", "edad": "20" },
+        { "nick": "us7", "password": "123v", "monedas": "10", "edad": "21" },
+        { "nick": "us8", "password": "124", "monedas": "14", "edad": "19" },
+        { "nick": "us9", "password": "124", "monedas": "14", "edad": "19" }
         
     ],
     "articulos": [
@@ -21,7 +26,8 @@
     "movimientos":[
         { "x": "0", "y": "1" },
         { "x": "0", "y": "2" },
-        { "x": "0", "y": "4" }
+        { "x": "0", "y": "4" },
+        { "x": "0", "y": "55" }
     ]
     }
 }

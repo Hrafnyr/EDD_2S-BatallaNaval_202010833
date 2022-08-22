@@ -287,7 +287,7 @@ void menuReportes(){
         switch (op)
         {
         case '1':
-            /* code */
+            usuario_.ReporteUsuarios();
             break;
         case '2':
             categoria_.generarReporte();

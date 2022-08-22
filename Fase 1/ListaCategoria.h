@@ -149,8 +149,9 @@ void listaCategoria::generarReporte(){
 
             file<<datos;
             file.close();
-            string command = "dot -Tpdf " + path + "Reporte.dot -o  " + path + "Reporte.pdf";
+            string command = "dot -Tpng " + path + "Reporte.dot -o  " + path + "Reporte.png";
             system(command.c_str());
+            system(("ArticulosReporte.png"));//Abrir archivo
         }catch (exception e){
             cout << "Error detectado, no se pudo generar el Reporte solicitado";
         }
