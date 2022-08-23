@@ -89,7 +89,8 @@ void listaUsuarios::ReporteUsuarios(){
             //Apuntadores
             if (actual->siguiente!=primero)
             {
-                apuntador+="NodoU"+to_string(contU)+"-> NodoU"+to_string(contU+1)+";\n";
+                apuntador+="NodoU"+to_string(contU)+"-> NodoU"+to_string(contU+1)+";\n";//->
+                apuntador+="NodoU"+to_string(contU+1)+"-> NodoU"+to_string(contU)+";\n";//<-
                 contU++;
             }
             
