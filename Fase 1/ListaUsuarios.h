@@ -442,8 +442,6 @@ void listaUsuarios::sumarPunto(string& name, string& pass){
 
 void listaUsuarios::nuevoMovimiento(string& name, string& pass,string& nomJ,string& X, string& Y){
     Usuario* actual = new Usuario(); //Auxiliar
-    Usuario* aux = new Usuario();
-
     actual = primero;
     
     while (actual!=NULL){
