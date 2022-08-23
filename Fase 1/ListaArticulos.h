@@ -97,7 +97,7 @@ string listaArticulos::generarReporte(int& contCate){
         while (actual!=NULL){
 
             NodoR+="NodoC"+to_string(contCate)+"_"+to_string(contAux)+"[label=";
-            NodoR+="\"ID: "+actual->Id+"\\nNombre: "+actual->nombre+"\\nPrecio: "+actual->precio+"\" fillcolor=\"lemonchiffon\"];\n";
+            NodoR+="\"ID: "+actual->Id+"\\nNombre: "+actual->nombre+"\\nPrecio: "+actual->precio+"\\nsrc: "+actual->src+"\" fillcolor=\"lemonchiffon\"];\n";
 
             //Apuntador
             if(actual->siguiente!=NULL){

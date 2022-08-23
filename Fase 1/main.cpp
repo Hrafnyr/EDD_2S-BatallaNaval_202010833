@@ -231,10 +231,9 @@ void menuUsuario(string& logName,string& logPass){
                 getline(cin,cY);
 
                 if (cY=="C"||cY=="c")
-                {
+                {   
                     break;
                 }
-
                 //Ingreso de nuevo movimiento
                 usuario_.nuevoMovimiento(logName,logPass,nameJugada,cX,cY);   
             }
