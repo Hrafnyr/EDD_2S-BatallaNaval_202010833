@@ -2,10 +2,8 @@
 #include <iostream>
 using namespace std;
 
-//Para la pila se facilita trabaja como lista doble
-
-class NodoDisparo{  //Puede cambiar el nombre
-    public: //Defina atributos publicos tipo nombre;
+class NodoDisparo{  
+    public: 
         string X;
         string Y;
 
