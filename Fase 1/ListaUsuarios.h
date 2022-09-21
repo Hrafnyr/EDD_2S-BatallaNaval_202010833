@@ -66,7 +66,7 @@ void listaUsuarios::insertarNuevo(string& nickname, string& pass, string& mon, s
 };
 
 //Metodo de reporte
-void listaUsuarios::ReporteUsuarios(){
+/*void listaUsuarios::ReporteUsuarios(){
     Usuario* actual = new Usuario(); //Auxiliar
     actual = primero;
 
@@ -129,7 +129,7 @@ void listaUsuarios::ReporteUsuarios(){
         cout<<"No hay datos"<<endl;
     }
 
-};
+};*/
 
 void listaUsuarios::modificarInformacion(string& name, string& pass){
     
@@ -269,6 +269,7 @@ bool listaUsuarios::verificarNombre(string& name){
     return false;
 }   
 
+/*
 void listaUsuarios::reporteJugadas(){
     Usuario* actual = new Usuario(); //Auxiliar
     actual = primero;
@@ -320,7 +321,7 @@ void listaUsuarios::reporteJugadas(){
     }else{
         cout<<"No hay datos\n";
     }
-}   
+}  */ 
 
 void listaUsuarios::eliminarCuenta(string& nameBuscar,string& passB){
     

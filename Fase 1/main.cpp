@@ -1,28 +1,44 @@
-#include <iostream>
-#include <string>
-#include <fstream>
-#include "sha256.h" //Permite cifrar contraseñas
-#include "json/json.h" //Permite manipular JSON
-#include "jsoncpp.cpp"
+//#include <iostream>
+//#include <string>
+//#include <fstream>
+//#include "sha256.h" //Permite cifrar contraseñas
+//#include "json/json.h" //Permite manipular JSON
+//#include "jsoncpp.cpp"
 #include "ListaUsuarios.h" //Llamada a lista de usuarios
-#include "ColaTutorial.h" //Llamada a la cola del tutorial
-#include "ListaCategoria.h"
+//#include "ColaTutorial.h" //Llamada a la cola del tutorial
+//#include "ListaCategoria.h"
 
-using namespace std;
+//using namespace std;
 
 
 //Declaraciones globales
 listaUsuarios usuario_;
-cola tutorial;
-listaCategoria categoria_;
+
+extern "C" {
+//--------------- BLOQUE DE PRUEBAS PARA PYTHON
+int llamarLogin(string p, string ps){
+    int r = usuario_.login(p,ps);
+    return r;
+}
+
+void llamarInsertar(string n, string p, string mon, string ed){
+    mon = "0";
+    usuario_.insertarNuevo(n,p,mon,ed);
+}
+
+}
 
 
-//Prototipos
+//cola tutorial;
+//listaCategoria categoria_;
+
+
+/*//Prototipos
 void menuUsuario(string&,string&);
 void menuReportes();
-void cargarJSON();
+void cargarJSON();*/
 
-int main(){
+/*int main(){
     //Menú principal
     char op;
     char e;
@@ -386,3 +402,4 @@ void cargarJSON(){
     }
     cout<<"-> Informacion cargada exitosamente\n";
 }
+*/

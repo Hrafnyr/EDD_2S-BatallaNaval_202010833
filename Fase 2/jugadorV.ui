@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1920</width>
+    <height>1080</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1920</width>
+    <height>1080</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Batalla Naval</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QFrame" name="frame">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QFrame" name="frame_superior">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>70</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QFrame{
+background-color: qlineargradient(spread:pad, x1:0.463579, y1:0.517045, x2:1, y2:1, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(70, 6, 255, 255));
+}
+
+
+QPushButton{
+	border-radius:15px;
+	border:1px solid white;
+	background-color: rgb(40, 195, 203);
+	
+	font: 57 12pt &quot;Hobo Std&quot;;
+	color:white;
+}
+
+QPushButton:hover{
+	
+	background-color: rgb(219, 236, 131);
+	font: 57 12pt &quot;Hobo Std&quot;;
+	color:black
+	
+}</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="font">
+             <font>
+              <family>Tw Cen MT</family>
+              <pointsize>20</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: rgb(26, 244, 255);
+background-color: rgb(0, 0, 0);</string>
+            </property>
+            <property name="text">
+             <string>Bienvenido</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="txtUS">
+            <property name="font">
+             <font>
+              <family>Tw Cen MT</family>
+              <pointsize>20</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: rgb(26, 244, 255);
+background-color: rgb(0, 0, 0);
+</string>
+            </property>
+            <property name="text">
+             <string>asdc</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>1681</width>
+              <height>17</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="frame_3">
+         <property name="styleSheet">
+          <string notr="true">QFrame{
+	
+background-color: qlineargradient(spread:pad, x1:0.463158, y1:0.511, x2:1, y2:1, stop:0 rgba(46, 0, 59, 255), stop:1 rgba(11, 132, 255, 255));
+}
+</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QFrame" name="menuUs">
+            <property name="maximumSize">
+             <size>
+              <width>300</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QFrame{
+	
+background-color: qlineargradient(spread:pad, x1:0.463158, y1:0.511, x2:1, y2:1, stop:0 rgba(46, 0, 59, 255), stop:1 rgba(11, 132, 255, 255));
+}
+
+QPushButton{
+	border-radius:15px;
+	height:75px;
+	border:1px solid white;
+	background-color: rgb(40, 195, 203);
+	
+	font: 57 12pt &quot;Hobo Std&quot;;
+	color:white;
+}
+
+QPushButton:hover{
+	
+	background-color: rgb(219, 236, 131);
+	font: 57 12pt &quot;Hobo Std&quot;;
+	color:black
+	
+}</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <item>
+              <widget class="QPushButton" name="pushButton">
+               <property name="text">
+                <string>    Editar Información</string>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>img/editar.png</normaloff>img/editar.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_2">
+               <property name="text">
+                <string>     Eliminar cuenta</string>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>img/delete.png</normaloff>img/delete.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_3">
+               <property name="text">
+                <string>    Tutorial</string>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>img/tutorial.png</normaloff>img/tutorial.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_4">
+               <property name="text">
+                <string>    Jugar</string>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>img/play.png</normaloff>img/play.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_5">
+               <property name="text">
+                <string>    Tienda</string>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>img/store.png</normaloff>img/store.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnCerrarS">
+               <property name="text">
+                <string>    Cerrar sesión</string>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>img/logOut.png</normaloff>img/logOut.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame_5">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <widget class="QPushButton" name="pushButton_7">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>60</y>
+               <width>1541</width>
+               <height>781</height>
+              </rect>
+             </property>
+             <property name="toolTipDuration">
+              <number>-13</number>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>img/imagenBarco.jpg</normaloff>img/imagenBarco.jpg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>1640</width>
+               <height>921</height>
+              </size>
+             </property>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1920</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
