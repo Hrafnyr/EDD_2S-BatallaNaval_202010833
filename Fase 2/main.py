@@ -3,18 +3,10 @@ from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QMessageBox
 from PyQt5 import QtGui
 import os
 import sys
-import ctypes, ctypes.util #Librería para consumir funciones de c++
 
 #Varibles globales
 nameUser = ""
 passUser = ""
-
-#Ruta de los DLL
-path = os.path.dirname(os.path.abspath(__file__))
-path1 = os.path.dirname(path) + "\\Fase 1"
-print(path1)
-os.add_dll_directory(os.path.dirname(os.path.abspath(path1)))
-loginC = ctypes.cdll.LoadLibrary(path1+"//p.dll")
 
 #iniciar app
 app = QtWidgets.QApplication(sys.argv)
@@ -37,11 +29,6 @@ def loginAction():
     else:
         loginV.label_4.setText("")
         loginV.label_5.setText("")
-        f= loginC.llamarLogin("dd","dd")
-        if f == 3:
-            print(f)
-        else:
-            verUsuario(nameUser)
 
 def verUsuario(nameU):
     loginV.hide()
@@ -71,7 +58,7 @@ def getDatosNuevaCuenta():
         nuevoV.label_4.setText("")
         nuevoV.label_5.setText("")
         nuevoV.label_7.setText("")
-        loginC.llamarInsertar(newName,newPass,"0",newEdad)
+
 
 def volverLogin():
     loginV.lineEdit.setText("")

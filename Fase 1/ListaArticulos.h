@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include <string>
+#include <iomanip>
 #include "NodoArticulos.h" 
 
 using namespace std;
