@@ -1,0 +1,18 @@
+digraph G{
+rankdir=LR;
+graph[fontsize=15 fontname="Verdana"];
+node[shape=box fontsize=12 fillcolor="darkolivegreen1" style="filled"];
+subgraph cluster_2{
+label ="Tutorial";
+color=darkslategrey;
+Nodo0[label="Ancho: 5\nAlto: 5"];
+Nodo1[label="X: 0\nY: 3"];
+Nodo2[label="X: 0\nY: 2"];
+Nodo3[label="X: 0\nY: 1"];
+
+}
+Nodo1-> Nodo2;
+Nodo2-> Nodo3;
+Nodo3-> Nodo0;
+
+}

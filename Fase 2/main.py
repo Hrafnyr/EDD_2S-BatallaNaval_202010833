@@ -4,17 +4,21 @@ from PyQt5 import QtGui
 import os
 import sys
 
+import requests
+import json
+
 #Varibles globales
 nameUser = ""
 passUser = ""
+url_Api = "http://192.168.1.20:8080"
 
 #iniciar app
 app = QtWidgets.QApplication(sys.argv)
 
 #cargar archivos ui localizados en el directorio actual
-loginV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"\\login.ui")
-nuevoV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"\\nuevaCuenta.ui")
-userV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"\\jugadorV.ui")
+loginV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"/login.ui")
+nuevoV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"/nuevaCuenta.ui")
+userV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"/jugadorV.ui")
 
 #Funciones
 def loginAction():
@@ -29,6 +33,8 @@ def loginAction():
     else:
         loginV.label_4.setText("")
         loginV.label_5.setText("")
+        loginV.hide()
+        userV.show()
 
 def verUsuario(nameU):
     loginV.hide()
@@ -58,6 +64,12 @@ def getDatosNuevaCuenta():
         nuevoV.label_4.setText("")
         nuevoV.label_5.setText("")
         nuevoV.label_7.setText("")
+
+        data = {"name":"{}".format(newName)}
+        res = requests.post(f'{url_Api}/AllUsuarios',json=data)
+
+        #nuevoV.hide()
+        #loginV.show()
 
 
 def volverLogin():

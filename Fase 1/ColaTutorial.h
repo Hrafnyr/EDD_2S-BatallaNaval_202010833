@@ -1,11 +1,11 @@
 
 #include <iostream>
-#include "nodoTutorial.h" //Llamada al archivo nodoTutorial.h 
+#include "NodoTutorial.h" //Llamada al archivo nodoTutorial.h 
 #include <filesystem>
 #include <unistd.h>
 #include <string>
 #include <fstream>
-using std::filesystem::current_path;
+//using std::filesystem::current_path;
 using namespace std;
 
 //Declaramos clase lista

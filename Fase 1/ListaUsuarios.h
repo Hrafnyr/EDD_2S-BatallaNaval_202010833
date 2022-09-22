@@ -1,5 +1,4 @@
-
-#include <iostream>
+#include <fstream>
 #include "NodoUsuario.h" 
 #include <string>
 using namespace std;
@@ -21,6 +20,7 @@ class listaUsuarios{
         void sumarPunto(string&,string&);
         bool verificarNombre(string&);
         void reporteJugadas();
+        string getDatos();
 
         void eliminarCuenta(string&,string&);
         string getMonedas(string& name, string& pass);
@@ -53,6 +53,7 @@ void listaUsuarios::insertarNuevo(string& nickname, string& pass, string& mon, s
         ultimo = nuevo;
         primero->siguiente = primero;
         primero->anterior = ultimo;
+        
     }
     else{
         ultimo->siguiente = nuevo; //Siguiente del ultimo es nuevo
@@ -61,9 +62,34 @@ void listaUsuarios::insertarNuevo(string& nickname, string& pass, string& mon, s
         nuevo->siguiente = primero; //Conectamos el siguiente del nuevo al primero
         ultimo = nuevo; //ahora el ultimo es nuevo
         primero->anterior = ultimo; //Conectamos el anterior del primero al ultimo
+        
     }
 
 };
+
+string listaUsuarios::getDatos()
+{
+    Usuario* actual = new Usuario(); //Auxiliar
+    actual = primero;
+    string out = "";
+    if (primero!=NULL){
+        do{
+			out += "{\"nick\": \"" + actual->nombre + "\",\"password\":\""+actual->password+"\"}";
+			actual = actual->siguiente;
+
+            if (actual != primero)
+            {      
+                out += ",";
+            }
+            
+		}while(actual!=primero);
+
+        return "[\n " + out + "\n]";
+       
+    }
+    return "[\n]";
+}
+    
 
 //Metodo de reporte
 void listaUsuarios::ReporteUsuarios(){
@@ -108,7 +134,8 @@ void listaUsuarios::ReporteUsuarios(){
         try {
             string path = "Usuarios";
 
-            ofstream file;
+            std::ofstream file;
+
             file.open(path + "Reporte.dot",std::ios::out);
 
             if(file.fail()){
