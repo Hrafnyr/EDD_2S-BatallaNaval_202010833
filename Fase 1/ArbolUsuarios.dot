@@ -1,0 +1,10 @@
+digraph G {
+node[shape=record]
+		//Agregar Nodos Rama
+R0x560a5ed39870[label="<C1>|2\nUsuario: us3\nPassword: pas3\nMonedas: 15\nEdad: 20|<C2>"];
+R0x560a5ed396d0[label="0\nUsuario: us1\nPassword: pas1\nMonedas: 15\nEdad: 20|1\nUsuario: us2\nPassword: pas2\nMonedas: 15\nEdad: 20"];
+R0x560a5ed39940[label="3\nUsuario: us4\nPassword: pas4\nMonedas: 15\nEdad: 20|4\nUsuario: us5\nPassword: pas5\nMonedas: 15\nEdad: 20"];
+		//Agregar conexiones
+R0x560a5ed39870:C1->R0x560a5ed396d0;
+R0x560a5ed39870:C2->R0x560a5ed39940;
+}
