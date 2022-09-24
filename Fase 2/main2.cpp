@@ -1,14 +1,31 @@
 #include <crow.h>
+#include <iostream>
+#include <string>
+#include <fstream>
 #include "../Fase 1/sha256.h"
-#include "../Fase 1/ListaUsuarios.h" //Pendiente 
+#include "../Fase 1/json/json.h" //Permite manipular JSON
+#include "../Fase 1/jsoncpp.cpp"
+#include "../Fase 1/ListaUsuarios.h" //Llamada a lista de usuarios
+#include "../Fase 1/ColaTutorial.h" //Llamada a la cola del tutorial
+#include "../Fase 1/ListaCategoria.h"
 #include "../Fase 1/arbolB.h"
-
+using namespace std;
 
 //Variables globales
 listaUsuarios usuarioV;
 ArbolB arbol;
+cola tutorial;
+listaCategoria categoria_;
+
+void cargaMasiva();
 
 int main(int argc, char **argv){
+    //creando usuario admin
+    string nameAdmin = "EDD";
+    string passAdmin = "edd123";
+    string edadAdmin = "50";
+    string monedasAdmin = "0";
+    arbol.insertarUser(nameAdmin,passAdmin,monedasAdmin,edadAdmin);
 
     //Creando app
     crow::SimpleApp app;
@@ -19,10 +36,20 @@ int main(int argc, char **argv){
         return "hello world";
     });
 
+    //Carga masiva
+    CROW_ROUTE(app, "/carga").methods(crow::HTTPMethod::POST)
+    ([&](const crow::request& req)
+    {
+        cargaMasiva();
+        return crow::response(200, "OK");
+    });
+
     //Mostrar usuarios
-    CROW_ROUTE(app, "/AllUsers")
-    ([]{
-        return usuarioV.getDatos();
+    CROW_ROUTE(app, "/AllUsers").methods(crow::HTTPMethod::POST)
+    ([&](const crow::request& req)
+    {
+        arbol.Grafo();
+        return crow::response(200, "added");
     });
 
     //Insertar
@@ -154,7 +181,7 @@ int main(int argc, char **argv){
         return crow::response(200, "Blog added");
     });
 
-    //Login
+    //eliminar
     CROW_ROUTE(app, "/removeUser").methods(crow::HTTPMethod::POST)
     ([&](const crow::request& req)
     {
@@ -193,4 +220,80 @@ int main(int argc, char **argv){
     app.port(8080).multithreaded().run();
 
     return 0;
+}
+
+void cargaMasiva(){
+    //variables usuarios
+    string nombre,pass,mon,ed;
+    string auxPass;
+    int verificador;
+
+    //variables tutorial
+    string ancho,alto,cX,cY;
+
+    //variables articulos
+    string categoria,id,nom,precio,src;
+    ifstream file("../Fase 1/carga.json"); //fstream para obtener el puntero del archivo
+    Json::Value datos;
+    Json::Reader reader; 
+
+    //Con reader parseamos el json
+    reader.parse(file,datos);
+
+    //Ahora datos ya contienen la informacion
+
+    //Accediendo a usuarios
+    for (int i = 0; i < datos["usuarios"].size(); i++)
+    {
+        //Accediendo a sus atributos y convirtiendo a string
+        nombre = datos["usuarios"][i]["nick"].asString();
+
+        //Validar nombre
+        verificador = arbol.verificarNickname(nombre);
+        if (verificador==0)
+        {
+            auxPass = datos["usuarios"][i]["password"].asString();
+            //Cifrar contraseña
+            pass = SHA256::cifrar(auxPass);
+
+            mon = datos["usuarios"][i]["monedas"].asString();
+            ed = datos["usuarios"][i]["edad"].asString();
+            
+            //Guardando usuarios
+            arbol.insertarUser(nombre,pass,mon,ed);
+        }
+
+    }
+
+    //Accediendo a tutorial
+    ancho = datos["tutorial"]["ancho"].asString();
+    alto = datos["tutorial"]["alto"].asString();
+    tutorial.queue(ancho,alto,cX="",cY="");
+
+    //Accediento a movimientos
+    for (int i = 0; i < datos["tutorial"]["movimientos"].size(); i++)
+    {
+        //Accediendo a atributos y convirtiendo a string
+
+        cX = datos["tutorial"]["movimientos"][i]["x"].asString();
+        cY = datos["tutorial"]["movimientos"][i]["y"].asString();
+        
+        //Guardando datos
+        tutorial.queue(ancho="",alto="",cX,cY);
+    }
+
+    //Articulos
+    for (int i = 0; i < datos["articulos"].size(); i++)
+    {
+        //->primero verificar si la categoria ya se guardo
+        categoria = datos["articulos"][i]["categoria"].asString();
+        id = datos["articulos"][i]["id"].asString();
+        nom = datos["articulos"][i]["nombre"].asString();
+        precio = datos["articulos"][i]["precio"].asString();
+        src = datos["articulos"][i]["src"].asString();
+
+        categoria_.insertarInicio(categoria);
+        categoria_.insertarNuevoArticulo(categoria,id,nom,precio,src);
+    }
+    cout<<"-> Informacion cargada exitosamente\n";
 }

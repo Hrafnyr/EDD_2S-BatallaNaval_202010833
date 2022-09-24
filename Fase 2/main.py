@@ -19,6 +19,7 @@ loginV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"/login.ui")
 nuevoV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"/nuevaCuenta.ui")
 userV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"/jugadorV.ui")
 editarV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"/panelEditar.ui")
+adminV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"/admin.ui")
 
 #Funciones
 def loginAction():
@@ -33,17 +34,21 @@ def loginAction():
     else:
         loginV.label_4.setText("")
         loginV.label_5.setText("")
+        #Verificar si es el admin
+        if nameUser=="EDD" and passUser=="edd123":
+            loginV.hide()
+            adminV.show()
+        else: 
+            obj={'nombre':'{}'.format(nameUser),'pass':'{}'.format(passUser)}
+            res = requests.post(f'{url_Api}/Login',json=obj)
 
-        obj={'nombre':'{}'.format(nameUser),'pass':'{}'.format(passUser)}
-        res = requests.post(f'{url_Api}/Login',json=obj)
-
-        #Verificar respuesta
-        jsonResponse = res.json()
-        
-        if jsonResponse["Message"]=="error":
-            QMessageBox.about(loginV,"Alerta","Datos incorrectos")
-        else:
-            verUsuario(nameUser,passUser)
+            #Verificar respuesta
+            jsonResponse = res.json()
+            
+            if jsonResponse["Message"]=="error":
+                QMessageBox.about(loginV,"Alerta","Datos incorrectos")
+            else:
+                verUsuario(nameUser,passUser)
 
 def eliminarCuenta():
     nameUser = userV.txtUS.text()
@@ -68,7 +73,6 @@ def eliminarCuenta():
 
     else:
         print('No clicked.')
-
 
 def verUsuario(nameU,passR):
     loginV.hide()
@@ -174,8 +178,28 @@ def logOut():
     else:
         print('No clicked.')
 
+def logOutAdmin():
+    buttonReply = QMessageBox.question(adminV, 'Alerta', "¿Salir?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+    if buttonReply == QMessageBox.Yes:
+        loginV.lineEdit.setText("")
+        loginV.lineEdit_2.setText("")
+        adminV.hide()
+        loginV.show()
+
+    else:
+        print('No clicked.')
+
+def allUsuarios():
+    requests.post(f'{url_Api}/AllUsers')
+
+def cargaMasiva():
+    requests.post(f'{url_Api}/carga')
+    QMessageBox.about(adminV,"Mensaje","Carga masiva realizada")
+
 def salir():
     exit()
+
+
 
 #------------ Botones
 #Login
@@ -195,6 +219,11 @@ userV.btnCerrarS.clicked.connect(logOut)
 #Editar datos
 editarV.btnBack.clicked.connect(volverEditar)
 editarV.btnSave.clicked.connect(updateData)
+
+#Admin
+adminV.btnCerrar.clicked.connect(logOutAdmin)
+adminV.btnUsers.clicked.connect(allUsuarios)
+adminV.btnCarga.clicked.connect(cargaMasiva)
 
 #Ejecutar principal
 loginV.show()

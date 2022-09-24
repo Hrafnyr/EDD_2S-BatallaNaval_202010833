@@ -299,8 +299,9 @@ void ArbolB::Grafo() {
             }
 
             string command = "dot -Tpng " + path + "Usuarios.dot -o  " + path + "Usuarios.png";
+            string command2 = "shotwell ArbolUsuarios.png";
             system(command.c_str());
-            system(("ArbolUsuarios.png"));//Abrir archivo
+            system(command2.c_str());//Abrir archivo
         }catch (exception e){
             cout << "Error detectado, no se pudo generar el Reporte solicitado";
         }

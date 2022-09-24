@@ -1,29 +1,28 @@
-#include <iostream>
+/*#include <iostream>
 #include <string>
 #include <fstream>
 #include "sha256.h" //Permite cifrar contraseñas
 #include "json/json.h" //Permite manipular JSON
-#include "jsoncpp.cpp"
+/*#include "jsoncpp.cpp"
 #include "ListaUsuarios.h" //Llamada a lista de usuarios
 #include "ColaTutorial.h" //Llamada a la cola del tutorial
 #include "ListaCategoria.h"
+#include "arbolB.h"
+using namespace std;*/
 
-using namespace std;
 
-
-//Declaraciones globales
+/*Declaraciones globales
 listaUsuarios usuario_;
+ArbolB arbol;
 cola tutorial;
 listaCategoria categoria_;
-
-
 //Prototipos
 void menuUsuario(string&,string&);
 void menuReportes();
-void cargarJSON();
+void cargarJSON();*/
 
 int main(){
-    //Menú principal
+    /*//Menú principal
     char op;
     char e;
     bool flag = true;
@@ -143,10 +142,11 @@ int main(){
             break;
         }
     }
-    
+    */
     return 0;
 };
 
+/*
 void menuUsuario(string& logName,string& logPass){
     bool flag = true;
 
@@ -315,7 +315,7 @@ void cargarJSON(){
     //variables usuarios
     string nombre,pass,mon,ed;
     string auxPass;
-    bool verificador;
+    int verificador;
 
     //variables tutorial
     string ancho,alto,cX,cY;
@@ -338,8 +338,8 @@ void cargarJSON(){
         nombre = datos["usuarios"][i]["nick"].asString();
 
         //Validar nombre
-        verificador = usuario_.verificarNombre(nombre);
-        if (verificador==false)
+        verificador = arbol.verificarNickname(nombre);
+        if (verificador==0)
         {
             auxPass = datos["usuarios"][i]["password"].asString();
             //Cifrar contraseña
@@ -349,7 +349,7 @@ void cargarJSON(){
             ed = datos["usuarios"][i]["edad"].asString();
             
             //Guardando usuarios
-            usuario_.insertarNuevo(nombre,pass,mon,ed);
+            arbol.insertarUser(nombre,pass,mon,ed);
         }
 
     }
@@ -386,3 +386,4 @@ void cargarJSON(){
     }
     cout<<"-> Informacion cargada exitosamente\n";
 }
+*/
