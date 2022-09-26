@@ -12,13 +12,13 @@
         
     ],
     "articulos": [
-        { "id": "1", "categoria": "comun", "precio": "50", "nombre": "Barco Naval Army", "src": "e" },
-        { "id": "2", "categoria": "comun", "precio": "10", "nombre": "Barco 2", "src": "e1" },
-        { "id": "3", "categoria": "Legendaria", "precio": "5", "nombre": "Barco 3", "src": "e2" },
-        { "id": "4", "categoria": "Legendaria", "precio": "500", "nombre": "Barco 4", "src": "e1" },
-        { "id": "5", "categoria": "c1", "precio": "500", "nombre": "Barco 4", "src": "e1" },
-        { "id": "6", "categoria": "c1", "precio": "500", "nombre": "Barco 4", "src": "e1" },
-        { "id": "22", "categoria": "comun", "precio": "10", "nombre": "Barco 2", "src": "e1" }
+        { "id": "1", "categoria": "comun", "precio": "50", "nombre": "Barco Naval Army", "src": "/home/moises/Escritorio/EDD/EDD_2S-BatallaNaval_202010833/Fase 2/img/ship.png" },
+        { "id": "2", "categoria": "comun", "precio": "10", "nombre": "Barco 2", "src": "/home/moises/Escritorio/EDD/EDD_2S-BatallaNaval_202010833/Fase 2/img/ship.png" },
+        { "id": "3", "categoria": "Legendaria", "precio": "5", "nombre": "Barco 3", "src": "/home/moises/Escritorio/EDD/EDD_2S-BatallaNaval_202010833/Fase 2/img/ship.png" },
+        { "id": "4", "categoria": "Legendaria", "precio": "500", "nombre": "Barco 4", "src": "/home/moises/Escritorio/EDD/EDD_2S-BatallaNaval_202010833/Fase 2/img/ship.png" },
+        { "id": "5", "categoria": "c1", "precio": "500", "nombre": "Barco 4", "src": "/home/moises/Escritorio/EDD/EDD_2S-BatallaNaval_202010833/Fase 2/img/ship.png" },
+        { "id": "6", "categoria": "c1", "precio": "500", "nombre": "Barco 4", "src": "/home/moises/Escritorio/EDD/EDD_2S-BatallaNaval_202010833/Fase 2/img/ship.png" },
+        { "id": "22", "categoria": "comun", "precio": "10", "nombre": "Barco 2", "src": "/home/moises/Escritorio/EDD/EDD_2S-BatallaNaval_202010833/Fase 2/img/ship.png" }
     ],
     "tutorial": {
     "ancho":"5",

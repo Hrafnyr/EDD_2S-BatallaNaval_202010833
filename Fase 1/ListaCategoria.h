@@ -17,6 +17,7 @@ class listaCategoria{
         void generarReporte();
         void insertarNuevoArticulo(string& nombreCate, string& id,string& nom,string& price,string&src); 
         bool verificarExistencia(string&); //Verifica si la categoría está guardada o no
+        string getDatos();
         listaCategoria();
 
 };
@@ -43,6 +44,37 @@ void listaCategoria::insertarInicio(string& nombreCate){
         }
     }    
 };
+
+//Modificar para entregar un JSON
+string listaCategoria::getDatos()
+{
+    nodoCategoria* actual = new nodoCategoria(); //Auxiliar
+    actual = primero;
+    string out = "";
+    string art = "";
+
+    if (primero!=NULL){
+        while (actual!=NULL){
+            
+            out += "\"" + actual->categoria + "\":[";
+
+            //concatenar los elementos de cada categoria
+            out += actual->elementos->getArticulos();
+
+            out += "]";
+
+            if (actual->siguiente!=NULL)
+            {
+                out+= ",\n";
+            }
+
+			actual = actual->siguiente;
+        }
+        return "{\"categorias\":\n{\n"+out+"\n}\n}";
+    }
+
+    return "{\"categorias\":[]}"; //vacio
+}
 
 void listaCategoria::mostrarLista(){
     nodoCategoria* actual = new nodoCategoria(); //Auxiliar

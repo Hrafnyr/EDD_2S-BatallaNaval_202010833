@@ -15,6 +15,7 @@ class listaArticulos{
         void insertarInicio(string&,string&,string&,string&);
         void mostrarLista();
         string generarReporte(int&); 
+        string getArticulos();
 
         // void eliminarnodoArticulos(int&); 
         // void eliminarLista();
@@ -82,6 +83,31 @@ void listaArticulos::mostrarLista(){
     }else{
         cout<<"No hay datos"<<endl;
     }
+};
+
+string listaArticulos::getArticulos(){
+    nodoArticulos* actual = new nodoArticulos(); //Auxiliar
+
+    actual = primero;
+    string data = "";
+    if (primero!=NULL){
+        while (actual!=NULL){
+            data+= "{\n";
+            data+= "\"id\":\""+ actual->Id + "\",";
+            data+= "\"nombre\":\""+ actual->nombre + "\",";
+            data+= "\"precio\":\""+ actual->precio + "\",";
+            data+= "\"src\":\""+ actual->src + "\"";
+            data+= "}";
+
+            if (actual->siguiente!=NULL){
+                data+=",\n";
+            }
+            
+            actual = actual->siguiente;
+        }
+        return data;
+    }
+    return "{}";
 };
 
 string listaArticulos::generarReporte(int& contCate){

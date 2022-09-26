@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>890</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>890</width>
+    <height>800</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>890</width>
+    <height>800</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Tienda</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget#centralwidget{
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(169, 80, 92, 255), stop:1 rgba(177, 124, 39, 255));
+}
+
+
+</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLineEdit" name="txtID">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>690</y>
+      <width>161</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>696</y>
+      <width>141</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel{
+	font: 75 bold 15pt &quot;Umpush&quot;;
+	color:rgb(255, 255, 255)
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Ingrese el ID</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnComprar">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>680</y>
+      <width>111</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+border-radius:10px;
+background-color: rgb(115, 210, 22);
+border: 3px solid black;
+font: 75 bold 18pt &quot;Ubuntu Condensed&quot;;
+color:white;
+}
+
+QPushButton:hover{
+border-radius:10px;
+	background-color: rgb(252, 233, 79);
+border: 3px solid black;
+font: 75 bold 18pt &quot;Ubuntu Condensed&quot;;
+color:black;
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>Comprar</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>640</y>
+      <width>201</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel{
+	font: 75 bold 15pt &quot;Umpush&quot;;
+	color:rgb(255, 255, 255)
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Ingrese la categoria</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="txtCategoria">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>640</y>
+      <width>161</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelWarning">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>630</y>
+      <width>341</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel{
+	font: 75 bold 18pt &quot;Umpush&quot;;
+	
+	color: black
+}
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnBack">
+    <property name="geometry">
+     <rect>
+      <x>750</x>
+      <y>680</y>
+      <width>111</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+border-radius:10px;
+background-color: rgb(32, 74, 135);
+border: 3px solid black;
+font: 75 bold 18pt &quot;Ubuntu Condensed&quot;;
+color:white;
+}
+
+QPushButton:hover{
+border-radius:10px;
+	background-color: rgb(238, 238, 236);
+border: 3px solid black;
+font: 75 bold 18pt &quot;Ubuntu Condensed&quot;;
+color:black;
+}</string>
+    </property>
+    <property name="text">
+     <string>Volver</string>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="tableStore">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>851</width>
+      <height>601</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 75 bold 12pt &quot;DejaVu Sans Mono&quot;;
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0.945274, y2:1, stop:0 rgba(172, 224, 142, 255), stop:0.756219 rgba(190, 237, 199, 255));</string>
+    </property>
+    <column>
+     <property name="text">
+      <string>Categoria</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Nombre</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>ID</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Precio</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Logo</string>
+     </property>
+    </column>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>890</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

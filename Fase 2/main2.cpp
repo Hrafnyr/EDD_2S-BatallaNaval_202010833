@@ -33,7 +33,8 @@ int main(int argc, char **argv){
 
     //Creacion de rutas
     CROW_ROUTE(app, "/")([](){
-        return "hello world";
+        crow::json::wvalue x({{"message","Hello"}});
+        return x;
     });
 
     //Carga masiva
@@ -41,7 +42,10 @@ int main(int argc, char **argv){
     ([&](const crow::request& req)
     {
         cargaMasiva();
-        return crow::response(200, "OK");
+        std::string dataTienda;
+        dataTienda = categoria_.getDatos();
+        crow::json::wvalue x(dataTienda);
+        return x;
     });
 
     //Mostrar usuarios

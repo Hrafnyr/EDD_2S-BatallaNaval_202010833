@@ -1,12 +1,15 @@
 
 from curses.ascii import NUL
+import json
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QMessageBox
+from storeC import MainWindow
 import os
 import sys
 import requests
 
 #Varibles globales
+
 nameUser = ""
 passUser = ""
 url_Api = "http://0.0.0.0:8080"
@@ -20,6 +23,7 @@ nuevoV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"/nuevaCuenta.ui"
 userV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"/jugadorV.ui")
 editarV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"/panelEditar.ui")
 adminV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"/admin.ui")
+tiendaV = MainWindow()
 
 #Funciones
 def loginAction():
@@ -193,13 +197,35 @@ def allUsuarios():
     requests.post(f'{url_Api}/AllUsers')
 
 def cargaMasiva():
-    requests.post(f'{url_Api}/carga')
+    #global storeV
+    res = requests.post(f'{url_Api}/carga')
+    pt = res.json()
+    #storeV = MainWindow(pt)
+    tiendaV.fillTable(pt)
     QMessageBox.about(adminV,"Mensaje","Carga masiva realizada")
+
+def irTienda():
+    tiendaV.show()
+
+def backtienda():
+    tiendaV.txtCategoria.setText("")
+    tiendaV.txtID.setText("")
+    tiendaV.hide()
 
 def salir():
     exit()
 
+def comprar():
+    categ = tiendaV.txtCategoria.text()
+    idAr = tiendaV.txtID.text()
 
+    if (len(categ)==0 or len(idAr)==0):
+        tiendaV.labelWarning.setText("Debe llenar ambos campos")
+    else:
+        tiendaV.labelWarning.setText("")
+        QMessageBox.about(tiendaV,"Mensaje","Compra realizada")
+        tiendaV.txtCategoria.setText("")
+        tiendaV.txtID.setText("")
 
 #------------ Botones
 #Login
@@ -215,6 +241,12 @@ nuevoV.pushButton_2.clicked.connect(volverLogin)
 userV.pushButton.clicked.connect(editarDatos)
 userV.pushButton_2.clicked.connect(eliminarCuenta)
 userV.btnCerrarS.clicked.connect(logOut)
+userV.pushButton_5.clicked.connect(irTienda)
+
+
+#Tienda
+tiendaV.btnBack.clicked.connect(backtienda)
+tiendaV.btnComprar.clicked.connect(comprar)
 
 #Editar datos
 editarV.btnBack.clicked.connect(volverEditar)
