@@ -8,10 +8,10 @@ class listaUsuarios{
     private:            
         Usuario* primero;
         Usuario* ultimo;    
-
+        int contID = 1000; //contador auxiliar para nuevo usuario
         int size_ = 0;  
     public:
-        void insertarNuevo(string&,string&,string&,string&);
+        void insertarNuevo(string&,string&,string&,string&,string&);
         void insertarJugada(string&,string&,string&);
         void nuevoMovimiento(string&,string&,string&,string&,string&);
         void ReporteUsuarios(); 
@@ -21,6 +21,8 @@ class listaUsuarios{
         bool verificarNombre(string&);
         void reporteJugadas();
         string getDatos();
+        
+        void nuevaCompra(string&,string&,string&,string&,string&,string&);
 
         void eliminarCuenta(string&,string&);
         string getMonedas(string& name, string& pass);
@@ -35,11 +37,19 @@ listaUsuarios::listaUsuarios(){ //constructor, apuntar por defecto a null
     this->ultimo=NULL;
 }
 
-void listaUsuarios::insertarNuevo(string& nickname, string& pass, string& mon, string& ed){
+void listaUsuarios::insertarNuevo(string& id, string& nickname, string& pass, string& mon, string& ed){
     
     Usuario* nuevo = new Usuario();//Nuevo nodo
 
     //Asignar valores
+    if (id.empty()==true)
+    {
+        nuevo->id= to_string(contID);
+        contID++;
+    }
+    else{
+        nuevo->id= id;
+    }
     nuevo->nombre = nickname;
     nuevo->password = pass;
     nuevo->monedas = mon;
@@ -90,6 +100,27 @@ string listaUsuarios::getDatos()
     return "[\n]";
 }
     
+void listaUsuarios::nuevaCompra(string& name,string& pass,string& idC,string& cate,string& precio,string& nombre){
+    Usuario* actual = new Usuario(); //Auxiliar
+
+    actual = primero;
+    bool encontrado = false;
+
+    if (primero!=NULL){
+        do{
+			
+			if(actual->nombre==name && actual->password==pass){
+				
+                //agregar compra
+                actual->compras->Insertar(idC,cate,precio,nombre);
+
+				encontrado = true;		
+			}
+			
+			actual = actual->siguiente;
+		}while(actual!=primero && encontrado != true);
+    }
+}
 
 //Metodo de reporte
 void listaUsuarios::ReporteUsuarios(){
@@ -295,7 +326,6 @@ bool listaUsuarios::verificarNombre(string& name){
     }
     return false;
 }   
-
 
 void listaUsuarios::reporteJugadas(){
     Usuario* actual = new Usuario(); //Auxiliar

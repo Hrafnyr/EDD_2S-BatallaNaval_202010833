@@ -10,9 +10,8 @@ class ArbolB{
     private:
         int orden_arbol = 5;
         UsuarioB* raiz;
-        int contID = 0;
     public:
-        void insertarUser(string&,string&,string&,string&);
+        void insertarUser(string&, string&,string&,string&,string&);
         pair<UsuarioB*, pair<bool, bool>> insertarCrearRama(UsuarioB* nodo, UsuarioB* rama);
         UsuarioB* dividir(UsuarioB* rama);
         pair<UsuarioB*, bool>  insertarEnRama(UsuarioB* primero, UsuarioB* nuevo);
@@ -46,15 +45,14 @@ ArbolB:: ArbolB(){
     this->raiz=NULL;
 }
 
-void ArbolB::insertarUser(string& nombre,string& pass, string& mon, string& edad) {
+void ArbolB::insertarUser(string& id, string& nombre,string& pass, string& mon, string& edad) {
     UsuarioB* nodo = new UsuarioB();
-    nodo->contID = to_string(contID);
+    nodo->contID = id;
     nodo->nombre=nombre;
     nodo->password=pass;
     nodo->monedas=mon;
     nodo->edad=edad;
 
-    contID+=1;
     if (raiz == NULL) {
         raiz = nodo;
     } else {

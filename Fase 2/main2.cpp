@@ -11,6 +11,8 @@
 #include "../Fase 1/arbolB.h"
 using namespace std;
 
+//CREAR METODO DE AGREGAR COMPRA, METODO PARA CREAR EL ARBOL DE USUARIOS DESDE LISTA USUARIOS
+
 //Variables globales
 listaUsuarios usuarioV;
 ArbolB arbol;
@@ -21,11 +23,12 @@ void cargaMasiva();
 
 int main(int argc, char **argv){
     //creando usuario admin
+    string id = "";
     string nameAdmin = "EDD";
     string passAdmin = "edd123";
     string edadAdmin = "50";
     string monedasAdmin = "0";
-    arbol.insertarUser(nameAdmin,passAdmin,monedasAdmin,edadAdmin);
+    arbol.insertarUser(id,nameAdmin,passAdmin,monedasAdmin,edadAdmin);
 
     //Creando app
     crow::SimpleApp app;
@@ -63,7 +66,7 @@ int main(int argc, char **argv){
         auto body = crow::json::load(req.body);
         if (!body)
             return crow::response(400, "Invalid body");
-        std::string nombre, pass, edad,mon,res;
+        std::string nombre, pass, edad,mon,res,id;
         try {
             nombre = body["nombre"].s();
             pass = body["pass"].s();
@@ -80,8 +83,8 @@ int main(int argc, char **argv){
             {
                 //cifrar contraseña
                 res = SHA256::cifrar(pass);
-
-                arbol.insertarUser(nombre,res,mon,edad); //insercion en arbol si el name no existe
+                id = "";
+                arbol.insertarUser(id,nombre,res,mon,edad); //insercion en arbol si el name no existe
                 return crow::response(200,"{\"Message\":\"OK\"}");
                
             }
@@ -228,7 +231,7 @@ int main(int argc, char **argv){
 
 void cargaMasiva(){
     //variables usuarios
-    string nombre,pass,mon,ed;
+    string ID,nombre,pass,mon,ed;
     string auxPass;
     int verificador;
 
@@ -250,6 +253,7 @@ void cargaMasiva(){
     for (int i = 0; i < datos["usuarios"].size(); i++)
     {
         //Accediendo a sus atributos y convirtiendo a string
+        ID =  datos["usuarios"][i]["id"].asString();
         nombre = datos["usuarios"][i]["nick"].asString();
 
         //Validar nombre
@@ -264,7 +268,7 @@ void cargaMasiva(){
             ed = datos["usuarios"][i]["edad"].asString();
             
             //Guardando usuarios
-            arbol.insertarUser(nombre,pass,mon,ed);
+            arbol.insertarUser(ID,nombre,pass,mon,ed);
         }
 
     }

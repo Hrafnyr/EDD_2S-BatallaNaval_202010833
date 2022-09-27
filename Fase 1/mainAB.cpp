@@ -1,54 +1,36 @@
 
-#include <cstdlib>
+// #include <cstdlib>
 
-#include "arbolB.h"
-#include <unistd.h>
-#include <fstream>
-#include <string>
-#include <sstream>
-using namespace std;
+// #include "arbolAVL.h"
+// #include <unistd.h>
+// #include <fstream>
+// #include <string>
+// #include <sstream>
+// using namespace std;
 
-/*
- * 
- */
-int main(int argc, char** argv) {
-    ArbolB pruebas;
-
-    string nombre = "us1";
-    string pass = "pas1";
-    string  edad = "20";
-    string mon = "15";
-    string u = "4";
-    int t;
-
+// /*
+//  * 
+//  */
+// int main()
+// {
+//     AVL ArbolInt;
+//     ArbolInt.Insertar("1","c1","50","b1");
+//     ArbolInt.Insertar("20","c2","500","b2");  
+//     ArbolInt.Insertar("50","c1","60","b3");  
+//     ArbolInt.Insertar("2","c2","100","b4");      
+//     ArbolInt.Insertar("30","c3","20","b5");  
+//     ArbolInt.Insertar("5","c4","25","b6");  
+//     ArbolInt.Insertar("9","c3","350","b7"); 
     
-    pruebas.insertarUser(nombre,pass,mon,edad);
+//     ArbolInt.InOrden();
+//     //ArbolInt.graficar();
 
-    
-    nombre = "us2";
-    pass = "pas2";
-    pruebas.insertarUser(nombre,pass,mon,edad);
-    
+//     ArbolInt.Borrar("20");
+//     ArbolInt.Borrar("9");
 
-    nombre = "us3";
-    pass = "pas3";
-    pruebas.insertarUser(nombre,pass,mon,edad);
+//     ArbolInt.InOrden();
+//     ArbolInt.graficar();
 
-
-    nombre = "us4";
-    pass = "pas4";
-    pruebas.insertarUser(nombre,pass,mon,edad);
-
-    nombre = "us5";
-    pass = "pas5";
-    pruebas.insertarUser(nombre,pass,mon,edad);
-
-    nombre = "us3";
-    pass = "pas3";
-    pruebas.Grafo();
-    t = pruebas.login(nombre,pass);
-    cout<<to_string(t)<<endl;
-
-    return 0;
-}
+//     return 0;
+// }
 
