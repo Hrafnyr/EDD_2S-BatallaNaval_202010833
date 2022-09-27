@@ -18,12 +18,59 @@ class listaCategoria{
         void insertarNuevoArticulo(string& nombreCate, string& id,string& nom,string& price,string&src); 
         bool verificarExistencia(string&); //Verifica si la categoría está guardada o no
         string getDatos();
+
+        //gets
+        string getNombre(string&,string&);
+        string getPrecio(string&,string&);
+
         listaCategoria();
 
 };
 
 listaCategoria::listaCategoria(){ //constructor, apuntar por defecto a null
     this->primero=NULL; 
+}
+
+string listaCategoria::getNombre(string& cate, string& id){
+    nodoCategoria* actual = new nodoCategoria(); //Auxiliar
+    actual = primero;
+
+    if (primero!=NULL){
+        while (actual!=NULL){
+            
+            if (actual->categoria==cate)
+            {
+                return actual->elementos->getName(id);
+            }
+            
+
+			actual = actual->siguiente;
+        }
+        
+    }
+
+    return ""; //vacio
+}
+
+string listaCategoria::getPrecio(string& cate, string& id){
+    nodoCategoria* actual = new nodoCategoria(); //Auxiliar
+    actual = primero;
+
+    if (primero!=NULL){
+        while (actual!=NULL){
+            
+            if (actual->categoria==cate)
+            {
+                return actual->elementos->getPrice(id);
+            }
+            
+
+			actual = actual->siguiente;
+        }
+        
+    }
+
+    return ""; //vacio
 }
 
 void listaCategoria::insertarInicio(string& nombreCate){

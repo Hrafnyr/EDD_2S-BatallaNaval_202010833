@@ -216,6 +216,45 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0.945274, y2:1, sto
      </property>
     </column>
    </widget>
+   <widget class="QPushButton" name="btnAVL">
+    <property name="geometry">
+     <rect>
+      <x>750</x>
+      <y>630</y>
+      <width>111</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Ubuntu Condensed</family>
+      <pointsize>15</pointsize>
+      <weight>75</weight>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+border-radius:10px;
+	background-color: rgb(65, 241, 198);
+border: 3px solid black;
+font: 75 bold 15pt &quot;Ubuntu Condensed&quot;;
+color:black;
+}
+
+QPushButton:hover{
+border-radius:10px;
+	background-color: rgb(252, 233, 79);
+border: 3px solid black;
+font: 75 bold 15pt &quot;Ubuntu Condensed&quot;;
+color:black;
+}</string>
+    </property>
+    <property name="text">
+     <string>Mis compras</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

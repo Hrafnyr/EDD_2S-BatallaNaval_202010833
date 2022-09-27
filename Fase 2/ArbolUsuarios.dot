@@ -1,12 +1,14 @@
 digraph G {
 node[shape=record]
 		//Agregar Nodos Rama
-R0x7f2948009ab0[label="<C1>|2\nUsuario: us2\nPassword: b7f6986f3b3b3ff3f58922fc9e364d4f7fb02ae81b7fb30e6eb3b45fe9e8c4e1\nMonedas: 5\nEdad: 20|<C2>|5\nUsuario: us5\nPassword: a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3\nMonedas: 0\nEdad: 18|<C3>"];
-R0x7f2948009910[label="0\nUsuario: EDD\nPassword: edd123\nMonedas: 0\nEdad: 50|1\nUsuario: us1\nPassword: a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3\nMonedas: 0\nEdad: 18"];
-R0x7f294800a1c0[label="3\nUsuario: us3\nPassword: b134d942a08a9d1eafaa2fe6b269fbfe5c4ed57e57b77ffcea515f236e26671c\nMonedas: 10\nEdad: 21|4\nUsuario: us4\nPassword: 6affdae3b3c1aa6aa7689e9b6a7b3225a636aa1ac0025f490cca1285ceaf1487\nMonedas: 14\nEdad: 19"];
-R0x7f294800a4d0[label="6\nUsuario: us6\nPassword: b7f6986f3b3b3ff3f58922fc9e364d4f7fb02ae81b7fb30e6eb3b45fe9e8c4e1\nMonedas: 5\nEdad: 20|7\nUsuario: us7\nPassword: b134d942a08a9d1eafaa2fe6b269fbfe5c4ed57e57b77ffcea515f236e26671c\nMonedas: 10\nEdad: 21|8\nUsuario: us8\nPassword: 6affdae3b3c1aa6aa7689e9b6a7b3225a636aa1ac0025f490cca1285ceaf1487\nMonedas: 14\nEdad: 19|9\nUsuario: us9\nPassword: 6affdae3b3c1aa6aa7689e9b6a7b3225a636aa1ac0025f490cca1285ceaf1487\nMonedas: 14\nEdad: 19"];
+R0x7fa2a400e960[label="<C1>|3\nUsuario: us3\nPassword: b134d942a08a9d1eafaa2fe6b269fbfe5c4ed57e57b77ffcea515f236e26671c\nMonedas: 10\nEdad: 21|<C2>|6\nUsuario: us6\nPassword: b7f6986f3b3b3ff3f58922fc9e364d4f7fb02ae81b7fb30e6eb3b45fe9e8c4e1\nMonedas: 5\nEdad: 20|<C3>|9\nUsuario: us9\nPassword: 6affdae3b3c1aa6aa7689e9b6a7b3225a636aa1ac0025f490cca1285ceaf1487\nMonedas: 14\nEdad: 19|<C4>"];
+R0x7fa2a400e720[label="1\nUsuario: USUARIO1\nPassword: a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3\nMonedas: 0\nEdad: 18|2\nUsuario: EMINEMB\nPassword: b7f6986f3b3b3ff3f58922fc9e364d4f7fb02ae81b7fb30e6eb3b45fe9e8c4e1\nMonedas: 5\nEdad: 20"];
+R0x7fa2a400efd0[label="4\nUsuario: us4\nPassword: 6affdae3b3c1aa6aa7689e9b6a7b3225a636aa1ac0025f490cca1285ceaf1487\nMonedas: 14\nEdad: 19|5\nUsuario: us5\nPassword: a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3\nMonedas: 0\nEdad: 18"];
+R0x7fa2a400f880[label="7\nUsuario: us7\nPassword: b134d942a08a9d1eafaa2fe6b269fbfe5c4ed57e57b77ffcea515f236e26671c\nMonedas: 10\nEdad: 21|8\nUsuario: us8\nPassword: 6affdae3b3c1aa6aa7689e9b6a7b3225a636aa1ac0025f490cca1285ceaf1487\nMonedas: 14\nEdad: 19"];
+R0x7fa2a400fbe0[label="1000\nUsuario: EDD\nPassword: edd123\nMonedas: 0\nEdad: 50|1001\nUsuario: TUPAC\nPassword: a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3\nMonedas: 0\nEdad: 80"];
 		//Agregar conexiones
-R0x7f2948009ab0:C1->R0x7f2948009910;
-R0x7f2948009ab0:C2->R0x7f294800a1c0;
-R0x7f2948009ab0:C3->R0x7f294800a4d0;
+R0x7fa2a400e960:C1->R0x7fa2a400e720;
+R0x7fa2a400e960:C2->R0x7fa2a400efd0;
+R0x7fa2a400e960:C3->R0x7fa2a400f880;
+R0x7fa2a400e960:C4->R0x7fa2a400fbe0;
 }

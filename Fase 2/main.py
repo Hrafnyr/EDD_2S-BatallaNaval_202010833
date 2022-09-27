@@ -216,6 +216,8 @@ def salir():
     exit()
 
 def comprar():
+    nameUser = userV.txtUS.text()
+    passUser= userV.label_2.text()
     categ = tiendaV.txtCategoria.text()
     idAr = tiendaV.txtID.text()
 
@@ -223,9 +225,32 @@ def comprar():
         tiendaV.labelWarning.setText("Debe llenar ambos campos")
     else:
         tiendaV.labelWarning.setText("")
-        QMessageBox.about(tiendaV,"Mensaje","Compra realizada")
-        tiendaV.txtCategoria.setText("")
-        tiendaV.txtID.setText("")
+        
+        obj={'id':'{}'.format(idAr),'categoria':'{}'.format(categ),'nombre':'{}'.format(nameUser),'password':'{}'.format(passUser)}
+        res = requests.post(f'{url_Api}/compra',json=obj)
+
+        #Verificar respuesta
+        jsonResponse = res.json()
+        
+        if jsonResponse["Message"]=="error":
+            QMessageBox.about(tiendaV,"Alerta","Hubo un error")
+        else:
+            QMessageBox.about(tiendaV,"Mensaje","compra realizada")
+            tiendaV.txtCategoria.setText("")
+            tiendaV.txtID.setText("")   
+
+def verCompras():
+    nameUser = userV.txtUS.text()
+    passUser= userV.label_2.text()
+          
+    obj={'nombre':'{}'.format(nameUser),'pass':'{}'.format(passUser)}
+    res = requests.post(f'{url_Api}/verAVL',json=obj)
+
+    #Verificar respuesta
+    jsonResponse = res.json()
+    
+    if jsonResponse["Message"]=="error":
+        QMessageBox.about(tiendaV,"Alerta","Hubo un error")
 
 #------------ Botones
 #Login
@@ -245,6 +270,7 @@ userV.pushButton_5.clicked.connect(irTienda)
 
 
 #Tienda
+tiendaV.btnAVL.clicked.connect(verCompras)
 tiendaV.btnBack.clicked.connect(backtienda)
 tiendaV.btnComprar.clicked.connect(comprar)
 

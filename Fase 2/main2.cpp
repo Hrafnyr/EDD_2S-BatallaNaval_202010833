@@ -8,14 +8,12 @@
 #include "../Fase 1/ListaUsuarios.h" //Llamada a lista de usuarios
 #include "../Fase 1/ColaTutorial.h" //Llamada a la cola del tutorial
 #include "../Fase 1/ListaCategoria.h"
-#include "../Fase 1/arbolB.h"
 using namespace std;
 
 //CREAR METODO DE AGREGAR COMPRA, METODO PARA CREAR EL ARBOL DE USUARIOS DESDE LISTA USUARIOS
 
 //Variables globales
 listaUsuarios usuarioV;
-ArbolB arbol;
 cola tutorial;
 listaCategoria categoria_;
 
@@ -28,7 +26,7 @@ int main(int argc, char **argv){
     string passAdmin = "edd123";
     string edadAdmin = "50";
     string monedasAdmin = "0";
-    arbol.insertarUser(id,nameAdmin,passAdmin,monedasAdmin,edadAdmin);
+    usuarioV.insertarNuevo(id,nameAdmin,passAdmin,monedasAdmin,edadAdmin);
 
     //Creando app
     crow::SimpleApp app;
@@ -55,7 +53,7 @@ int main(int argc, char **argv){
     CROW_ROUTE(app, "/AllUsers").methods(crow::HTTPMethod::POST)
     ([&](const crow::request& req)
     {
-        arbol.Grafo();
+        usuarioV.graficarArbol();
         return crow::response(200, "added");
     });
 
@@ -78,13 +76,13 @@ int main(int argc, char **argv){
 
         try {
             
-            int resP = arbol.verificarNickname(nombre);
+            int resP = usuarioV.verificarNombre(nombre);
             if (resP==0)
             {
                 //cifrar contraseña
                 res = SHA256::cifrar(pass);
                 id = "";
-                arbol.insertarUser(id,nombre,res,mon,edad); //insercion en arbol si el name no existe
+                usuarioV.insertarNuevo(id,nombre,res,mon,edad); 
                 return crow::response(200,"{\"Message\":\"OK\"}");
                
             }
@@ -121,7 +119,7 @@ int main(int argc, char **argv){
 
         try {
             
-            int resP = arbol.verificarNickname(newNombre);
+            int resP = usuarioV.verificarNombre(newNombre);
             if (resP==0)
             {
                 //cifrar contraseña
@@ -131,7 +129,7 @@ int main(int argc, char **argv){
                 }
                 pass1 = SHA256::cifrar(pass) ;       
 
-                int i = arbol.actualizar(user,pass1,newNombre,pass2,newEdad);
+                int i = usuarioV.modificarInformacion(user,pass1,newNombre,pass2,newEdad);
                 if (i==1)
                 {
                     return crow::response(200,"{\"Message\":\"OK\"}");
@@ -153,6 +151,82 @@ int main(int argc, char **argv){
         return crow::response(200, "added");
     });
 
+    //nuevaCompra
+    CROW_ROUTE(app, "/compra").methods(crow::HTTPMethod::POST)
+    ([&](const crow::request& req)
+    {
+        auto body = crow::json::load(req.body);
+        if (!body)
+            return crow::response(400, "Invalid body");
+        std::string idC, cate, price,name, user, pass,pass1;
+        try {
+            idC = body["id"].s();
+            cate = body["categoria"].s();
+            user= body["nombre"].s();
+            pass = body["password"].s();
+        } catch (const std::runtime_error &err) {
+            return crow::response(400, "Invalid body");
+        }
+
+        try {
+            
+            price = categoria_.getNombre(cate,idC);
+            name = categoria_.getPrecio(cate,idC);
+            
+            //cifrar contraseña
+            pass1 = SHA256::cifrar(pass) ;       
+
+            int i = usuarioV.nuevaCompra(user,pass1,idC,cate,price,name);
+            if (i==1)
+            {
+                return crow::response(200,"{\"Message\":\"OK\"}");
+            }
+            else{
+                    return crow::response(200,"{\"Message\":\"error\"}");
+            }   
+
+        } catch (const std::runtime_error &ex) {
+            return crow::response(500, "Internal Server Error");
+        }
+
+        return crow::response(200, "added");
+    });
+
+     //ver AVL de compras
+    CROW_ROUTE(app, "/verAVL").methods(crow::HTTPMethod::POST)
+    ([&](const crow::request& req)
+    {
+        auto body = crow::json::load(req.body);
+        if (!body)
+            return crow::response(400, "Invalid body");
+        std::string nombre, pass,vr;
+        int resp;
+        try {
+            nombre = body["nombre"].s();
+            pass = body["pass"].s();
+        } catch (const std::runtime_error &err) {
+            return crow::response(400, "Invalid body");
+        }
+
+        try {
+            vr = SHA256::cifrar(pass);
+            resp = usuarioV.verAVL(nombre,vr);
+            if (resp==0)
+            {
+               return crow::response(200,"{\"Message\":\"error\"}");
+            }
+            else if (resp==1)
+            {
+                 return crow::response(200,"{\"Message\":\"OK\"}");
+            }
+
+        } catch (const std::runtime_error &ex) {
+            return crow::response(500, "Internal Server Error");
+        }
+
+        return crow::response(200, "Blog added");
+    });
+
     //Login
     CROW_ROUTE(app, "/Login").methods(crow::HTTPMethod::POST)
     ([&](const crow::request& req)
@@ -171,7 +245,7 @@ int main(int argc, char **argv){
 
         try {
             vr = SHA256::cifrar(pass);
-            resp = arbol.login(nombre,vr);
+            resp = usuarioV.login(nombre,vr);
             if (resp==0)
             {
                return crow::response(200,"{\"Message\":\"error\"}");
@@ -206,7 +280,7 @@ int main(int argc, char **argv){
 
         try {
             vr = SHA256::cifrar(pass);
-            resp = arbol.eliminar(nombre,vr);
+            resp = usuarioV.eliminarCuenta(nombre,vr);
             if (resp==0)
             {
                return crow::response(200,"{\"Message\":\"error\"}");
@@ -257,7 +331,7 @@ void cargaMasiva(){
         nombre = datos["usuarios"][i]["nick"].asString();
 
         //Validar nombre
-        verificador = arbol.verificarNickname(nombre);
+        verificador = usuarioV.verificarNombre(nombre);
         if (verificador==0)
         {
             auxPass = datos["usuarios"][i]["password"].asString();
@@ -268,7 +342,7 @@ void cargaMasiva(){
             ed = datos["usuarios"][i]["edad"].asString();
             
             //Guardando usuarios
-            arbol.insertarUser(ID,nombre,pass,mon,ed);
+            usuarioV.insertarNuevo(ID,nombre,pass,mon,ed);
         }
 
     }

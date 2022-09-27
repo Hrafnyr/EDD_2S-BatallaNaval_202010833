@@ -17,6 +17,9 @@ class listaArticulos{
         string generarReporte(int&); 
         string getArticulos();
 
+        string getName(string&);
+        string getPrice(string&);
+
         // void eliminarnodoArticulos(int&); 
         // void eliminarLista();
 
@@ -26,6 +29,46 @@ class listaArticulos{
 listaArticulos::listaArticulos(){
     this->primero=NULL;
 }
+
+string listaArticulos::getName(string& id){
+    nodoArticulos* actual = new nodoArticulos(); //Auxiliar
+
+    actual = primero;
+    
+    if (primero!=NULL){
+        while (actual!=NULL){
+            
+            if (actual->Id==id)
+            {
+                return actual->nombre;
+            }
+            
+
+            actual = actual->siguiente;
+        }
+    }
+    return "";
+};
+
+string listaArticulos::getPrice(string& id){
+    nodoArticulos* actual = new nodoArticulos(); //Auxiliar
+
+    actual = primero;
+    
+    if (primero!=NULL){
+        while (actual!=NULL){
+            
+            if (actual->Id==id)
+            {
+                return actual->precio;
+            }
+            
+
+            actual = actual->siguiente;
+        }
+    }
+    return "";
+};
 
 void listaArticulos::insertarInicio(string& id,string& nombre,string& precio, string& src){
     

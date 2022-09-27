@@ -589,10 +589,10 @@ int  ArbolB::actualizarB(UsuarioB* rama,string& nick, string& pass, string& newN
                 auxS+="a";
             }
             if (aux->siguiente != NULL) {
-
+               
                 if (aux->nombre==nick && aux->password==pass)
                 {
-                    cout<<"incio de actualizar"<<endl;
+                    cout<<"inicio update arbol"<<endl;
                     //Validar campos para actualizar
                     if (newName.empty()!=true)
                     {
@@ -608,13 +608,14 @@ int  ArbolB::actualizarB(UsuarioB* rama,string& nick, string& pass, string& newN
                     {
                         aux->edad=newEdad;
                     }
-                    cout<<"Actualizado"<<endl;
+                    cout<<"Actualizado en arbol"<<endl;
                     encontrado = true;
                     return 1;
                 }
                 
                 
             } else {
+                
                 if (aux->nombre==nick && aux->password==pass)
                 {
                     //Validar campos para actualizar
@@ -632,6 +633,7 @@ int  ArbolB::actualizarB(UsuarioB* rama,string& nick, string& pass, string& newN
                     {
                         aux->edad=newEdad;
                     }
+                    cout<<"Actualizado en arbol"<<endl;
                     encontrado = true;
                     return 1;
                 }

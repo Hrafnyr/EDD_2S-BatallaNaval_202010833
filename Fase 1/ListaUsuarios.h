@@ -1,6 +1,7 @@
 #include <fstream>
 #include "NodoUsuario.h" 
 #include <string>
+#include "arbolB.h"
 using namespace std;
 
 //Declaramos clase lista
@@ -9,51 +10,77 @@ class listaUsuarios{
         Usuario* primero;
         Usuario* ultimo;    
         int contID = 1000; //contador auxiliar para nuevo usuario
-        int size_ = 0;  
+        int size_ = 0;
+
     public:
+        ArbolB* arbol;
         void insertarNuevo(string&,string&,string&,string&,string&);
         void insertarJugada(string&,string&,string&);
         void nuevoMovimiento(string&,string&,string&,string&,string&);
         void ReporteUsuarios(); 
         int login(string&,string&);
-        void modificarInformacion(string&,string&);
+        int modificarInformacion(string&,string&,string&,string&,string&);
         void sumarPunto(string&,string&);
-        bool verificarNombre(string&);
+        int verificarNombre(string&);
         void reporteJugadas();
         string getDatos();
         
-        void nuevaCompra(string&,string&,string&,string&,string&,string&);
+        int nuevaCompra(string&,string&,string&,string&,string&,string&);
 
-        void eliminarCuenta(string&,string&);
+        int eliminarCuenta(string&,string&);
         string getMonedas(string& name, string& pass);
 
         //void eliminarLista(); 
         listaUsuarios();
         
+        //metodos con arbol
+        void graficarArbol();
+        void insertarAB(string&, string&,string&, string&, string&);
+        void modificarAB(string&, string&,string&, string&, string&);
+        void reInsercion();
+
+        int verAVL(string&, string&);
 };
 
 listaUsuarios::listaUsuarios(){ //constructor, apuntar por defecto a null
     this->primero=NULL; 
     this->ultimo=NULL;
+    this->arbol=new ArbolB();
+}
+
+void listaUsuarios::graficarArbol(){
+    arbol->Grafo();
+}
+
+void listaUsuarios::insertarAB(string& id, string& nickname, string& pass, string& mon, string& ed){
+    arbol->insertarUser(id, nickname, pass, mon, ed);
+}
+
+void listaUsuarios::modificarAB(string& name, string& pass, string& name2, string& pass2, string& edad2){
+    arbol->actualizar(name,pass,name2,pass2,edad2);
 }
 
 void listaUsuarios::insertarNuevo(string& id, string& nickname, string& pass, string& mon, string& ed){
     
     Usuario* nuevo = new Usuario();//Nuevo nodo
+    string aux;
 
-    //Asignar valores
     if (id.empty()==true)
     {
-        nuevo->id= to_string(contID);
+        aux = to_string(contID);
         contID++;
     }
     else{
-        nuevo->id= id;
+        aux = id;
     }
+    nuevo->id = aux;
     nuevo->nombre = nickname;
     nuevo->password = pass;
     nuevo->monedas = mon;
     nuevo->edad = ed;
+
+    insertarAB(aux,nickname,pass,mon,ed);
+
     size_++;
 
     //Manejo de apuntadores
@@ -98,9 +125,31 @@ string listaUsuarios::getDatos()
        
     }
     return "[\n]";
-}
-    
-void listaUsuarios::nuevaCompra(string& name,string& pass,string& idC,string& cate,string& precio,string& nombre){
+};
+
+int listaUsuarios::verAVL(string& name, string& pass){
+    Usuario* actual = new Usuario(); //Auxiliar
+
+    actual = primero;
+    bool encontrado = false;
+
+    if (primero!=NULL){
+        do{
+			
+			if(actual->nombre==name && actual->password==pass){
+				actual->compras->graficar();
+				encontrado = true;
+                return 1;		
+			}
+			
+			actual = actual->siguiente;
+		}while(actual!=primero && encontrado != true);
+    }
+
+    return 0;
+} 
+
+int listaUsuarios::nuevaCompra(string& name,string& pass,string& idC,string& cate,string& precio,string& nombre){
     Usuario* actual = new Usuario(); //Auxiliar
 
     actual = primero;
@@ -114,12 +163,14 @@ void listaUsuarios::nuevaCompra(string& name,string& pass,string& idC,string& ca
                 //agregar compra
                 actual->compras->Insertar(idC,cate,precio,nombre);
 
-				encontrado = true;		
+				encontrado = true;
+                return 1;		
 			}
 			
 			actual = actual->siguiente;
 		}while(actual!=primero && encontrado != true);
     }
+    return 0;
 }
 
 //Metodo de reporte
@@ -189,7 +240,7 @@ void listaUsuarios::ReporteUsuarios(){
 
 };
 
-void listaUsuarios::modificarInformacion(string& name, string& pass){
+int listaUsuarios::modificarInformacion(string& name, string& pass,string& name2,string& pass2,string& edad2){
     
     Usuario* actual = new Usuario(); //Auxiliar
 
@@ -197,6 +248,7 @@ void listaUsuarios::modificarInformacion(string& name, string& pass){
     bool encontrado = false;
     bool flag4=false;
 
+    /*
     string nName="";
     string nEdad="";
     string nPass="";
@@ -209,14 +261,14 @@ void listaUsuarios::modificarInformacion(string& name, string& pass){
     cout<<"3. Editar password\n";
     cout<<"4. Regresar\n";
     cout<<"--> Ingrese el numero de opcion: ";
-    cin>>opMod;
-
+    cin>>opMod;*/
 
     if (primero!=NULL){
         do{
 			
 			if(actual->nombre==name && actual->password==pass){
-				//Modificación de información
+
+				/*//Modificación de información
                 switch (opMod)
                 {
                 case '1':
@@ -263,9 +315,28 @@ void listaUsuarios::modificarInformacion(string& name, string& pass){
                 
                 default:
                     break;
+                }*/
+                
+                
+                //Validar campos para actualizar
+                if (name2.empty()!=true)
+                {
+                    actual->nombre=name2;
+                }
+                
+                if (pass2.empty()!=true)
+                {
+                    actual->password=pass2;
                 }
 
-				encontrado = true;		
+                if (edad2.empty()!=true)
+                {
+                    actual->edad=edad2;
+                }
+                cout<<"Actualizado en lista"<<endl;
+                modificarAB(name,pass,name2,pass2,edad2);
+                encontrado = true;
+                return 1;	
 			}
 			
 			actual = actual->siguiente;
@@ -274,10 +345,10 @@ void listaUsuarios::modificarInformacion(string& name, string& pass){
         if (encontrado==false)
         {
             cout<<"No se encuentra el usuario\n";
+            return 0;
         }
-    }else{
-        cout<<"No hay datos\n";
     }
+    return 0;
 }
 
 int listaUsuarios::login(string& name, string& pass){
@@ -291,23 +362,18 @@ int listaUsuarios::login(string& name, string& pass){
 			
 			if(actual->nombre==name && actual->password==pass){
 				
-				encontrado = true;		
+				encontrado = true;
+                return 1;		
 			}
 			
 			actual = actual->siguiente;
 		}while(actual!=primero && encontrado != true);
-
-        if (encontrado==false)
-        {
-            return 0;
-        }else{
-           return 1;
-        }
     }
-    return 3;
+
+    return 0;
 } 
 
-bool listaUsuarios::verificarNombre(string& name){
+int listaUsuarios::verificarNombre(string& name){
     Usuario* actual = new Usuario(); //Auxiliar
 
     actual = primero;
@@ -318,13 +384,13 @@ bool listaUsuarios::verificarNombre(string& name){
 			
 			if(actual->nombre==name){
 				encontrado = true;
-                return true;		
+                return 1;		
 			}
 			
 			actual = actual->siguiente;
 		}while(actual!=primero && encontrado != true);
     }
-    return false;
+    return 0;
 }   
 
 void listaUsuarios::reporteJugadas(){
@@ -380,7 +446,7 @@ void listaUsuarios::reporteJugadas(){
     }
 }  
 
-void listaUsuarios::eliminarCuenta(string& nameBuscar,string& passB){
+int listaUsuarios::eliminarCuenta(string& nameBuscar,string& passB){
     
     Usuario* actual = new Usuario();
     actual = primero;
@@ -388,7 +454,9 @@ void listaUsuarios::eliminarCuenta(string& nameBuscar,string& passB){
     aux = NULL;
 
     bool encontrado = false;
-    
+
+    string prueba;
+
     if(primero!=NULL){
         do{
             if((actual->nombre==nameBuscar)&&(actual->password==passB)){
@@ -413,7 +481,12 @@ void listaUsuarios::eliminarCuenta(string& nameBuscar,string& passB){
                 }
                 size_--;
                 cout<<"\n Cuenta Eliminada \n";
+
+                //crear el arbol desde cero
+                reInsercion();
+
                 encontrado=true;
+                return 1;
             }
             aux = actual; //Aux almacena el anterior del actual
             actual = actual->siguiente; //Pasa al siguiente nodo
@@ -421,12 +494,10 @@ void listaUsuarios::eliminarCuenta(string& nameBuscar,string& passB){
 
         if (!encontrado){
             cout<<"\n Nodo no encontrado \n";
+            return 0;
         }
-    }else{
-        cout<<"\n La lista se Encuentra Vacia \n";
-
     }
-
+    return 0;
 };
 
 string listaUsuarios::getMonedas(string& name, string& pass){
@@ -514,6 +585,32 @@ void listaUsuarios::nuevoMovimiento(string& name, string& pass,string& nomJ,stri
     }
 
 };
+
+void listaUsuarios::reInsercion(){
+    
+    //borrar arbol
+    ArbolB* nuevo = new ArbolB();
+    arbol = nuevo;
+
+    Usuario* actual = new Usuario(); //Auxiliar
+    actual = primero;
+    string id,name,pass,mon,ed;
+    if (primero!=NULL){
+        do{
+
+            id = actual->id;
+            name = actual->nombre;
+            pass = actual->password;
+            mon = actual->monedas;
+            ed = actual->edad;
+			insertarAB(id,name,pass,mon,ed);   
+
+            actual = actual->siguiente;         
+
+		}while(actual!=primero);
+       
+    }
+}
 
 /* void listaUsuarios::eliminarLista(){
          while (primero != NULL)
