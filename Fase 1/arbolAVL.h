@@ -513,7 +513,6 @@ string AVL::getCodigoInterno(compra* nodo) {
     string etiqueta;
     string aux;
 
-    //FALTA IMPRIMIR TODOS LOS DATOS
     if(nodo->izquierdo==NULL && nodo->derecho==NULL){
         aux="ID: "+nodo->id+"\\nNombre:"+nodo->nombre+"\\nPrecio:"+nodo->precio+"\\nCategoria:"+nodo->categoria;
         etiqueta="nodo"+nodo->id+" [ label =\""+aux+"\"];\n";
