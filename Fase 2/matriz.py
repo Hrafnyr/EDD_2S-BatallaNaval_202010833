@@ -243,35 +243,16 @@ class MatrizDispersa():
 
         result = "matriz_{}.png".format(nombre)
         os.system("neato -Tpng " + dot + " -o " + result)
-        os.system("shotwell "+result)
-
+        #os.system("shotwell "+result)
 
 
 
 ################
 #pruebas
-matriz = MatrizDispersa(1)
+# matriz = MatrizDispersa(1)
 
-matriz.insert(1, 1, " ")     
-matriz.insert(1, 2, " ")
-matriz.insert(1, 3, " ")
-matriz.insert(1, 4, " ")
-matriz.insert(2, 1, " ")
-matriz.insert(2, 2, " ")
-matriz.insert(2, 3, " ")
-matriz.insert(2, 4, " ")
-matriz.insert(3, 1, " ")
-matriz.insert(3, 2, " ")
-matriz.insert(3, 3, " ")
-matriz.insert(3, 4, " ")
-matriz.insert(4, 1, " ")
-matriz.insert(4, 2, " ")
-matriz.insert(4, 3, " ")
-matriz.insert(4, 4, " ")
-matriz.insert(8, 9, " ")
-matriz.insert(9, 8, " ")
-matriz.insert(2, 2, " ")
-matriz.insert(15,20," ")
-matriz.insert(15,2, " ")
-matriz.insert(15,4," ")
-matriz.graficarNeato("datos","datos")
+# for i in range(1,11):
+#     for j in range(1,11):
+#         matriz.insert(i,j," ")
+
+# matriz.graficarNeato("datos","datos")

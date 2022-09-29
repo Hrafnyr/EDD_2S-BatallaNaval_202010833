@@ -1,15 +1,13 @@
 
-from curses.ascii import NUL
-import json
-from PyQt5 import QtWidgets, uic
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5 import QtWidgets, uic, QtGui
+from PyQt5.QtWidgets import QMessageBox, QInputDialog
 from storeC import MainWindow
 import os
 import sys
 import requests
+from matriz import MatrizDispersa
 
 #Varibles globales
-
 nameUser = ""
 passUser = ""
 url_Api = "http://0.0.0.0:8080"
@@ -252,6 +250,42 @@ def verCompras():
     if jsonResponse["Message"]=="error":
         QMessageBox.about(tiendaV,"Alerta","Hubo un error")
 
+
+#JUGAR
+
+def prueba():
+    size,ok = QInputDialog.getText(userV,"Tamaño del tablero","Ingrese el tamaño del tablero (10 minimo)")
+    
+    if ok:
+
+        if int(str(size))<10:
+            QMessageBox.about(userV,"Alerta","Debe ingresar un valor mayor o igual a 10")
+        else:
+            generarMatriz1(int(str(size)))
+            getImage()
+    else:
+        print("canceled")
+
+def generarMatriz1(size):
+    matriz = MatrizDispersa(1)
+
+    for i in range(1,size+1):
+        for j in range(1,size+1):
+            matriz.insert(i,j," ")
+
+    matriz.graficarNeato("Partida","Partida")
+
+def getImage():
+    userV.label_3.setPixmap(QtGui.QPixmap("matriz_Partida.png"))
+
+def getships(size):
+    tot = ((size-1)//10)+1
+    p = tot
+    s = p+p
+    d = s+p
+    b = d+p
+    return {'p':p,'s':s,'d':d,'b':b} # retorna un json con la cantidad de barcos 
+
 #------------ Botones
 #Login
 loginV.pushButton.clicked.connect(loginAction)
@@ -268,6 +302,7 @@ userV.pushButton_2.clicked.connect(eliminarCuenta)
 userV.btnCerrarS.clicked.connect(logOut)
 userV.pushButton_5.clicked.connect(irTienda)
 
+userV.pushButton_4.clicked.connect(prueba)
 
 #Tienda
 tiendaV.btnAVL.clicked.connect(verCompras)
