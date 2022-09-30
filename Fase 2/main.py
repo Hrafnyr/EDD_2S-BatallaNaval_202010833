@@ -144,7 +144,7 @@ def updateData():
         else:
             if len(newName)!=0:
                 userV.txtUS.setText(newName)
-            elif len(newPass)!=0:
+            if len(newPass)!=0:
                 userV.label_2.setText(newPass)
             QMessageBox.about(editarV,"Mensaje","Informacion actualizada correctamente")        
 
@@ -267,24 +267,16 @@ def prueba():
         print("canceled")
 
 def generarMatriz1(size):
-    matriz = MatrizDispersa(1)
+    matriz = MatrizDispersa(1,size)
 
     for i in range(1,size+1):
         for j in range(1,size+1):
             matriz.insert(i,j," ")
-
+    matriz.generarPosicionesAleatorias()
     matriz.graficarNeato("Partida","Partida")
 
 def getImage():
     userV.label_3.setPixmap(QtGui.QPixmap("matriz_Partida.png"))
-
-def getships(size):
-    tot = ((size-1)//10)+1
-    p = tot
-    s = p+p
-    d = s+p
-    b = d+p
-    return {'p':p,'s':s,'d':d,'b':b} # retorna un json con la cantidad de barcos 
 
 #------------ Botones
 #Login
