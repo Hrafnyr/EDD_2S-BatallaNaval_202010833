@@ -34,10 +34,13 @@ class Nodo_Interno(): # Nodos ortogonales/celda
     def setCaracter(self,nuevoCaracter): self.caracter = nuevoCaracter
 
 class MatrizDispersa():
-    def __init__(self, capa,size):
+    def __init__(self, capa):
         self.capa = capa
         self.filas = Lista_Encabezado('fila') # Encabezados  X
         self.columnas = Lista_Encabezado('columna') # Encabezados  Y
+        self.sizeT = 0
+
+    def putSizeT(self,size):
         self.sizeT = size
 
     # (filas = x, columnas = y)
@@ -130,6 +133,35 @@ class MatrizDispersa():
                     inicio.setAcceso(None)
                     tmp = tmp.getDerecha()
             f+=1
+
+    def insertarMovimiento(self,fila,columna):
+        inicio : Nodo_Encabezado = self.filas.getEncabezado(fila) #Se obtiene la cabecera con la fila
+        if inicio == None:
+            print('Esa coordenada de fila no existe')
+            return "nExist"
+            
+        tmp : Nodo_Interno = inicio.getAcceso() #Verifica el acceso
+        verificador = False
+        while tmp != None:
+
+            if tmp.coordenadaX == fila and tmp.coordenadaY == columna: #Ubica el punto
+                verificador = True
+                #primero validamos que no haya barco
+                if tmp.caracter == "P" or tmp.caracter == "S" or tmp.caracter == "D" or tmp.caracter == "B":
+                    tmp.caracter = "x"
+                    return "Disparo"
+                else:
+                    if tmp.caracter == " ":
+                        tmp.caracter = "X"
+                    return "Fallo"
+
+
+            tmp = tmp.getDerecha()
+
+        if verificador == False:
+            print('Coordenada no encontrada')
+
+        return "NAC"
 
     def ubicarPortavion(self,fila, columna): #Se solicita el punto de entrada  
       
@@ -809,12 +841,12 @@ class MatrizDispersa():
                     contenido += '\n\tnode[label=" " fillcolor="Teal" pos="{},-{}!" shape=box]i{}_{};'.format( #pos="{},-{}!"
                         posy_celda, posx, pivote_celda.coordenadaX, pivote_celda.coordenadaY
                     )
-                elif pivote_celda.caracter == 'U':
-                    contenido += '\n\tnode[label="U" fillcolor="red" pos="{},-{}!" shape=box]i{}_{};'.format( #pos="{},-{}!"
+                elif pivote_celda.caracter == 'x':
+                    contenido += '\n\tnode[label="x" fillcolor="red" pos="{},-{}!" shape=box]i{}_{};'.format( #pos="{},-{}!"
                         posy_celda, posx, pivote_celda.coordenadaX, pivote_celda.coordenadaY
                     )
-                elif pivote_celda.caracter == 'T':
-                    contenido += '\n\tnode[label="T" fillcolor="yellow" pos="{},-{}!" shape=box]i{}_{};'.format( #pos="{},-{}!"
+                elif pivote_celda.caracter == 'X':
+                    contenido += '\n\tnode[label="X" fillcolor="yellow" pos="{},-{}!" shape=box]i{}_{};'.format( #pos="{},-{}!"
                         posy_celda, posx, pivote_celda.coordenadaX, pivote_celda.coordenadaY
                     )
                 else:
@@ -844,14 +876,18 @@ class MatrizDispersa():
         #os.system("shotwell "+result)
 
 
-
 ##############
 #pruebas
-# matriz = MatrizDispersa(1,24)
+# matriz = MatrizDispersa(1,10)
 
 # for i in range(1,11):
 #     for j in range(1,11):
 #         matriz.insert(i,j," ")
 # matriz.generarPosicionesAleatorias()
+
+# matriz.insertarMovimiento(1,5)
+# matriz.insertarMovimiento(5,5)
+# matriz.insertarMovimiento(6,2)
+# matriz.insertarMovimiento(7,1)
 
 # matriz.graficarNeato("datos","datos")

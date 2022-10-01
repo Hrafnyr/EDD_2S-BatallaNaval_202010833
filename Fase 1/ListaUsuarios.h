@@ -20,7 +20,8 @@ class listaUsuarios{
         void ReporteUsuarios(); 
         int login(string&,string&);
         int modificarInformacion(string&,string&,string&,string&,string&);
-        void sumarPunto(string&,string&);
+        void sumarPunto(string&,string&,string&);
+        void restarMonedas(string&,string&,string&);
         int verificarNombre(string&);
         void reporteJugadas();
         string getDatos();
@@ -73,13 +74,13 @@ void listaUsuarios::insertarNuevo(string& id, string& nickname, string& pass, st
     else{
         aux = id;
     }
+    insertarAB(aux,nickname,pass,mon,ed);
+
     nuevo->id = aux;
     nuevo->nombre = nickname;
     nuevo->password = pass;
     nuevo->monedas = mon;
     nuevo->edad = ed;
-
-    insertarAB(aux,nickname,pass,mon,ed);
 
     size_++;
 
@@ -248,6 +249,8 @@ int listaUsuarios::modificarInformacion(string& name, string& pass,string& name2
     bool encontrado = false;
     bool flag4=false;
 
+    modificarAB(name,pass,name2,pass2,edad2);
+
     /*
     string nName="";
     string nEdad="";
@@ -334,7 +337,6 @@ int listaUsuarios::modificarInformacion(string& name, string& pass,string& name2
                     actual->edad=edad2;
                 }
                 cout<<"Actualizado en lista"<<endl;
-                modificarAB(name,pass,name2,pass2,edad2);
                 encontrado = true;
                 return 1;	
 			}
@@ -545,13 +547,15 @@ void listaUsuarios::insertarJugada(string& name, string& pass,string& nomJ){
 
 };
 
-void listaUsuarios::sumarPunto(string& name, string& pass){
+void listaUsuarios::sumarPunto(string& name, string& pass, string& cant){
     Usuario* actual = new Usuario(); //Auxiliar
 
     actual = primero;
     bool encontrado = false;
     string mon_ = getMonedas(name,pass);
     int aux = stoi(mon_);
+    int sum = stoi(cant);
+    int tot = aux+sum;
 
     if (primero!=NULL){
         do{
@@ -559,8 +563,32 @@ void listaUsuarios::sumarPunto(string& name, string& pass){
 			if(actual->nombre==name && actual->password==pass){
 				
 				encontrado = true;
-                aux++;
-                actual->monedas=to_string(aux);		
+                actual->monedas=to_string(tot);		
+			}
+			
+			actual = actual->siguiente;
+		}while(actual!=primero && encontrado != true);
+
+    }  
+}
+
+void listaUsuarios::restarMonedas(string& name, string& pass, string& cant){
+    Usuario* actual = new Usuario(); //Auxiliar
+
+    actual = primero;
+    bool encontrado = false;
+    string mon_ = getMonedas(name,pass);
+    int aux = stoi(mon_);
+    int cant2 = stoi(cant);
+    int tot = aux-cant2;
+
+    if (primero!=NULL){
+        do{
+			
+			if(actual->nombre==name && actual->password==pass){
+				
+				encontrado = true;
+                actual->monedas=to_string(tot);		
 			}
 			
 			actual = actual->siguiente;

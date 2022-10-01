@@ -1,4 +1,5 @@
 
+import json
 from PyQt5 import QtWidgets, uic, QtGui
 from PyQt5.QtWidgets import QMessageBox, QInputDialog
 from storeC import MainWindow
@@ -8,9 +9,29 @@ import requests
 from matriz import MatrizDispersa
 
 #Varibles globales
+class mt:
+    def __init__(self,capa):
+        self.matriz = MatrizDispersa(capa)
+    
+    def putSizeT(self,size):
+        self.matriz.sizeT = size
+    
+    def insert(self, f,c,cr):
+        self.matriz.insert(f,c,cr)
+
+    def generarPosicionesAleatorias(self):
+        self.matriz.generarPosicionesAleatorias()
+    
+    def graficarNeato(self,n1,n2):
+        self.matriz.graficarNeato(n1,n2)
+    
+    def insertarMovimiento(self,f,c):
+        return self.matriz.insertarMovimiento(f,c)
+
 nameUser = ""
 passUser = ""
 url_Api = "http://0.0.0.0:8080"
+matriz = mt(1)
 
 #iniciar app
 app = QtWidgets.QApplication(sys.argv)
@@ -78,6 +99,20 @@ def eliminarCuenta():
 
 def verUsuario(nameU,passR):
     loginV.hide()
+    
+    #ocultar menu de juego
+    userV.labelF.hide()
+    userV.labelC.hide()
+    userV.txtFila.hide()
+    userV.txtColumna.hide()
+    userV.labelWarning.hide()
+    userV.btnShoot.hide()
+
+    userV.labelMon.hide()
+    userV.labelMON.hide()
+    userV.labelV.hide()
+    userV.labelVidas.hide()
+
     userV.label_2.hide()
     userV.label_2.setText(passR)
     userV.txtUS.setText(nameU)
@@ -203,6 +238,8 @@ def cargaMasiva():
     QMessageBox.about(adminV,"Mensaje","Carga masiva realizada")
 
 def irTienda():
+    monedas = getCoins()
+    tiendaV.labelMC.setText(monedas)
     tiendaV.show()
 
 def backtienda():
@@ -218,6 +255,7 @@ def comprar():
     passUser= userV.label_2.text()
     categ = tiendaV.txtCategoria.text()
     idAr = tiendaV.txtID.text()
+    
 
     if (len(categ)==0 or len(idAr)==0):
         tiendaV.labelWarning.setText("Debe llenar ambos campos")
@@ -232,10 +270,14 @@ def comprar():
         
         if jsonResponse["Message"]=="error":
             QMessageBox.about(tiendaV,"Alerta","Hubo un error")
+        elif jsonResponse["Message"]=="NEC":
+            QMessageBox.about(tiendaV,"Alerta","No tiene dinero suficiente")
         else:
             QMessageBox.about(tiendaV,"Mensaje","compra realizada")
             tiendaV.txtCategoria.setText("")
             tiendaV.txtID.setText("")   
+            monedas = getCoins()
+            tiendaV.labelMC.setText(monedas)
 
 def verCompras():
     nameUser = userV.txtUS.text()
@@ -251,6 +293,26 @@ def verCompras():
         QMessageBox.about(tiendaV,"Alerta","Hubo un error")
 
 
+def getCoins():
+    nameUser = userV.txtUS.text()
+    passUser= userV.label_2.text()
+
+    obj={'nombre':'{}'.format(nameUser),'pass':'{}'.format(passUser)}
+    res = requests.post(f'{url_Api}/getCoins',json=obj)
+
+    #Verificar respuesta
+    jsonResponse = res.json()
+    
+    return jsonResponse["Coins"]
+
+def setCoins(cant):
+    nameUser = userV.txtUS.text()
+    passUser= userV.label_2.text()
+    
+
+    obj={'nombre':'{}'.format(nameUser),'pass':'{}'.format(passUser),'cant':'{}'.format(cant)}
+    requests.post(f'{url_Api}/setCoins',json=obj)
+
 #JUGAR
 
 def prueba():
@@ -261,14 +323,29 @@ def prueba():
         if int(str(size))<10:
             QMessageBox.about(userV,"Alerta","Debe ingresar un valor mayor o igual a 10")
         else:
+
+            #mostar componentes 
+            userV.labelF.show()
+            userV.labelC.show()
+            userV.txtFila.show()
+            userV.txtColumna.show()
+            userV.btnShoot.show()
+
+            userV.labelMon.show()
+            monedas = getCoins()
+            userV.labelMON.setText(monedas)
+            userV.labelMON.show()
+            userV.labelV.show()
+            userV.labelVidas.show()
+
+            #generar matriz y mostrar tablero
             generarMatriz1(int(str(size)))
             getImage()
     else:
         print("canceled")
 
 def generarMatriz1(size):
-    matriz = MatrizDispersa(1,size)
-
+    matriz.putSizeT(size)    
     for i in range(1,size+1):
         for j in range(1,size+1):
             matriz.insert(i,j," ")
@@ -278,6 +355,59 @@ def generarMatriz1(size):
 def getImage():
     userV.label_3.setPixmap(QtGui.QPixmap("matriz_Partida.png"))
 
+def getImageBack():
+    userV.label_3.setPixmap(QtGui.QPixmap("imagenBarco.jpg"))
+
+def makeMove():
+    fila = userV.txtFila.text()
+    columna = userV.txtColumna.text()
+
+    vidas = int(userV.labelVidas.text())
+    
+    if fila.isalpha() or columna.isalpha():
+        userV.labelWarning.setText("Ingrese valores numericos")
+        userV.labelWarning.show()
+    elif len(fila)==0 or len(columna)==0:
+        userV.labelWarning.setText("Debe llenar ambos campos")
+        userV.labelWarning.show()
+    else:
+        userV.labelWarning.setText(" ")
+        response = matriz.insertarMovimiento(int(fila),int(columna))
+
+        if response == "nExist":  
+            userV.labelWarning.setText("No existe la fila")
+            userV.labelWarning.show()
+
+        elif response == "Disparo":
+            setCoins("20")
+            monedas = getCoins()
+
+            userV.labelMON.setText(monedas)
+            userV.labelWarning.setText("")
+            userV.label
+            QMessageBox.about(userV,"Felicidades","Disparo correcto, ganas 20 tokens")
+            matriz.graficarNeato("Partida","Partida")
+            getImage()
+
+        elif response == "Fallo":
+
+            userV.labelWarning.setText("")
+            QMessageBox.about(userV,"¡Oh no!","Ha fallado el disparo, pierde una vida")
+
+            #pierde una vida
+            vidas-=1
+            userV.labelVidas.setText(str(vidas))
+
+            matriz.graficarNeato("Partida","Partida")
+            getImage()
+
+        elif response == "NAC":
+            userV.labelWarning.show()
+            userV.labelWarning.setText("Se encuentra la coordenada")
+
+    if vidas == 0:
+        QMessageBox.about(userV,"¡Oh no!","Has Perdido la partida")
+        getImageBack()
 #------------ Botones
 #Login
 loginV.pushButton.clicked.connect(loginAction)
@@ -293,6 +423,8 @@ userV.pushButton.clicked.connect(editarDatos)
 userV.pushButton_2.clicked.connect(eliminarCuenta)
 userV.btnCerrarS.clicked.connect(logOut)
 userV.pushButton_5.clicked.connect(irTienda)
+
+userV.btnShoot.clicked.connect(makeMove)
 
 userV.pushButton_4.clicked.connect(prueba)
 

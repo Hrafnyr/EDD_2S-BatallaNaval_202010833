@@ -70,7 +70,7 @@ string listaCategoria::getPrecio(string& cate, string& id){
         
     }
 
-    return ""; //vacio
+    return "1000000"; //vacio
 }
 
 void listaCategoria::insertarInicio(string& nombreCate){

@@ -1,7 +1,0 @@
-digraph grafica{
-rankdir=TB;
-node [shape = record, style=filled, fillcolor=seashell2];
-nodo1 [ label ="<C0>|ID: 1\nNombre:50\nPrecio:Barco Naval Army\nCategoria:comun|<C1>"];
-nodo6 [ label ="ID: 6\nNombre:500\nPrecio:Barco 4\nCategoria:c1"];
-nodo1:C1->nodo6
-}

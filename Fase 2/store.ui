@@ -255,6 +255,51 @@ color:black;
      <string>Mis compras</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>650</y>
+      <width>71</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel{
+	
+	background-color: rgb(233, 185, 110);
+	border-radius: 10px;
+	border: 1px solid black;
+}</string>
+    </property>
+    <property name="text">
+     <string>Monedas</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelMC">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>690</y>
+      <width>71</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel{
+
+	border-radius: 12px;
+	border: 1px solid black;
+	background-color: rgb(255, 255, 255);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

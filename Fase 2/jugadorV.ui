@@ -352,6 +352,235 @@ QPushButton:hover{
               <set>Qt::AlignJustify|Qt::AlignVCenter</set>
              </property>
             </widget>
+            <widget class="QLabel" name="labelF">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>770</y>
+               <width>101</width>
+               <height>31</height>
+              </rect>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLabel{
+	
+	background-color: qlineargradient(spread:pad, x1:0.114, y1:0, x2:0.965025, y2:0.966, stop:0.21393 rgba(45, 53, 94, 255), stop:1 rgba(89, 157, 160, 255));
+	font: 75 bold 20pt &quot;Ubuntu Condensed&quot;;
+	color: rgb(255, 255, 255);
+}</string>
+             </property>
+             <property name="text">
+              <string>Fila :</string>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="txtFila">
+             <property name="geometry">
+              <rect>
+               <x>140</x>
+               <y>770</y>
+               <width>91</width>
+               <height>31</height>
+              </rect>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLineEdit{
+	
+	
+	font: 75 bold 18pt &quot;C059&quot;;
+}</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="txtColumna">
+             <property name="geometry">
+              <rect>
+               <x>140</x>
+               <y>810</y>
+               <width>91</width>
+               <height>31</height>
+              </rect>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLineEdit{
+	
+	
+	font: 75 bold 18pt &quot;C059&quot;;
+}</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+             </property>
+            </widget>
+            <widget class="QLabel" name="labelC">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>810</y>
+               <width>101</width>
+               <height>31</height>
+              </rect>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLabel{
+	
+	background-color: qlineargradient(spread:pad, x1:0.114, y1:0, x2:0.965025, y2:0.966, stop:0.21393 rgba(45, 53, 94, 255), stop:1 rgba(89, 157, 160, 255));
+	font: 75 bold 20pt &quot;Ubuntu Condensed&quot;;
+	color: rgb(255, 255, 255);
+}</string>
+             </property>
+             <property name="text">
+              <string>Columna:</string>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="btnShoot">
+             <property name="geometry">
+              <rect>
+               <x>270</x>
+               <y>800</y>
+               <width>121</width>
+               <height>41</height>
+              </rect>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton{
+	border-radius: 10px;
+	background-color: rgb(201, 224, 20);
+	font: 75 bold 17pt &quot;Tlwg Typo&quot;;
+}
+
+QPushButton:hover{
+	border-radius: 10px;
+	
+	background-color: rgb(14, 248, 205);
+	font: 75 bold 17pt &quot;Tlwg Typo&quot;;
+}</string>
+             </property>
+             <property name="text">
+              <string>Disparar</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="labelWarning">
+             <property name="geometry">
+              <rect>
+               <x>250</x>
+               <y>770</y>
+               <width>171</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLabel{
+	
+	color: rgb(255, 255, 255);
+}</string>
+             </property>
+             <property name="text">
+              <string>No existe la coordenada</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="labelMon">
+             <property name="geometry">
+              <rect>
+               <x>480</x>
+               <y>770</y>
+               <width>71</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLabel{
+	border-radius: 9px;
+
+	color: rgb(255, 255, 255);
+}</string>
+             </property>
+             <property name="text">
+              <string>Monedas:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+            <widget class="QLabel" name="labelMON">
+             <property name="geometry">
+              <rect>
+               <x>560</x>
+               <y>770</y>
+               <width>61</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLabel{
+	border-radius: 9px;
+	background-color: rgb(255, 255, 255);
+	color: black;
+	border: 1px solid black;
+}</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+            <widget class="QLabel" name="labelVidas">
+             <property name="geometry">
+              <rect>
+               <x>560</x>
+               <y>810</y>
+               <width>61</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLabel{
+	
+border-radius: 9px;
+	background-color: rgb(255, 255, 255);
+	color: black;
+	border: 1px solid black;
+
+}</string>
+             </property>
+             <property name="text">
+              <string>3</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+            <widget class="QLabel" name="labelV">
+             <property name="geometry">
+              <rect>
+               <x>480</x>
+               <y>810</y>
+               <width>71</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLabel{
+		border-radius: 9px;
+	color: rgb(255, 255, 255);
+}</string>
+             </property>
+             <property name="text">
+              <string>Vidas:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
            </widget>
           </item>
          </layout>

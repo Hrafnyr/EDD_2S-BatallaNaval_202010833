@@ -1,6 +1,6 @@
 {
     "usuarios": [
-        { "id": "1","nick": "us1", "password": "123", "monedas": "0", "edad": "18" },
+        { "id": "1","nick": "us1", "password": "123", "monedas": "10", "edad": "18" },
         { "id": "2","nick": "us2", "password": "123S", "monedas": "5", "edad": "20" },
         { "id": "3","nick": "us3", "password": "123v", "monedas": "10", "edad": "21" },
         { "id": "4","nick": "us4", "password": "124", "monedas": "14", "edad": "19" },
