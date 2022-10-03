@@ -13,7 +13,7 @@ class pila{
         void push(string&,string&); //ultimo en entrar primero en salir 1,2,3,4->NULL
         string mostrarPila(int&,int&,int&); 
         void pop(); //elimina el ultimo elemento apilado
-        void top(); //Devuelve el ultimo elemento apilado
+        string top(); //Devuelve el ultimo elemento apilado
         //void eliminarPila();
         pila();
 };
@@ -76,7 +76,7 @@ string pila::mostrarPila(int& cont_U, int& cont_J, int& cM){
     return "";
 };
 
-void pila::top(){
+string pila::top(){
     NodoDisparo* temporal = new NodoDisparo(); //Auxiliar
 
     temporal = primero;
@@ -88,8 +88,10 @@ void pila::top(){
     }
     else{
         cout<<"No hay datos"<<endl;
+        return "{\"X\": \"NA\",\"Y\":\"NA\"}";
     }
-    cout<<temporal->X<<","<<temporal->Y;
+
+    return "{\"X\": \"" +temporal->X+ "\",\"Y\":\""+temporal->Y+"\"}";
 }
 
 void pila::pop(){

@@ -13,6 +13,8 @@ class listaJugadas{
         void nuevaJugada(string& nombre);
         string reporte(int& contU);
         void nuevoMovimiento(string& nombre,string&X,string&Y);
+        string verTop(string& nombre);
+        void eliminarTop(string& nombre);
         listaJugadas();
 
 };
@@ -24,7 +26,7 @@ listaJugadas::listaJugadas(){ //constructor, apuntar por defecto a null
 void listaJugadas::nuevaJugada(string& nombre){
     
     nodoJugada* nuevo = new nodoJugada();//Nuevo nodo
-
+    
     //Asignar valores
     nuevo->nombreJugada = nombre;
 
@@ -35,6 +37,7 @@ void listaJugadas::nuevaJugada(string& nombre){
         nuevo->siguiente=primero;
         primero=nuevo;
     }    
+    cout<<"Se creo la jugada"<<endl;
 };
 
 string listaJugadas::reporte(int& contU){
@@ -70,8 +73,6 @@ string listaJugadas::reporte(int& contU){
     return "";
 };
 
-
-
 void listaJugadas::nuevoMovimiento(string& nombre,string& X, string& Y){
     nodoJugada* actual = new nodoJugada(); //Auxiliar
 
@@ -84,6 +85,45 @@ void listaJugadas::nuevoMovimiento(string& nombre,string& X, string& Y){
             actual = actual->siguiente;
         }else{
             actual->coordenadas->push(X,Y);
+            cout<<"Se agregò el movimiento"<<endl;
+            break;
+        }
+    }
+
+};
+
+string listaJugadas::verTop(string& nombre){
+    nodoJugada* actual = new nodoJugada(); //Auxiliar
+    string tot = " ";
+    actual = primero;
+    
+    while (actual!=NULL){
+
+        if (actual->nombreJugada!=nombre)
+        {
+            actual = actual->siguiente;
+        }else{
+            tot = actual->coordenadas->top();
+            return tot;
+            break;
+        }
+    }
+
+    return " ";
+};
+
+void listaJugadas::eliminarTop(string& nombre){
+    nodoJugada* actual = new nodoJugada(); //Auxiliar
+
+    actual = primero;
+    
+    while (actual!=NULL){
+
+        if (actual->nombreJugada!=nombre)
+        {
+            actual = actual->siguiente;
+        }else{
+            actual->coordenadas->pop();
             break;
         }
     }

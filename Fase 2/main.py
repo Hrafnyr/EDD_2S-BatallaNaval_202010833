@@ -12,6 +12,7 @@ from matriz import MatrizDispersa
 class mt:
     def __init__(self,capa):
         self.matriz = MatrizDispersa(capa)
+        self.NombreJugada = ""
     
     def putSizeT(self,size):
         self.matriz.sizeT = size
@@ -27,6 +28,12 @@ class mt:
     
     def insertarMovimiento(self,f,c):
         return self.matriz.insertarMovimiento(f,c)
+    
+    def verificarGanar(self):
+        return self.matriz.verificarPartidaGanada(self.matriz.sizeT)
+    
+    def reestablecer(self,fila,columna):
+        self.matriz.reestablecer(fila,columna)
 
 nameUser = ""
 passUser = ""
@@ -107,6 +114,9 @@ def verUsuario(nameU,passR):
     userV.txtColumna.hide()
     userV.labelWarning.hide()
     userV.btnShoot.hide()
+
+    userV.labelWR.hide()
+    userV.btnDeshacer.hide()
 
     userV.labelMon.hide()
     userV.labelMON.hide()
@@ -323,24 +333,44 @@ def prueba():
         if int(str(size))<10:
             QMessageBox.about(userV,"Alerta","Debe ingresar un valor mayor o igual a 10")
         else:
+            
+            name2,ok2 = QInputDialog.getText(userV,"Nombre de la jugada","Ingrese el nombre de la jugada")
+            if ok2:
 
-            #mostar componentes 
-            userV.labelF.show()
-            userV.labelC.show()
-            userV.txtFila.show()
-            userV.txtColumna.show()
-            userV.btnShoot.show()
+                #Guardamos la jugada
+                nameUser = userV.txtUS.text()
+                passUser= userV.label_2.text()
 
-            userV.labelMon.show()
-            monedas = getCoins()
-            userV.labelMON.setText(monedas)
-            userV.labelMON.show()
-            userV.labelV.show()
-            userV.labelVidas.show()
+                matriz.NombreJugada=name2 #Se guarda en la clase para acceder desde cualquier parte
 
-            #generar matriz y mostrar tablero
-            generarMatriz1(int(str(size)))
-            getImage()
+                obj={'nombre':'{}'.format(nameUser),'pass':'{}'.format(passUser),'jugada':'{}'.format(str(name2))}
+                res = requests.post(f'{url_Api}/newJugada',json=obj)
+
+                #Verificar respuesta
+                jsonResponse = res.json()
+                if jsonResponse["Message"]!="OK":
+                    QMessageBox.about(userV,"Alerta","Hubo un error")
+
+                #mostar componentes 
+                userV.labelF.show()
+                userV.labelC.show()
+                userV.txtFila.show()
+                userV.txtColumna.show()
+                userV.btnShoot.show()
+                userV.btnDeshacer.show()
+                userV.labelMon.show()
+                monedas = getCoins()
+                userV.labelMON.setText(monedas)
+                userV.labelMON.show()
+                userV.labelV.show()
+                userV.labelVidas.show()
+
+                #generar matriz y mostrar tablero
+                generarMatriz1(int(str(size)))
+                getImage()
+
+            else:
+                print("canceled")
     else:
         print("canceled")
 
@@ -373,6 +403,19 @@ def makeMove():
     else:
         userV.labelWarning.setText(" ")
         response = matriz.insertarMovimiento(int(fila),int(columna))
+        
+        #obtenemos datos del usuario
+        nameUser = userV.txtUS.text()
+        passUser= userV.label_2.text()
+
+        #Guardamos el movimiento en la cola
+        obj={'nombre':'{}'.format(nameUser),'pass':'{}'.format(passUser),'jugada':'{}'.format(matriz.NombreJugada),'x':'{}'.format(fila),'y':'{}'.format(columna)}
+        resC = requests.post(f'{url_Api}/newMov',json=obj)
+
+        #Verificar respuesta
+        jsonResponse = resC.json()
+        if jsonResponse["Message"]!="OK":
+            QMessageBox.about(userV,"Alerta","Hubo un error")
 
         if response == "nExist":  
             userV.labelWarning.setText("No existe la fila")
@@ -403,11 +446,66 @@ def makeMove():
 
         elif response == "NAC":
             userV.labelWarning.show()
-            userV.labelWarning.setText("Se encuentra la coordenada")
+            userV.labelWarning.setText("No se encuentra")
 
     if vidas == 0:
         QMessageBox.about(userV,"¡Oh no!","Has Perdido la partida")
         getImageBack()
+
+    partida = matriz.verificarGanar()
+    if partida == "terminado":
+        QMessageBox.about(userV,"¡Felicidades!","Has Ganado la partida")
+
+def deshacer():
+    #obtenemos datos del usuario
+    nameUser = userV.txtUS.text()
+    passUser= userV.label_2.text()
+
+    #Validamos que pueda retroceder
+    obj={'nombre':'{}'.format(nameUser),'password':'{}'.format(passUser)}
+    res = requests.post(f'{url_Api}/restarMP',json=obj)
+
+    #Verificar respuesta
+    jsonResponse = res.json()
+    
+    if jsonResponse["Message"]=="NEC":
+        userV.labelWR.setText("No tienes monedas suficientes")
+        userV.labelWR.show()
+    else:
+        monedas = getCoins()
+        userV.labelMON.setText(monedas)
+        userV.labelWR.setText("")
+
+        #Guardamos el movimiento en la cola
+        obj={'nombre':'{}'.format(nameUser),'pass':'{}'.format(passUser),'jugada':'{}'.format(matriz.NombreJugada)}
+        resC = requests.post(f'{url_Api}/lastMove',json=obj)
+
+        #Verificar respuesta
+        jsonResponse = resC.json()
+        print(jsonResponse)
+        #Validar si hay datos en pila para evitar error
+        if jsonResponse["X"]!="NA" and jsonResponse["Y"]!="NA":
+            userV.labelWR.hide()
+
+            #Reestablecemos tablero
+            matriz.reestablecer(int(jsonResponse["X"]),int(jsonResponse["Y"]))
+            print("cargando...")
+            #Repintamos y mostramos
+            matriz.graficarNeato("Partida","Partida")
+            getImage()
+
+            #Eliminamos de la pila
+            res2 = requests.post(f'{url_Api}/eliminarLastMove',json=obj)
+        
+            #Verificar respuesta
+            respuesta = res2.json()
+            if respuesta["Message"]!="OK":
+                QMessageBox.about(userV,"Alerta","Hubo un error")
+        else:
+            userV.labelWR.setText("No hay movimientos")
+            userV.labelWR.show()
+
+
 #------------ Botones
 #Login
 loginV.pushButton.clicked.connect(loginAction)
@@ -423,7 +521,7 @@ userV.pushButton.clicked.connect(editarDatos)
 userV.pushButton_2.clicked.connect(eliminarCuenta)
 userV.btnCerrarS.clicked.connect(logOut)
 userV.pushButton_5.clicked.connect(irTienda)
-
+userV.btnDeshacer.clicked.connect(deshacer)
 userV.btnShoot.clicked.connect(makeMove)
 
 userV.pushButton_4.clicked.connect(prueba)

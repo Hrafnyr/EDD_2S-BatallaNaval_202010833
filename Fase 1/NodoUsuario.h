@@ -32,7 +32,7 @@ Usuario::Usuario() {    //Inicialización
     this->password = "";
     this->monedas = "";
     this->edad = "";
-    //this->jugadas = new listaJugadas();
+    this->jugadas = new listaJugadas();
     this->compras = new AVL();
     this->anterior=NULL;
     this->siguiente=NULL;
@@ -44,7 +44,7 @@ Usuario::Usuario(string idN, string name,string pass,string mon,string ed) { //a
     this->password = pass;
     this->monedas = mon;
     this->edad = ed;
-    //this->jugadas = new listaJugadas();
+    this->jugadas = new listaJugadas();
     this->compras = new AVL();
     this->anterior=NULL;
     this->siguiente=NULL;

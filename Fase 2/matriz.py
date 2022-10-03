@@ -39,6 +39,7 @@ class MatrizDispersa():
         self.filas = Lista_Encabezado('fila') # Encabezados  X
         self.columnas = Lista_Encabezado('columna') # Encabezados  Y
         self.sizeT = 0
+        self.CarateresDisparados = []
 
     def putSizeT(self,size):
         self.sizeT = size
@@ -148,10 +149,16 @@ class MatrizDispersa():
                 verificador = True
                 #primero validamos que no haya barco
                 if tmp.caracter == "P" or tmp.caracter == "S" or tmp.caracter == "D" or tmp.caracter == "B":
+                    #Se agrega para su posterior reestablecimiento
+                    self.CarateresDisparados.append(tmp.caracter)
+                    
                     tmp.caracter = "x"
                     return "Disparo"
                 else:
                     if tmp.caracter == " ":
+                        #Se agrega para su posterior reestablecimiento
+                        self.CarateresDisparados.append(tmp.caracter)
+
                         tmp.caracter = "X"
                     return "Fallo"
 
@@ -875,7 +882,58 @@ class MatrizDispersa():
         os.system("neato -Tpng " + dot + " -o " + result)
         #os.system("shotwell "+result)
 
+    def verificarPartidaGanada(self,filas): #Este metodo recorre la matriz
+        f = 1
+        f2 = int(filas)+1
+        verificador = False
 
+        while f < f2:
+            inicio : Nodo_Encabezado = self.filas.getEncabezado(f)
+            if inicio == None:
+                return None
+            else:    
+                tmp : Nodo_Interno = inicio.getAcceso()
+                while tmp != None:
+
+                    #Si encuentra simbolos de naves entonces no se ha terminado la partida
+                    if tmp.caracter == "P" or tmp.caracter == "S" or tmp.caracter == "D" or tmp.caracter == "B":
+                        verificador = True
+
+                    tmp = tmp.getDerecha()
+            f+=1
+
+
+        if verificador == False: #si no se encontraon simbolos de nava entonces termina la partida
+            return "terminado"
+        else: return "continuar"
+            
+    def reestablecer(self,fila,columna):
+        
+        inicio : Nodo_Encabezado = self.filas.getEncabezado(fila) #Se obtiene la cabecera con la fila
+        if inicio == None:
+            print('Esa coordenada de fila no existe')
+            return "nExist"
+            
+        tmp : Nodo_Interno = inicio.getAcceso() #Verifica el acceso
+        verificador = False
+        while tmp != None:
+
+            if tmp.coordenadaX == fila and tmp.coordenadaY == columna: #Ubica el punto
+                verificador = True
+                #Reestablecemos
+                last = self.CarateresDisparados.pop()
+                
+                tmp.caracter = last
+                
+                return "OK"
+
+
+            tmp = tmp.getDerecha()
+
+        if verificador == False:
+            print('Coordenada no encontrada')
+
+        return "NAC"    
 ##############
 #pruebas
 # matriz = MatrizDispersa(1,10)

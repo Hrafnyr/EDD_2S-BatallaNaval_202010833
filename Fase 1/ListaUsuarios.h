@@ -17,6 +17,8 @@ class listaUsuarios{
         void insertarNuevo(string&,string&,string&,string&,string&);
         void insertarJugada(string&,string&,string&);
         void nuevoMovimiento(string&,string&,string&,string&,string&);
+        string verUltimoMovimiento(string&,string&,string&);
+        void eliminarUltimoMovimiento(string&,string&,string&);
         void ReporteUsuarios(); 
         int login(string&,string&);
         int modificarInformacion(string&,string&,string&,string&,string&);
@@ -32,7 +34,7 @@ class listaUsuarios{
         string getMonedas(string& name, string& pass);
 
         //void eliminarLista(); 
-        listaUsuarios();
+        
         
         //metodos con arbol
         void graficarArbol();
@@ -41,6 +43,9 @@ class listaUsuarios{
         void reInsercion();
 
         int verAVL(string&, string&);
+
+
+        listaUsuarios();
 };
 
 listaUsuarios::listaUsuarios(){ //constructor, apuntar por defecto a null
@@ -539,7 +544,7 @@ void listaUsuarios::insertarJugada(string& name, string& pass,string& nomJ){
         {
             actual = actual->siguiente;
         }else{
-
+            
             actual->jugadas->nuevaJugada(nomJ);
             break;
         }
@@ -608,6 +613,42 @@ void listaUsuarios::nuevoMovimiento(string& name, string& pass,string& nomJ,stri
             actual = actual->siguiente;
         }else{
             actual->jugadas->nuevoMovimiento(nomJ,X,Y);
+            break;
+        }
+    }
+
+};
+
+string listaUsuarios::verUltimoMovimiento(string& name, string& pass,string& nomJ){
+    Usuario* actual = new Usuario(); //Auxiliar
+    string mov = " ";
+    actual = primero;
+    
+    while (actual!=NULL){
+
+        if (actual->nombre!=name && actual->password!=pass)
+        {
+            actual = actual->siguiente;
+        }else{
+            mov = actual->jugadas->verTop(nomJ);
+            break;
+        }
+    }
+    return mov;
+
+};
+
+void listaUsuarios::eliminarUltimoMovimiento(string& name, string& pass,string& nomJ){
+    Usuario* actual = new Usuario(); //Auxiliar
+    actual = primero;
+    
+    while (actual!=NULL){
+
+        if (actual->nombre!=name && actual->password!=pass)
+        {
+            actual = actual->siguiente;
+        }else{
+            actual->jugadas->eliminarTop(nomJ);
             break;
         }
     }

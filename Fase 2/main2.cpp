@@ -361,6 +361,166 @@ int main(int argc, char **argv){
         return crow::response(200, "Blog added");
     });
 
+    //Guardar jugada
+    CROW_ROUTE(app, "/newJugada").methods(crow::HTTPMethod::POST)
+    ([&](const crow::request& req)
+    {
+        auto body = crow::json::load(req.body);
+        if (!body)
+            return crow::response(400, "Invalid body");
+        std::string nombre, pass,vr,resp,nameJ;
+        try {
+            nombre = body["nombre"].s();
+            pass = body["pass"].s();
+            nameJ = body["jugada"].s();
+        } catch (const std::runtime_error &err) {
+            return crow::response(400, "Invalid body");
+        }
+
+        try {
+            vr = SHA256::cifrar(pass);
+            usuarioV.insertarJugada(nombre,pass,nameJ);
+            return crow::response(200,"{\"Message\":\"OK\"}");
+        } catch (const std::runtime_error &ex) {
+            return crow::response(500, "Internal Server Error");
+        }
+
+        return crow::response(200, "Blog added");
+    });
+
+    //Guardar movimiento
+    CROW_ROUTE(app, "/newMov").methods(crow::HTTPMethod::POST)
+    ([&](const crow::request& req)
+    {
+        auto body = crow::json::load(req.body);
+        if (!body)
+            return crow::response(400, "Invalid body");
+        std::string nombre, pass,vr,resp,nameJ,x,y;
+        try {
+            nombre       = body["nombre"].s();
+            pass         = body["pass"].s();
+            nameJ        = body["jugada"].s();
+            x            = body["x"].s();
+            y            = body["y"].s();
+        } catch (const std::runtime_error &err) {
+            return crow::response(400, "Invalid body");
+        }
+
+        try {
+            vr = SHA256::cifrar(pass);
+            usuarioV.nuevoMovimiento(nombre,vr,nameJ,x,y);
+            return crow::response(200,"{\"Message\":\"OK\"}");
+        } catch (const std::runtime_error &ex) {
+            return crow::response(500, "Internal Server Error");
+        }
+
+        return crow::response(200, "Blog added");
+    });
+
+    //ver ultimo movimiento
+    CROW_ROUTE(app, "/lastMove").methods(crow::HTTPMethod::POST)
+    ([&](const crow::request& req)
+    {
+        auto body = crow::json::load(req.body);
+        if (!body)
+            return crow::response(400, "Invalid body");
+        std::string nombre, pass,vr,resp,nameJ,result;
+        try {
+
+            nombre = body["nombre"].s();
+            pass   = body["pass"].s();
+            nameJ  = body["jugada"].s();
+
+        } catch (const std::runtime_error &err) {
+            return crow::response(400, "Invalid body");
+        }
+
+        try {
+            vr = SHA256::cifrar(pass);
+            result = usuarioV.verUltimoMovimiento(nombre,vr,nameJ);
+        
+            return crow::response(200, result);
+
+        } catch (const std::runtime_error &ex) {
+            return crow::response(500, "Internal Server Error");
+        }
+
+        return crow::response(200, "Blog added");
+    });
+
+     //eliminar ultimo movimiento
+    CROW_ROUTE(app, "/eliminarLastMove").methods(crow::HTTPMethod::POST)
+    ([&](const crow::request& req)
+    {
+        auto body = crow::json::load(req.body);
+        if (!body)
+            return crow::response(400, "Invalid body");
+        std::string nombre, pass,vr,resp,nameJ,result;
+        try {
+
+            nombre = body["nombre"].s();
+            pass   = body["pass"].s();
+            nameJ  = body["jugada"].s();
+
+        } catch (const std::runtime_error &err) {
+            return crow::response(400, "Invalid body");
+        }
+
+        try {
+            vr = SHA256::cifrar(pass);
+            usuarioV.eliminarUltimoMovimiento(nombre,vr,nameJ);
+        
+            return crow::response(200, "{\"Message\":\"OK\"}");
+
+        } catch (const std::runtime_error &ex) {
+            return crow::response(500, "Internal Server Error");
+        }
+
+        return crow::response(200, "Blog added");
+    });
+
+    //RestarMonedasRetroceso
+    CROW_ROUTE(app, "/restarMP").methods(crow::HTTPMethod::POST)
+    ([&](const crow::request& req)
+    {
+        auto body = crow::json::load(req.body);
+        if (!body)
+            return crow::response(400, "Invalid body");
+        std::string name, user, pass,pass1,monedas,cant;
+        try {
+            user= body["nombre"].s();
+            pass = body["password"].s();
+        } catch (const std::runtime_error &err) {
+            return crow::response(400, "Invalid body");
+        }
+
+        try {
+            pass1 = SHA256::cifrar(pass) ; 
+
+            monedas = usuarioV.getMonedas(user,pass1);
+            cant = "5";
+
+            //verificar que pueda comprar
+            if ((stoi(monedas) - stoi(cant))>=0)
+            {
+                
+                usuarioV.restarMonedas(user,pass1,cant);
+                return crow::response(200,"{\"Message\":\"OK\"}");  
+            }
+            else{
+                return crow::response(200,"{\"Message\":\"NEC\"}"); //Not enough cash
+            }   
+                       
+
+        } catch (const std::runtime_error &ex) {
+            return crow::response(500, "Internal Server Error");
+        }
+
+        return crow::response(200, "added");
+    });
+
+
+
     //inicializacion
     app.port(8080).multithreaded().run();
 
