@@ -17,7 +17,7 @@ class cola{
     public:
         
         void queue(string&,string&,string&,string&); //Insercion al inicio nodo3->nodo2->nodo1->Null
-        void mostrarTutorial();
+        string mostrarTutorial();
         void dequeue(); //Elimina el primero en entrar
         void eliminarCola();
         void generarReporte();
@@ -57,39 +57,46 @@ void cola::queue(string& nuevoAncho,string& nuevoAlto,string& cX,string& cY){
 };
 
 //Metodo de prueba para verificar la correcta inserción
-void cola::mostrarTutorial(){
+string cola::mostrarTutorial(){
     nodoTutorial* actual = new nodoTutorial(); //Auxiliar
     int contAux = 1;
     actual = primero;
-    string aux="",aux2="",aux3="";
+    string aux="";
 
-    system("cls");
-    aux+="----- Tutorial -----\n";
+    aux+="{ \"Movimientos\":[";
     if (primero!=NULL){
         while (actual!=NULL){
             
             if (actual->ancho.empty()!=true && actual->alto.empty()!=true)
             {
-                if (contAux==1)
-                {
-                    aux2+="\n\tTablero:\n\t\tAncho:"+actual->ancho+"\n\t\tAlto: "+actual->alto+"\n";
-                    aux2+="\n\tMovimientos:\n\t\t";
-                }
-                contAux++;
+                // if (contAux==1)
+                // {
+                //     aux2+="\n\tTablero:\n\t\tAncho:"+actual->ancho+"\n\t\tAlto: "+actual->alto+"\n";
+                //     aux2+="\n\tMovimientos:\n\t\t";
+                // }
+                // contAux++;
+                aux+="\"ancho\":\""+actual->ancho+"\",\"alto\":\""+actual->alto+"\"}";
             }
            
             if (actual->cX.empty()!=true && actual->cY.empty()!=true)
             {
-               aux3+=" -> ("+actual->cX+","+actual->cY+")";
+                //    aux3+=" -> ("+actual->cX+","+actual->cY+")";
+                aux+= "{\"X\":\""+actual->cX+"\",\"Y\":\""+actual->cY+"\"}";
+
+                if (actual->siguiente->cX.empty()!=true && actual->siguiente->cY.empty()!=true)
+                {
+                   aux+=","; 
+                }else{
+                    aux+="],";
+                }
+                
             }
             
             actual = actual->siguiente;
         }
-        cout<<aux+aux2+aux3+"\n\n";
-    }else{
-        cout<<"No hay datos"<<endl;
+        return aux;
     }
-    
+    return "{}";
 };
 
 void cola::dequeue(){

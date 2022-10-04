@@ -252,7 +252,7 @@ QPushButton:hover{
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton_3">
+              <widget class="QPushButton" name="btnTutorial">
                <property name="text">
                 <string>    Tutorial</string>
                </property>
@@ -627,6 +627,36 @@ QPushButton:hover{
              </property>
              <property name="text">
               <string>No tienes monedas suficientes</string>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="btnAbandonar">
+             <property name="geometry">
+              <rect>
+               <x>990</x>
+               <y>810</y>
+               <width>121</width>
+               <height>41</height>
+              </rect>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton{
+	border-radius: 10px;
+	border: 2px solid black;
+	
+	background-color: rgb(252, 233, 79);
+	font: 75 bold 15pt &quot;Tlwg Typo&quot;;
+}
+
+QPushButton:hover{
+	border-radius: 10px;
+	border: 2px solid black;
+	
+	background-color: rgb(139, 219, 209);
+	font: 75 bold 15pt &quot;Tlwg Typo&quot;;
+}</string>
+             </property>
+             <property name="text">
+              <string>Abandonar</string>
              </property>
             </widget>
            </widget>

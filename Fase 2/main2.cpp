@@ -173,28 +173,43 @@ int main(int argc, char **argv){
 
             monedas = usuarioV.getMonedas(user,pass1);
 
-            name = categoria_.getNombre(cate,idC);
-            price = categoria_.getPrecio(cate,idC);
+            //verificamos que exista el ID y la categoria
+            bool flag = categoria_.verificarExistencia(cate);
+
+            if (flag==true)
+            {
+                bool f = categoria_.verificarID(cate,idC);
+                if (f==true)
+                {
+                    name = categoria_.getNombre(cate,idC);
+                    price = categoria_.getPrecio(cate,idC);
             
 
-            //verificar que pueda comprar
-            if (stoi(monedas) >= stoi(price))
-            {
-                
-                int i = usuarioV.nuevaCompra(user,pass1,idC,cate,price,name);
-                if (i==1)
-                {
-                    usuarioV.restarMonedas(user,pass1,price);
-                    return crow::response(200,"{\"Message\":\"OK\"}");
+                    //verificar que pueda comprar
+                    if (stoi(monedas) >= stoi(price))
+                    {
+                        
+                        int i = usuarioV.nuevaCompra(user,pass1,idC,cate,price,name);
+                        if (i==1)
+                        {
+                            usuarioV.restarMonedas(user,pass1,price);
+                            return crow::response(200,"{\"Message\":\"OK\"}");
+                        }
+                        else{
+                            return crow::response(200,"{\"Message\":\"error\"}");
+                        }   
+                    }
+                    else{
+                        return crow::response(200,"{\"Message\":\"NEC\"}"); //Not enough cash
+                    }   
+                  
+                }else{
+                    return crow::response(200,"{\"Message\":\"errorID\"}");
                 }
-                else{
-                        return crow::response(200,"{\"Message\":\"error\"}");
-                }   
-            }
-            else{
-                return crow::response(200,"{\"Message\":\"NEC\"}"); //Not enough cash
-            }   
-                       
+                
+            }else{
+                return crow::response(200,"{\"Message\":\"errorCate\"}");
+            }     
 
         } catch (const std::runtime_error &ex) {
             return crow::response(500, "Internal Server Error");
@@ -519,6 +534,55 @@ int main(int argc, char **argv){
         return crow::response(200, "added");
     });
 
+    //Abandonar
+    CROW_ROUTE(app, "/Abandonar").methods(crow::HTTPMethod::POST)
+    ([&](const crow::request& req)
+    {
+        auto body = crow::json::load(req.body);
+        if (!body)
+            return crow::response(400, "Invalid body");
+        std::string name, user, pass,pass1,monedas,cant;
+        try {
+            user= body["nombre"].s();
+            pass = body["password"].s();
+        } catch (const std::runtime_error &err) {
+            return crow::response(400, "Invalid body");
+        }
+
+        try {
+            pass1 = SHA256::cifrar(pass) ; 
+
+            monedas = usuarioV.getMonedas(user,pass1);
+            cant = "20";
+
+            //verificar que pueda comprar
+            if ((stoi(monedas) - stoi(cant))>=0)
+            {
+                
+                usuarioV.restarMonedas(user,pass1,cant);
+                return crow::response(200,"{\"Message\":\"OK\"}");  
+            }
+            else{
+                return crow::response(200,"{\"Message\":\"NEC\"}"); //Not enough cash
+            }   
+                       
+
+        } catch (const std::runtime_error &ex) {
+            return crow::response(500, "Internal Server Error");
+        }
+
+        return crow::response(200, "added");
+    });
+
+    //getColaTutoria
+    CROW_ROUTE(app, "/tutorial").methods(crow::HTTPMethod::POST)
+    ([&](const crow::request& req)
+    {
+        std::string tuto;
+        tuto = tutorial.mostrarTutorial();
+        crow::json::wvalue x(tuto);
+        return tuto;
+    });
 
 
     //inicializacion

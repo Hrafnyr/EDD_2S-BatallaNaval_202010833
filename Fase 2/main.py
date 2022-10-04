@@ -1,6 +1,7 @@
 
 import json
-from PyQt5 import QtWidgets, uic, QtGui
+import time
+from PyQt5 import QtWidgets, uic, QtGui,QtTest
 from PyQt5.QtWidgets import QMessageBox, QInputDialog
 from storeC import MainWindow
 import os
@@ -32,13 +33,64 @@ class mt:
     def verificarGanar(self):
         return self.matriz.verificarPartidaGanada(self.matriz.sizeT)
     
+    def verificarAciertos(self):
+        self.matriz.verificarAciertos()
+    
     def reestablecer(self,fila,columna):
         self.matriz.reestablecer(fila,columna)
+    
+    def eliminar(self): 
+        self.matriz.eliminacionPorFilas(self.matriz.sizeT)
+        self.matriz.errores = 0
+        self.matriz.cantP = 0
+        self.matriz.cantS = 0
+        self.matriz.cantD = 0
+        self.matriz.cantB = 0
+        self.matriz.CarateresDisparados.clear()
+
+class tutorialM:
+    def __init__(self):
+        self.matrizTutorial = MatrizDispersa(0)
+        self.NombreJugada = "Tutorial"
+    
+    def putSizeT(self,size):
+        self.matrizTutorial.sizeT = size
+    
+    def insert(self, f,c,cr):
+        self.matrizTutorial.insert(f,c,cr)
+
+    def generarPosicionesAleatorias(self):
+        self.matrizTutorial.generarPosicionesAleatorias()
+    
+    def graficarNeato(self,n1,n2):
+        self.matrizTutorial.graficarNeato(n1,n2)
+    
+    def insertarMovimiento(self,f,c):
+        return self.matrizTutorial.insertarMovimiento(f,c)
+    
+    def verificarGanar(self):
+        return self.matrizTutorial.verificarPartidaGanada(self.matriz.sizeT)
+    
+    def verificarAciertos(self):
+        self.matrizTutorial.verificarAciertos()
+    
+    def reestablecer(self,fila,columna):
+        self.matrizTutorial.reestablecer(fila,columna)
+    
+    def eliminar(self): 
+        self.matrizTutorial.eliminacionPorFilas(self.matrizTutorial.sizeT)
+        self.matrizTutorial.errores = 0
+        self.matrizTutorial.cantP = 0
+        self.matrizTutorial.cantS = 0
+        self.matrizTutorial.cantD = 0
+        self.matrizTutorial.cantB = 0
+        self.matrizTutorial.CarateresDisparados.clear()
 
 nameUser = ""
 passUser = ""
 url_Api = "http://0.0.0.0:8080"
 matriz = mt(1)
+tutorialMatriz = tutorialM ()
 
 #iniciar app
 app = QtWidgets.QApplication(sys.argv)
@@ -49,6 +101,7 @@ nuevoV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"/nuevaCuenta.ui"
 userV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"/jugadorV.ui")
 editarV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"/panelEditar.ui")
 adminV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"/admin.ui")
+tutoV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"/tutorial.ui")
 tiendaV = MainWindow()
 
 #Funciones
@@ -117,6 +170,7 @@ def verUsuario(nameU,passR):
 
     userV.labelWR.hide()
     userV.btnDeshacer.hide()
+    userV.btnAbandonar.hide()
 
     userV.labelMon.hide()
     userV.labelMON.hide()
@@ -278,10 +332,10 @@ def comprar():
         #Verificar respuesta
         jsonResponse = res.json()
         
-        if jsonResponse["Message"]=="error":
-            QMessageBox.about(tiendaV,"Alerta","Hubo un error")
-        elif jsonResponse["Message"]=="NEC":
-            QMessageBox.about(tiendaV,"Alerta","No tiene dinero suficiente")
+        if jsonResponse["Message"]=="error": QMessageBox.about(tiendaV,"Alerta","Hubo un error")
+        elif jsonResponse["Message"]=="NEC": QMessageBox.about(tiendaV,"Alerta","No tiene dinero suficiente")
+        elif jsonResponse["Message"]=="errorID": QMessageBox.about(tiendaV,"Alerta","No se encuentra el ID")
+        elif jsonResponse["Message"]=="errorCate": QMessageBox.about(tiendaV,"Alerta","No existe la categoria")
         else:
             QMessageBox.about(tiendaV,"Mensaje","compra realizada")
             tiendaV.txtCategoria.setText("")
@@ -301,7 +355,6 @@ def verCompras():
     
     if jsonResponse["Message"]=="error":
         QMessageBox.about(tiendaV,"Alerta","Hubo un error")
-
 
 def getCoins():
     nameUser = userV.txtUS.text()
@@ -364,6 +417,7 @@ def prueba():
                 userV.labelMON.show()
                 userV.labelV.show()
                 userV.labelVidas.show()
+                userV.btnAbandonar.show()
 
                 #generar matriz y mostrar tablero
                 generarMatriz1(int(str(size)))
@@ -380,12 +434,31 @@ def generarMatriz1(size):
         for j in range(1,size+1):
             matriz.insert(i,j," ")
     matriz.generarPosicionesAleatorias()
-    matriz.graficarNeato("Partida","Partida")
+    matriz.graficarNeato("Partida",matriz.NombreJugada)
 
 def getImage():
     userV.label_3.setPixmap(QtGui.QPixmap("matriz_Partida.png"))
 
 def getImageBack():
+    #ocultar menu de juego
+    userV.labelF.hide()
+    userV.labelC.hide()
+    userV.txtFila.hide()
+    userV.txtColumna.hide()
+    userV.labelWarning.hide()
+    userV.btnShoot.hide()
+
+    userV.labelWR.hide()
+    userV.btnDeshacer.hide()
+    userV.btnAbandonar.hide()
+
+    userV.labelMon.hide()
+    userV.labelMON.hide()
+    userV.labelV.hide()
+    userV.labelVidas.setText("3")
+    userV.labelVidas.hide()
+
+    #mostrar barco de fondo
     userV.label_3.setPixmap(QtGui.QPixmap("imagenBarco.jpg"))
 
 def makeMove():
@@ -429,7 +502,7 @@ def makeMove():
             userV.labelWarning.setText("")
             userV.label
             QMessageBox.about(userV,"Felicidades","Disparo correcto, ganas 20 tokens")
-            matriz.graficarNeato("Partida","Partida")
+            matriz.graficarNeato("Partida",matriz.NombreJugada)
             getImage()
 
         elif response == "Fallo":
@@ -441,20 +514,110 @@ def makeMove():
             vidas-=1
             userV.labelVidas.setText(str(vidas))
 
-            matriz.graficarNeato("Partida","Partida")
+            matriz.graficarNeato("Partida",matriz.NombreJugada)
             getImage()
 
         elif response == "NAC":
             userV.labelWarning.show()
             userV.labelWarning.setText("No se encuentra")
 
+    #Verificamos si quedan vidas
     if vidas == 0:
         QMessageBox.about(userV,"¡Oh no!","Has Perdido la partida")
-        getImageBack()
 
+        #Mostramos sus resultados
+        matriz.verificarAciertos()
+        mensaje = " "
+        mensaje += "Errores: {}\n\n".format(matriz.matriz.errores)
+        mensaje += "Barcos destruidos: \nPortaviones: {}\n\nSubmarinos: {}\n\nDestructores: {}\n\nBuques: {}".format(matriz.matriz.cantP,matriz.matriz.cantS,matriz.matriz.cantD,matriz.matriz.cantB)
+        QMessageBox.about(userV,"Resultados",mensaje)
+
+
+        #preguntamos
+        terminate = QMessageBox.question(userV, 'Mensaje', "¿Volver a jugar con la configuracion actual?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if terminate == QMessageBox.Yes:
+            name2,ok2 = QInputDialog.getText(userV,"Nombre de la jugada","Ingrese el nombre de la jugada")
+            if ok2:
+
+                #Guardamos la jugada
+                nameUser = userV.txtUS.text()
+                passUser= userV.label_2.text()
+
+                matriz.NombreJugada=name2 #Se guarda en la clase para acceder desde cualquier parte
+
+                obj={'nombre':'{}'.format(nameUser),'pass':'{}'.format(passUser),'jugada':'{}'.format(str(name2))}
+                res = requests.post(f'{url_Api}/newJugada',json=obj)
+
+                #Verificar respuesta
+                jsonResponse = res.json()
+                if jsonResponse["Message"]!="OK":
+                    QMessageBox.about(userV,"Alerta","Hubo un error")
+
+                aux = matriz.matriz.sizeT
+
+                #resetear
+                resetGame()
+                monedas = getCoins()
+                userV.labelMON.setText(monedas)
+                userV.labelVidas.setText("3")
+
+                #generar matriz y mostrar tablero
+                matriz.putSizeT(aux)
+                generarMatriz1(int(str(aux)))
+                getImage()
+
+        else:
+            getImageBack()
+            resetGame()
+
+    #verificamos si ha ganado
     partida = matriz.verificarGanar()
     if partida == "terminado":
         QMessageBox.about(userV,"¡Felicidades!","Has Ganado la partida")
+
+        #Mostramos sus resultados
+        matriz.verificarAciertos()
+        mensaje = " "
+        mensaje += "Errores: {}\n\n".format(matriz.matriz.errores)
+        mensaje += "Barcos destruidos: \nPortaviones: {}\n\nSubmarinos: {}\n\nDestructores: {}\n\nBuques: {}".format(matriz.matriz.cantP,matriz.matriz.cantS,matriz.matriz.cantD,matriz.matriz.cantB)
+        QMessageBox.about(userV,"Resultados",mensaje)
+        
+        #preguntamos
+        terminate = QMessageBox.question(userV, 'Mensaje', "¿Volver a jugar con la configuracion actual?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if terminate == QMessageBox.Yes:
+            name2,ok2 = QInputDialog.getText(userV,"Nombre de la jugada","Ingrese el nombre de la jugada")
+            if ok2:
+
+                #Guardamos la jugada
+                nameUser = userV.txtUS.text()
+                passUser= userV.label_2.text()
+
+                matriz.NombreJugada=name2 #Se guarda en la clase para acceder desde cualquier parte
+
+                obj={'nombre':'{}'.format(nameUser),'pass':'{}'.format(passUser),'jugada':'{}'.format(str(name2))}
+                res = requests.post(f'{url_Api}/newJugada',json=obj)
+
+                #Verificar respuesta
+                jsonResponse = res.json()
+                if jsonResponse["Message"]!="OK":
+                    QMessageBox.about(userV,"Alerta","Hubo un error")
+
+                aux = matriz.matriz.sizeT
+
+                #resetear
+                resetGame()
+                monedas = getCoins()
+                userV.labelMON.setText(monedas)
+                userV.labelVidas.setText("3")
+
+                #generar matriz y mostrar tablero
+                matriz.putSizeT(aux)
+                generarMatriz1(int(str(aux)))
+                getImage()
+
+        else:
+            getImageBack()
+            resetGame()
 
 def deshacer():
     #obtenemos datos del usuario
@@ -491,7 +654,7 @@ def deshacer():
             matriz.reestablecer(int(jsonResponse["X"]),int(jsonResponse["Y"]))
             print("cargando...")
             #Repintamos y mostramos
-            matriz.graficarNeato("Partida","Partida")
+            matriz.graficarNeato("Partida",matriz.NombreJugada)
             getImage()
 
             #Eliminamos de la pila
@@ -505,6 +668,75 @@ def deshacer():
             userV.labelWR.setText("No hay movimientos")
             userV.labelWR.show()
 
+def abandonar():
+    buttonReply = QMessageBox.question(userV, 'Alerta', "¿Abandonar? Costo: 20 tokens", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+    if buttonReply == QMessageBox.Yes:
+        
+        #obtenemos datos del usuario
+        nameUser = userV.txtUS.text()
+        passUser= userV.label_2.text()
+
+        #Validamos que pueda abandonar
+        obj={'nombre':'{}'.format(nameUser),'password':'{}'.format(passUser)}
+        res = requests.post(f'{url_Api}/Abandonar',json=obj)
+
+        #Verificar respuesta
+        jsonResponse = res.json()
+        
+        if jsonResponse["Message"]=="NEC":
+            QMessageBox.about(userV,"Alerta","No tiene monedas suficientes")
+        else:
+            
+            getImageBack()
+            resetGame()
+    else:
+        print('No clicked.')
+
+def resetGame():         
+    #eliminamos la matriz
+    matriz.eliminar()
+    
+#Tutorial
+def getTutorial():
+    res = requests.post(f'{url_Api}/tutorial')
+
+    #Verificar respuesta
+    jsonResponse = res.json()
+
+    #generar matriz y mostrar tablero
+    showTutorial()
+    generarMatrizTutorial(int(jsonResponse["ancho"]))
+    getImageTutorial()
+    
+
+    #iniciar reproduccion, se recorren los movimientos
+    for d in jsonResponse["Movimientos"]:
+        QtTest.QTest.qWait(1500)
+        tutorialMatriz.insertarMovimiento(int(d["X"]),int(d["Y"]))
+        tutorialMatriz.graficarNeato("Tutorial",tutorialMatriz.NombreJugada)
+        getImageTutorial()
+
+        QtTest.QTest.qWait(1500)
+
+    tutoV.hide()
+    tutorialMatriz.eliminar()
+
+def showTutorial():
+    tutoV.show()
+
+def getImageTutorial():
+    tutoV.labelTutorial.setPixmap(QtGui.QPixmap("matriz_Tutorial.png"))
+
+def generarMatrizTutorial(size):
+    tutorialMatriz.putSizeT(size)    
+    for i in range(1,size+1):
+        for j in range(1,size+1):
+            tutorialMatriz.insert(i,j," ")
+    tutorialMatriz.generarPosicionesAleatorias()
+    tutorialMatriz.graficarNeato("Tutorial",tutorialMatriz.NombreJugada)
+
+        
+        
 
 #------------ Botones
 #Login
@@ -523,7 +755,8 @@ userV.btnCerrarS.clicked.connect(logOut)
 userV.pushButton_5.clicked.connect(irTienda)
 userV.btnDeshacer.clicked.connect(deshacer)
 userV.btnShoot.clicked.connect(makeMove)
-
+userV.btnAbandonar.clicked.connect(abandonar)
+userV.btnTutorial.clicked.connect(getTutorial)
 userV.pushButton_4.clicked.connect(prueba)
 
 #Tienda

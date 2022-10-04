@@ -20,6 +20,8 @@ class listaArticulos{
         string getName(string&);
         string getPrice(string&);
 
+        bool verificarID(string&);
+
         // void eliminarnodoArticulos(int&); 
         // void eliminarLista();
 
@@ -68,6 +70,27 @@ string listaArticulos::getPrice(string& id){
         }
     }
     return "";
+};
+
+bool listaArticulos::verificarID(string& id){
+    nodoArticulos* actual = new nodoArticulos(); //Auxiliar
+
+    actual = primero;
+    
+    if (primero!=NULL){
+        while (actual!=NULL){
+            
+            if (actual->Id==id)
+            {
+                return true;
+            }
+            
+
+            actual = actual->siguiente;
+        }
+        return false;
+    }
+    return false;
 };
 
 void listaArticulos::insertarInicio(string& id,string& nombre,string& precio, string& src){

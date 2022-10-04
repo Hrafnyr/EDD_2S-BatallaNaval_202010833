@@ -40,6 +40,13 @@ class MatrizDispersa():
         self.columnas = Lista_Encabezado('columna') # Encabezados  Y
         self.sizeT = 0
         self.CarateresDisparados = []
+        self.errores = 0
+
+        #Contadores de barcos destruidos
+        self.cantP = 0
+        self.cantS = 0
+        self.cantD = 0
+        self.cantB = 0
 
     def putSizeT(self,size):
         self.sizeT = size
@@ -156,8 +163,12 @@ class MatrizDispersa():
                     return "Disparo"
                 else:
                     if tmp.caracter == " ":
+
                         #Se agrega para su posterior reestablecimiento
                         self.CarateresDisparados.append(tmp.caracter)
+
+                        #Agregamos el contador de errores
+                        self.errores+=1
 
                         tmp.caracter = "X"
                     return "Fallo"
@@ -934,6 +945,41 @@ class MatrizDispersa():
             print('Coordenada no encontrada')
 
         return "NAC"    
+
+    def verificarAciertos(self):
+        #Contadores auxiliares
+        c1 = 0
+        c2 = 0
+        c3 = 0
+        c4 = 0
+
+        #Recorremos sus disparos
+        for dato in self.CarateresDisparados:
+
+            if dato == "P":
+                c1+=1
+            elif dato == "S":
+                c2+=1
+            elif dato == "D":
+                c3+=1
+            elif dato == "B":
+                c4+=1
+
+            if c1 == 4:
+                self.cantP +=1
+                c1 = 0
+            elif c2 == 3:
+                self.cantS +=1
+                c2 = 0
+            elif c3 == 2:
+                self.cantD +=1
+                c3 = 0
+            elif c4 == 1:
+                self.cantB +=1
+                c4 = 0
+
+
+
 ##############
 #pruebas
 # matriz = MatrizDispersa(1,10)

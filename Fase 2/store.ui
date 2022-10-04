@@ -137,7 +137,7 @@ color:black;
     </property>
     <property name="styleSheet">
      <string notr="true">QLabel{
-	font: 75 bold 18pt &quot;Umpush&quot;;
+	font: 75 bold 12pt &quot;Umpush&quot;;
 	
 	color: black
 }

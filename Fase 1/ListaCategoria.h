@@ -17,6 +17,7 @@ class listaCategoria{
         void generarReporte();
         void insertarNuevoArticulo(string& nombreCate, string& id,string& nom,string& price,string&src); 
         bool verificarExistencia(string&); //Verifica si la categoría está guardada o no
+        bool verificarID(string&,string&);
         string getDatos();
 
         //gets
@@ -173,6 +174,25 @@ void listaCategoria::insertarNuevoArticulo(string& nombreCate, string& id,string
         }
     }
 
+};
+
+bool listaCategoria::verificarID(string& nombreCate, string& id){
+    nodoCategoria* actual = new nodoCategoria(); //Auxiliar
+    bool result;
+    actual = primero;
+    
+    while (actual!=NULL){
+
+        if (actual->categoria!=nombreCate)
+        {
+            actual = actual->siguiente;
+        }else{
+            result = actual->elementos->verificarID(id);
+            return result;
+            break;
+        }
+    }
+    return false;
 };
 
 void listaCategoria::generarReporte(){
