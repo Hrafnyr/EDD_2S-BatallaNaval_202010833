@@ -288,8 +288,7 @@ class MatrizDispersa():
 
         if verificador == False:
             print('Coordenada no encontrada')
-
-        return None
+            return None
 
     def pintarPortavion(self,fila, columna): #Se solicita el punto de entrada  
       
@@ -312,8 +311,7 @@ class MatrizDispersa():
 
         if verificador == False:
             print('Coordenada no encontrada')
-
-        return None
+            return None
 
     def ubicarSubmarino(self,fila, columna): #Se solicita el punto de entrada  
       
@@ -422,8 +420,7 @@ class MatrizDispersa():
 
         if verificador == False:
             print('Coordenada no encontrada')
-
-        return None
+            return None
 
     def pintarSubmarino(self,fila, columna): #Se solicita el punto de entrada  
       
@@ -446,8 +443,7 @@ class MatrizDispersa():
 
         if verificador == False:
             print('Coordenada no encontrada')
-
-        return None
+            return None
 
     def ubicarDestructor(self,fila, columna): #Se solicita el punto de entrada  
       
@@ -556,8 +552,7 @@ class MatrizDispersa():
 
         if verificador == False:
             print('Coordenada no encontrada')
-
-        return None
+            return None
 
     def pintarDestructor(self,fila, columna): #Se solicita el punto de entrada  
       
@@ -581,7 +576,7 @@ class MatrizDispersa():
         if verificador == False:
             print('Coordenada no encontrada')
 
-        return None
+            return None
 
     def ubicarBuque(self,fila, columna): #Se solicita el punto de entrada  
       
@@ -690,8 +685,7 @@ class MatrizDispersa():
 
         if verificador == False:
             print('Coordenada no encontrada')
-
-        return None
+            return None
 
     def pintarBuque(self,fila, columna): #Se solicita el punto de entrada  
       
@@ -714,8 +708,7 @@ class MatrizDispersa():
 
         if verificador == False:
             print('Coordenada no encontrada')
-
-        return None
+            return None
 
     def getShips(self,size):
         tot = ((size-1)//10)+1
@@ -978,20 +971,162 @@ class MatrizDispersa():
                 self.cantB +=1
                 c4 = 0
 
+    def verListaAdyacencia(self):  #Recorre filas, hacia la derecha
+        f = 1
+        f2 = self.sizeT+1
+        contPadre=0
+        contHijo = 0
+        cabecera = ""
+        apuntarHijo=""
+        NodoInterno=""
+        NodoFila = " "
+        apuntarPadre=""
+        cuerpo = ""
+
+        cabecera+="digraph G {\nrankdir=LR;\ngraph [fontsize=15 fontname=\"Verdana\"];\n"
+        cabecera+="node[shape=box fontsize=12 fillcolor=\"darkseagreen1\" style=\"filled\"];\nlabel=\"Lista\";\n"
+
+        while f < f2:
+            inicio : Nodo_Encabezado = self.filas.getEncabezado(f)
+            if inicio == None:
+                print('----> No hay datos')
+                return None
+            else:    
+                tmp : Nodo_Interno = inicio.getAcceso()
+                print("Fila:",tmp.coordenadaX, end= " ")
+
+                #Creacion de nodo fila
+                contPadre+=1
+                NodoFila +="\nNodoF{}[label=\"{}\",fillcolor=\"gold2\"];\n".format(contPadre,tmp.coordenadaX)
+                
+                #agregar hijos
+                while tmp != None:
+
+                    if tmp.caracter=="X" or tmp.caracter=="x":
+                        contHijo+=1
+                        print(" -> ",tmp.coordenadaY, end = " ")
+
+                        NodoInterno+="NodoF{}_FH{}[label=\"{}\"];\n".format(contPadre,contHijo,tmp.coordenadaY)
+                    
+                    tmp = tmp.getDerecha()
+                
+                #apuntador entre hijos
+                for i in range(1,contHijo+1):
+                    apuntarHijo+= "NodoF{}_FH{}".format(contPadre,i)
+
+                    if i+1 < contHijo+1:
+                        apuntarHijo+=" -> "
+                
+                #apuntar padre  hijos
+                if contHijo > 0:
+                    apuntarHijo+= "\nNodoF{} -> NodoF{}_FH{};\n".format(contPadre,contPadre,1)
+
+                contHijo = 0
+                cuerpo+= NodoFila + NodoInterno + apuntarHijo 
+                NodoFila = ""
+                NodoInterno = ""
+                apuntarHijo = ""
+                print(" ")
+            f+=1
+    
+        #Apuntador de padres
+        apuntarPadre+="{rank=same;\n"
+        
+        for i in range(1,contPadre+1):
+            apuntarPadre+= "NodoF{}".format(i)
+            
+            if i+1 < contPadre+1:
+                apuntarPadre+=" -> "
+    
+        apuntarPadre+="\n}\n"
+
+        #unir todo
+        tot = cabecera + cuerpo + apuntarPadre + "\n}"
+
+        #--- se genera DOT y se procede a ecjetuar el comando
+        dot = "adyacente_dot.dot"
+        archivo = open(dot,'w', encoding='utf-8')
+        archivo.write(tot)
+        archivo.close()
+
+        result = "adyacente.png"
+        os.system("dot -Tpng " + dot + " -o " + result)
+        os.system("shotwell "+result)
+
+    def grafoAdyacencia(self):  #Recorre filas, hacia la derecha
+        f = 1
+        f2 = self.sizeT+1
+        contPadre=0
+        contHijo = 0
+        cabecera = ""
+        NodoInterno=""
+        NodoFila = " "
+        cuerpo = ""
+
+        cabecera+="digraph G {\ngraph [fontsize=15 fontname=\"Verdana\"];\n"
+        cabecera+="node[shape=circle fontsize=12 fillcolor=\"darkseagreen1\" style=\"filled\"];\nlabel=\"Grafo\";\n"
+
+        while f < f2:
+            inicio : Nodo_Encabezado = self.filas.getEncabezado(f)
+            if inicio == None:
+                print('----> No hay datos')
+                return None
+            else:    
+                tmp : Nodo_Interno = inicio.getAcceso()
+                print("Fila:",tmp.coordenadaX, end= " ")
+
+                #Creacion de nodo fila
+                contPadre+=1
+                NodoFila +="\n{}".format(tmp.coordenadaX)
+                
+                #agregar hijos
+                while tmp != None:
+
+                    if tmp.caracter=="X" or tmp.caracter=="x":
+                        contHijo+=1
+                        print(" -> ",tmp.coordenadaY, end = " ")
+
+                        NodoInterno+=" -> {}".format(tmp.coordenadaY)
+                    
+                    tmp = tmp.getDerecha()
+
+                contHijo = 0
+                cuerpo+= NodoFila + NodoInterno
+                NodoFila = ""
+                NodoInterno = ""
+                
+                print(" ")
+            f+=1
+
+        #unir todo
+        tot = cabecera + cuerpo + "\n}"
+
+        #--- se genera DOT y se procede a ecjetuar el comando
+        dot = "grafoAdyacente_dot.dot"
+        archivo = open(dot,'w', encoding='utf-8')
+        archivo.write(tot)
+        archivo.close()
+
+        result = "grafoAdyacente.png"
+        os.system("neato -Tpng " + dot + " -o " + result)
+        os.system("shotwell "+result)
 
 
 ##############
 #pruebas
-# matriz = MatrizDispersa(1,10)
-
+# matriz = MatrizDispersa(0)
+# matriz.sizeT = 10
 # for i in range(1,11):
 #     for j in range(1,11):
 #         matriz.insert(i,j," ")
 # matriz.generarPosicionesAleatorias()
 
 # matriz.insertarMovimiento(1,5)
+# matriz.insertarMovimiento(1,10)
 # matriz.insertarMovimiento(5,5)
 # matriz.insertarMovimiento(6,2)
 # matriz.insertarMovimiento(7,1)
 
 # matriz.graficarNeato("datos","datos")
+# matriz.grafoAdyacencia()
+# matriz.verListaAdyacencia()
