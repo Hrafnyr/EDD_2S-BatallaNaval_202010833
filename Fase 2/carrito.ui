@@ -7,23 +7,23 @@
     <x>0</x>
     <y>0</y>
     <width>890</width>
-    <height>900</height>
+    <height>500</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>890</width>
-    <height>900</height>
+    <height>500</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>890</width>
-    <height>900</height>
+    <height>500</height>
    </size>
   </property>
   <property name="windowTitle">
-   <string>Tienda</string>
+   <string>Carrito</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget#centralwidget{
@@ -34,34 +34,11 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgb
 </string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
+   <widget class="QPushButton" name="getImage">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>696</y>
-      <width>141</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QLabel{
-	font: 75 bold 15pt &quot;Umpush&quot;;
-	color:rgb(255, 255, 255)
-}
-</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btnPlus">
-    <property name="geometry">
-     <rect>
-      <x>560</x>
-      <y>720</y>
+      <x>730</x>
+      <y>200</y>
       <width>131</width>
       <height>41</height>
      </rect>
@@ -86,18 +63,15 @@ color:black;
 </string>
     </property>
     <property name="text">
-     <string>Añadir al carrito</string>
+     <string>Ver imagen</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>640</y>
-      <width>201</width>
+      <x>570</x>
+      <y>70</y>
+      <width>141</width>
       <height>31</height>
      </rect>
     </property>
@@ -109,15 +83,25 @@ color:black;
 </string>
     </property>
     <property name="text">
-     <string/>
+     <string>Ingrese indice</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="txtIndice">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>110</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
     </property>
    </widget>
    <widget class="QLabel" name="labelWarning">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>690</y>
-      <width>161</width>
+      <x>720</x>
+      <y>70</y>
+      <width>151</width>
       <height>31</height>
      </rect>
     </property>
@@ -136,8 +120,8 @@ color:black;
    <widget class="QPushButton" name="btnBack">
     <property name="geometry">
      <rect>
-      <x>750</x>
-      <y>630</y>
+      <x>770</x>
+      <y>400</y>
       <width>111</width>
       <height>41</height>
      </rect>
@@ -168,8 +152,8 @@ color:black;
      <rect>
       <x>20</x>
       <y>20</y>
-      <width>851</width>
-      <height>601</height>
+      <width>541</width>
+      <height>371</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -178,35 +162,25 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0.945274, y2:1, sto
     </property>
     <column>
      <property name="text">
-      <string>Categoria</string>
+      <string>Indice</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Nombre</string>
+      <string>ID Skin</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>ID</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Precio</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Logo</string>
+      <string>Nombre Skin</string>
      </property>
     </column>
    </widget>
-   <widget class="QPushButton" name="btnAVL">
+   <widget class="QPushButton" name="btnDelete">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>800</y>
+      <x>720</x>
+      <y>110</y>
       <width>111</width>
       <height>41</height>
      </rect>
@@ -238,69 +212,33 @@ color:black;
 }</string>
     </property>
     <property name="text">
-     <string>Mis compras</string>
+     <string>Eliminar</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_2">
+   <widget class="QPushButton" name="btnPagar">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>810</y>
-      <width>71</width>
-      <height>31</height>
+      <x>580</x>
+      <y>200</y>
+      <width>131</width>
+      <height>41</height>
      </rect>
     </property>
-    <property name="styleSheet">
-     <string notr="true">QLabel{
-	
-	background-color: rgb(233, 185, 110);
-	border-radius: 10px;
-	border: 1px solid black;
-}</string>
-    </property>
-    <property name="text">
-     <string>Monedas</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="labelMC">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>810</y>
-      <width>71</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QLabel{
-
-	border-radius: 12px;
-	border: 1px solid black;
-	background-color: rgb(255, 255, 255);
-}</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="buttonCarrito">
-    <property name="geometry">
-     <rect>
-      <x>550</x>
-      <y>770</y>
-      <width>161</width>
-      <height>71</height>
-     </rect>
+    <property name="font">
+     <font>
+      <family>Ubuntu Condensed</family>
+      <pointsize>15</pointsize>
+      <weight>75</weight>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
 border-radius:10px;
-background-color: rgb(216, 249, 245);
-font: 15pt &quot;Ubuntu&quot;;
+	background-color: rgb(65, 241, 198);
 border: 3px solid black;
+font: 75 bold 15pt &quot;Ubuntu Condensed&quot;;
 color:black;
 }
 
@@ -308,98 +246,52 @@ QPushButton:hover{
 border-radius:10px;
 	background-color: rgb(252, 233, 79);
 border: 3px solid black;
-font: 15pt &quot;Ubuntu&quot;;
+font: 75 bold 15pt &quot;Ubuntu Condensed&quot;;
 color:black;
 }</string>
     </property>
     <property name="text">
-     <string>0</string>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>img/carrito.png</normaloff>img/carrito.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>45</width>
-      <height>45</height>
-     </size>
+     <string>Pagar todo</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_4">
+   <widget class="QPushButton" name="btnCancelar">
     <property name="geometry">
      <rect>
-      <x>730</x>
-      <y>740</y>
-      <width>131</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QLabel{
-	font: 75 bold 15pt &quot;Umpush&quot;;
-	color:rgb(255, 255, 255)
-}
-</string>
-    </property>
-    <property name="text">
-     <string>Total a pagar</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="labelCarrito">
-    <property name="geometry">
-     <rect>
-      <x>720</x>
-      <y>770</y>
+      <x>640</x>
+      <y>270</y>
       <width>151</width>
-      <height>71</height>
+      <height>41</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Ubuntu Condensed</family>
+      <pointsize>15</pointsize>
+      <weight>75</weight>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">QLabel{
-	font: 75 bold 20pt &quot;Umpush&quot;;
-	color:black;
-	border-radius: 10px;
-	border: 3px solid black;
-	background-color: rgb(216, 249, 245);
+     <string notr="true">QPushButton{
+border-radius:10px;
+	
+	background-color: rgb(255, 120, 120);
+border: 3px solid black;
+font: 75 bold 15pt &quot;Ubuntu Condensed&quot;;
+color:black;
 }
-</string>
+
+QPushButton:hover{
+border-radius:10px;
+	background-color: rgb(252, 233, 79);
+border: 3px solid black;
+font: 75 bold 15pt &quot;Ubuntu Condensed&quot;;
+color:black;
+}</string>
     </property>
     <property name="text">
-     <string>0</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_5">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>750</y>
-      <width>141</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QLabel{
-	font: 75 bold 15pt &quot;Umpush&quot;;
-	color:rgb(255, 255, 255)
-}
-</string>
-    </property>
-    <property name="text">
-     <string>Ingrese Fila</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="labelFila">
-    <property name="geometry">
-     <rect>
-      <x>240</x>
-      <y>740</y>
-      <width>161</width>
-      <height>31</height>
-     </rect>
+     <string>Cancelar compra</string>
     </property>
    </widget>
   </widget>

@@ -349,6 +349,32 @@ int main(int argc, char **argv){
         return crow::response(200, "Blog added");
     });
 
+    //GetCoins
+    CROW_ROUTE(app, "/getIDuser").methods(crow::HTTPMethod::POST)
+    ([&](const crow::request& req)
+    {
+        auto body = crow::json::load(req.body);
+        if (!body)
+            return crow::response(400, "Invalid body");
+        std::string nombre, pass,vr,resp;
+        try {
+            nombre = body["nombre"].s();
+            pass = body["pass"].s();
+        } catch (const std::runtime_error &err) {
+            return crow::response(400, "Invalid body");
+        }
+
+        try {
+            vr = SHA256::cifrar(pass);
+            resp = usuarioV.getID(nombre,vr);
+            return crow::response(200,"{\"ID\":\""+resp+"\"}");
+        } catch (const std::runtime_error &ex) {
+            return crow::response(500, "Internal Server Error");
+        }
+
+        return crow::response(200, "Blog added");
+    });
+
     //setCoins
     CROW_ROUTE(app, "/setCoins").methods(crow::HTTPMethod::POST)
     ([&](const crow::request& req)

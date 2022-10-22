@@ -5,10 +5,12 @@ import time
 from PyQt5 import QtWidgets, uic, QtGui,QtTest
 from PyQt5.QtWidgets import QMessageBox, QInputDialog
 from storeC import MainWindow
+from carrito import MainWindowC
 import os
 import sys
 import requests
 from matriz import MatrizDispersa
+from tablaHASH import tbHash
 
 #Varibles globales
 #Matriz computadora
@@ -176,6 +178,7 @@ matriz = mt(3)
 invitado = jInvitado(2)
 jugadorP = partidaPrincipal(1)
 tutorialMatriz = tutorialM ()
+hashTable = tbHash()
 tipoJuego = ""
 
 #iniciar app
@@ -189,6 +192,7 @@ editarV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"/panelEditar.ui
 adminV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"/admin.ui")
 tutoV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"/tutorial.ui")
 tiendaV = MainWindow()
+carritoV = MainWindowC()
 invitadoV = uic.loadUi(os.path.dirname(os.path.abspath(__file__))+"/userInvitado.ui")
 
 #Funciones
@@ -394,8 +398,8 @@ def irTienda():
     tiendaV.show()
 
 def backtienda():
-    tiendaV.txtCategoria.setText("")
-    tiendaV.txtID.setText("")
+    # tiendaV.txtCategoria.setText("")
+    # tiendaV.txtID.setText("")
     tiendaV.hide()
 
 def salir():
@@ -463,6 +467,108 @@ def setCoins(cant):
     obj={'nombre':'{}'.format(nameUser),'pass':'{}'.format(passUser),'cant':'{}'.format(cant)}
     requests.post(f'{url_Api}/setCoins',json=obj)
 
+def getIDuser():
+    nameUser = userV.txtUS.text()
+    passUser= userV.label_2.text()
+
+    obj={'nombre':'{}'.format(nameUser),'pass':'{}'.format(passUser)}
+    res = requests.post(f'{url_Api}/getIDuser',json=obj)
+
+    #Verificar respuesta
+    jsonResponse = res.json()
+    
+    return jsonResponse["ID"]
+
+
+#Carrito
+def pagar():
+    pagar = tiendaV.labelCarrito.text()
+    mon = getCoins()
+    verificar = int(mon)-int(pagar)
+
+    if verificar >= 0:
+        print("puede comprar")
+    else:
+        QMessageBox.about(carritoV,"Alerta","No tiene monedas suficientes")
+
+def sendCar():
+
+    #obtenener dato de fila y columnas
+    f = tiendaV.labelFila.text()
+
+    if len(f)==0:
+        tiendaV.labelWarning.setText("Debe llenar campo")
+    elif f.isalpha():
+        tiendaV.labelWarning.setText("Debe ser numero")
+    else:
+        tiendaV.labelWarning.setText("")
+        #buscar ID usuario y nombre del producto
+        idP = tiendaV.getID(int(f))
+        idU = int(getIDuser())
+        dato = tiendaV.getNombre(int(f))
+        precio = tiendaV.getPrecio(int(f))
+    
+        #insercion en tabla (id usuario, nombr, id producto)
+        hashTable.insertar([idU,dato,idP,precio])
+
+        #eliminar tabla en ventana
+        carritoV.clearTable()
+        
+        #obtencion de json e insercion en ventana carrito
+        aux = hashTable.getJson()
+        carritoV.fillTable(aux)
+
+        #Muestra la suma de precios
+        aux = tiendaV.labelCarrito.text()
+        precio = tiendaV.getPrecio(int(f))
+        total = int(aux)+int(precio)
+        tiendaV.labelCarrito.setText(str(total))
+
+        #Muestra la cantidad añadida al carrito
+        aux = int(tiendaV.buttonCarrito.text()) 
+        aux+=1 #aumentamos
+        tiendaV.buttonCarrito.setText(str(aux))
+
+def viewCar():
+    carritoV.show()
+
+def backCar():
+    carritoV.hide()
+
+def graphCar():
+    hashTable.getGraph()
+
+def eliminarFila():
+    indice = carritoV.txtIndice.text()
+
+    if len(indice)==0:
+        carritoV.labelWarning.setText("Debe llenar campo")
+    elif indice.isalpha():
+        carritoV.labelWarning.setText("Debe ser numero")
+    else:
+        carritoV.labelWarning.setText("")
+        precio = hashTable.eliminarDato(int(indice))
+
+        carritoV.clearTable()
+        
+        aux = hashTable.getJson()
+        carritoV.fillTable(aux)
+
+        #Muestra la cantidad restada al carrito
+        aux = int(tiendaV.buttonCarrito.text()) 
+        aux-=1 #aumentamos
+        tiendaV.buttonCarrito.setText(str(aux))
+
+        #Muestra la resta de precios
+        aux = tiendaV.labelCarrito.text()
+        total = int(aux)-int(precio)
+        tiendaV.labelCarrito.setText(str(total))
+
+def cancelar():
+    hashTable.vaciarTabla()
+    carritoV.clearTable()
+    tiendaV.buttonCarrito.setText("0")
+    tiendaV.labelCarrito.setText("0")
 #JUGAR
 
 def generarTurno():
@@ -1484,7 +1590,7 @@ def resetGame():
 
 def resetGameJ1():         
     #eliminamos la matriz
-    jugadorP.eliminar()
+    jugadorP.eliminar() 
 
 def resetGameJ2():         
     #eliminamos la matriz
@@ -1560,7 +1666,16 @@ invitadoV.btnShoot.clicked.connect(makeMoveInv)
 #Tienda
 tiendaV.btnAVL.clicked.connect(verCompras)
 tiendaV.btnBack.clicked.connect(backtienda)
-tiendaV.btnComprar.clicked.connect(comprar)
+#tiendaV.btnComprar.clicked.connect(comprar)
+tiendaV.btnPlus.clicked.connect(sendCar)
+tiendaV.buttonCarrito.clicked.connect(viewCar)
+
+#Carrito
+carritoV.getImage.clicked.connect(graphCar)
+carritoV.btnBack.clicked.connect(backCar)
+carritoV.btnDelete.clicked.connect(eliminarFila)
+carritoV.btnCancelar.clicked.connect(cancelar)
+carritoV.btnPagar.clicked.connect(pagar)
 
 #Editar datos
 editarV.btnBack.clicked.connect(volverEditar)

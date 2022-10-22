@@ -32,6 +32,7 @@ class listaUsuarios{
 
         int eliminarCuenta(string&,string&);
         string getMonedas(string& name, string& pass);
+        string getID(string&, string&);
 
         //void eliminarLista(); 
         
@@ -520,6 +521,32 @@ string listaUsuarios::getMonedas(string& name, string& pass){
 				
 				encontrado = true;
                 return actual->monedas;		
+			}
+			
+			actual = actual->siguiente;
+		}while(actual!=primero && encontrado != true);
+
+        if (encontrado==false)
+        {
+            return "0";
+        }
+    }
+    return "0";
+}    
+
+string listaUsuarios::getID(string& name, string& pass){
+    Usuario* actual = new Usuario(); //Auxiliar
+
+    actual = primero;
+    bool encontrado = false;
+
+    if (primero!=NULL){
+        do{
+			
+			if(actual->nombre==name && actual->password==pass){
+				
+				encontrado = true;
+                return actual->id;		
 			}
 			
 			actual = actual->siguiente;

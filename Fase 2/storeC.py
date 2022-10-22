@@ -20,8 +20,6 @@ class MainWindow(QMainWindow):
 
     def fillTable(self,respuesta):
         data = json.loads(respuesta)
-        # print(respuesta)
-        #print(data)
         cont=0
         rows = 0
 
@@ -36,8 +34,6 @@ class MainWindow(QMainWindow):
         #Agregar datos
         for single in data["categorias"]:
             for info in data["categorias"][single]:
-                #print(single)
-                #print(info["id"])
                 self.tableStore.setItem(cont,0,QtWidgets.QTableWidgetItem(single))
                 self.tableStore.setItem(cont,1,QtWidgets.QTableWidgetItem(info["nombre"]))
                 self.tableStore.setItem(cont,2,QtWidgets.QTableWidgetItem(info["id"]))
@@ -58,6 +54,21 @@ class MainWindow(QMainWindow):
         pixmap = QtGui.QPixmap(path)
         image.setPixmap(pixmap)
         return image
+    
+    def getID(self,fila):
+        
+        data = self.tableStore.item(fila-1,2)
+        return data.text()
+    
+    def getNombre(self,fila):
+        
+        data = self.tableStore.item(fila-1,1)
+        return data.text()
+    
+    def getPrecio(self,fila):
+        
+        data = self.tableStore.item(fila-1,3)
+        return data.text()
 
 # data = '''{"categorias":
 # {
@@ -81,5 +92,6 @@ class MainWindow(QMainWindow):
 # app = QApplication(sys.argv)
 # prueba = MainWindow()
 # prueba.fillTable(data)
+# print(prueba.getPrueba(1))
 # prueba.show()
 # app.exec()
