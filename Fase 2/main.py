@@ -679,6 +679,16 @@ def prueba():
 
                     generarMatrizInvitado(int(str(size)))
                     getImageInvitado()
+
+                    #Mostramos tablero invitado y su nombre
+                     
+                    nameInv,ok3 = QInputDialog.getText(invitadoV,"Bienvenido","Ingrese su nombre o juegue como anonimo")
+                    if ok3:
+                        mes = "{}".format(nameInv)
+                        invitadoV.label.setText(mes)
+                    else:
+                        invitadoV.label.setText("Anonimo")
+
                     invitadoV.show()  
 
                     #decidir turno inicial
@@ -987,12 +997,29 @@ def makeMove():
                 mensaje += "Barcos destruidos: \nPortaviones: {}\n\nSubmarinos: {}\n\nDestructores: {}\n\nBuques: {}".format(jugadorP.matriz.cantP,jugadorP.matriz.cantS,jugadorP.matriz.cantD,jugadorP.matriz.cantB)
                 QMessageBox.about(invitadoV,"Resultados",mensaje)
 
+                mensaje = " "
+                mensaje += "Errores: {}\\n\\n".format(jugadorP.matriz.errores)
+                mensaje += "Barcos destruidos: \\nPortaviones: {}\\n\\nSubmarinos: {}\\n\\nDestructores: {}\\n\\nBuques: {}".format(jugadorP.matriz.cantP,jugadorP.matriz.cantS,jugadorP.matriz.cantD,jugadorP.matriz.cantB)
+                
+
+                #Estadìsticas 1
+                nameinv = invitadoV.label.text()
+                estadistica1(mensaje,nameinv)
+
                 #Mostramos resultados del jugador
                 invitado.verificarAciertos()
                 mensaje = " "
                 mensaje += "Errores: {}\n\n".format(invitado.matriz.errores)
                 mensaje += "Barcos destruidos: \nPortaviones: {}\n\nSubmarinos: {}\n\nDestructores: {}\n\nBuques: {}".format(invitado.matriz.cantP,invitado.matriz.cantS,invitado.matriz.cantD,invitado.matriz.cantB)
                 QMessageBox.about(userV,"Resultados",mensaje)
+
+                mensaje = " "
+                mensaje += "Errores: {}\\n\\n".format(invitado.matriz.errores)
+                mensaje += "Barcos destruidos: \\nPortaviones: {}\\n\\nSubmarinos: {}\\n\\nDestructores: {}\\n\\nBuques: {}".format(invitado.matriz.cantP,invitado.matriz.cantS,invitado.matriz.cantD,invitado.matriz.cantB)
+
+
+                #Estadìsticas 2
+                estadistica1(mensaje,nameUser)
 
                 #Preguntamos si quiere lista o el grafo
                 box = QMessageBox()
@@ -1065,12 +1092,28 @@ def makeMove():
                 mensaje += "Barcos destruidos: \nPortaviones: {}\n\nSubmarinos: {}\n\nDestructores: {}\n\nBuques: {}".format(jugadorP.matriz.cantP,jugadorP.matriz.cantS,jugadorP.matriz.cantD,jugadorP.matriz.cantB)
                 QMessageBox.about(invitadoV,"Resultados",mensaje)
 
+                mensaje = " "
+                mensaje += "Errores: {}\\n\\n".format(jugadorP.matriz.errores)
+                mensaje += "Barcos destruidos: \\nPortaviones: {}\\n\\nSubmarinos: {}\\n\\nDestructores: {}\\n\\nBuques: {}".format(jugadorP.matriz.cantP,jugadorP.matriz.cantS,jugadorP.matriz.cantD,jugadorP.matriz.cantB)
+                
+                #Estadìsticas 1
+                nameinv = invitadoV.label.text()
+                estadistica1(mensaje,nameinv)
+
                 #Mostramos resultados del jugador
                 invitado.verificarAciertos()
                 mensaje = " "
                 mensaje += "Errores: {}\n\n".format(invitado.matriz.errores)
                 mensaje += "Barcos destruidos: \nPortaviones: {}\n\nSubmarinos: {}\n\nDestructores: {}\n\nBuques: {}".format(invitado.matriz.cantP,invitado.matriz.cantS,invitado.matriz.cantD,invitado.matriz.cantB)
                 QMessageBox.about(userV,"Resultados",mensaje)
+
+                mensaje = " "
+                mensaje += "Errores: {}\\n\\n".format(invitado.matriz.errores)
+                mensaje += "Barcos destruidos: \\nPortaviones: {}\\n\\nSubmarinos: {}\\n\\nDestructores: {}\\n\\nBuques: {}".format(invitado.matriz.cantP,invitado.matriz.cantS,invitado.matriz.cantD,invitado.matriz.cantB)
+
+
+                #Estadìsticas 2
+                estadistica1(mensaje,nameUser)
 
                 #Preguntamos si quiere lista o el grafo
                 box = QMessageBox()
@@ -1374,6 +1417,7 @@ def elegirPosiciones(size):
 
 #invitado
 def makeMoveInv():
+    nameUser = userV.txtUS.text()
     if invitado.turno == True:
         fila = invitadoV.txtFila.text()
         columna = invitadoV.txtColumna.text()
@@ -1401,6 +1445,12 @@ def makeMoveInv():
                 invitado.turno=False
                 jugadorP.turno=True
                 QMessageBox.about(invitadoV,"Felicidades","Disparo correcto")
+
+                #Suma 20 puntos
+                actual = invitadoV.puntos.text()
+                total = int(actual)+20
+                invitadoV.puntos.setText(str(total))
+
                 jugadorP.graficarNeato("Partida",jugadorP.NombreJugada)
                 getImage()
 
@@ -1433,12 +1483,27 @@ def makeMoveInv():
             mensaje += "Barcos destruidos: \nPortaviones: {}\n\nSubmarinos: {}\n\nDestructores: {}\n\nBuques: {}".format(jugadorP.matriz.cantP,jugadorP.matriz.cantS,jugadorP.matriz.cantD,jugadorP.matriz.cantB)
             QMessageBox.about(invitadoV,"Resultados",mensaje)
 
+            mensaje = " "
+            mensaje += "Errores: {}\\n\\n".format(jugadorP.matriz.errores)
+            mensaje += "Barcos destruidos: \\nPortaviones: {}\\n\\nSubmarinos: {}\\n\\nDestructores: {}\\n\\nBuques: {}".format(jugadorP.matriz.cantP,jugadorP.matriz.cantS,jugadorP.matriz.cantD,jugadorP.matriz.cantB)
+            
+            #Estadìsticas 1
+            nameinv = invitadoV.label.text()
+            estadistica1(mensaje,nameinv)
+
             #Mostramos resultados del jugador
             invitado.verificarAciertos()
             mensaje = " "
             mensaje += "Errores: {}\n\n".format(invitado.matriz.errores)
             mensaje += "Barcos destruidos: \nPortaviones: {}\n\nSubmarinos: {}\n\nDestructores: {}\n\nBuques: {}".format(invitado.matriz.cantP,invitado.matriz.cantS,invitado.matriz.cantD,invitado.matriz.cantB)
             QMessageBox.about(userV,"Resultados",mensaje)
+
+            mensaje = " "
+            mensaje += "Errores: {}\\n\\n".format(invitado.matriz.errores)
+            mensaje += "Barcos destruidos: \\nPortaviones: {}\\n\\nSubmarinos: {}\\n\\nDestructores: {}\\n\\nBuques: {}".format(invitado.matriz.cantP,invitado.matriz.cantS,invitado.matriz.cantD,invitado.matriz.cantB)
+
+            #Estadìsticas 2
+            estadistica1(mensaje,nameUser)
 
             #Preguntamos si quiere lista o el grafo
             box = QMessageBox()
@@ -1513,12 +1578,28 @@ def makeMoveInv():
             mensaje += "Barcos destruidos: \nPortaviones: {}\n\nSubmarinos: {}\n\nDestructores: {}\n\nBuques: {}".format(jugadorP.matriz.cantP,jugadorP.matriz.cantS,jugadorP.matriz.cantD,jugadorP.matriz.cantB)
             QMessageBox.about(invitadoV,"Resultados",mensaje)
 
+            mensaje = " "
+            mensaje += "Errores: {}\\n\\n".format(jugadorP.matriz.errores)
+            mensaje += "Barcos destruidos: \\nPortaviones: {}\\n\\nSubmarinos: {}\\n\\nDestructores: {}\\n\\nBuques: {}".format(jugadorP.matriz.cantP,jugadorP.matriz.cantS,jugadorP.matriz.cantD,jugadorP.matriz.cantB)
+            
+            
+            #Estadìsticas 1
+            nameinv = invitadoV.label.text()
+            estadistica1(mensaje,nameinv)
+
             #Mostramos resultados del jugador
             invitado.verificarAciertos()
             mensaje = " "
             mensaje += "Errores: {}\n\n".format(invitado.matriz.errores)
             mensaje += "Barcos destruidos: \nPortaviones: {}\n\nSubmarinos: {}\n\nDestructores: {}\n\nBuques: {}".format(invitado.matriz.cantP,invitado.matriz.cantS,invitado.matriz.cantD,invitado.matriz.cantB)
             QMessageBox.about(userV,"Resultados",mensaje)
+
+            mensaje = " "
+            mensaje += "Errores: {}\\n\\n".format(invitado.matriz.errores)
+            mensaje += "Barcos destruidos: \\nPortaviones: {}\\n\\nSubmarinos: {}\\n\\nDestructores: {}\\n\\nBuques: {}".format(invitado.matriz.cantP,invitado.matriz.cantS,invitado.matriz.cantD,invitado.matriz.cantB)
+
+            #Estadìsticas 2
+            estadistica1(mensaje,nameUser)
 
             #Preguntamos si quiere lista o el grafo
             box = QMessageBox()
@@ -1594,6 +1675,45 @@ def resetGameJ2():
     #eliminamos la matriz
     invitado.eliminar()
     
+#Estadìsticas
+def estadistica1(mensaje,nombre):
+    cabecera = ""
+
+    cabecera+="digraph G {\n"
+    cabecera+="node[shape=box fontsize=12 fillcolor=\"darkseagreen1\" style=\"filled\"];\nlabel=\"Jugador {}\";\n".format(nombre)
+
+    #Se crea un nodo principal cuya etiqueta sera el mensaje
+    cabecera+="nodo [ label = \"{}\"]\n".format(mensaje)
+    cabecera+="}"
+    #--- se genera DOT y se procede a ecjetuar el comando
+    dot = "estadistica1.dot"
+    archivo = open(dot,'w', encoding='utf-8')
+    archivo.write(cabecera)
+    archivo.close()
+
+    result = "estadistica1.png"
+    os.system("dot -Tpng " + dot + " -o " + result)
+    os.system("shotwell "+result)
+
+def estadistica2(mensaje,nombre):
+    cabecera = ""
+
+    cabecera+="digraph G {\n"
+    cabecera+="node[shape=box fontsize=12 fillcolor=\"darkseagreen1\" style=\"filled\"];\nlabel=\"Jugador {}\";\n".format(nombre)
+
+    #Se crea un nodo principal cuya etiqueta sera el mensaje
+    cabecera+="nodo [ label = \"{}\"]\n}".format(mensaje)
+
+    #--- se genera DOT y se procede a ecjetuar el comando
+    dot = "estadistica2.dot"
+    archivo = open(dot,'w', encoding='utf-8')
+    archivo.write(cabecera)
+    archivo.close()
+
+    result = "estadistica2.png"
+    os.system("dot -Tpng " + dot + " -o " + result)
+    os.system("shotwell "+result)
+
 #Tutorial
 def getTutorial():
     res = requests.post(f'{url_Api}/tutorial')
@@ -1632,7 +1752,6 @@ def generarMatrizTutorial(size):
             tutorialMatriz.insert(i,j," ")
     tutorialMatriz.generarPosicionesAleatorias()
     tutorialMatriz.graficarNeato("Tutorial",tutorialMatriz.NombreJugada)
-
 
 #Principal - insercion se hace en la matriz invitado
 #Invitado - insercion se hace en la principal
