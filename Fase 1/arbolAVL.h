@@ -12,16 +12,12 @@ class compra {
     // Constructor:
     compra(
         string idC,
-        string cate,
-        string prec,
         string nom, 
         compra *pad=NULL, 
         compra *izq=NULL, 
         compra *der=NULL
         ):
             id(idC),
-            categoria(cate),
-            precio(prec),
             nombre(nom), 
             padre(pad), 
             izquierdo(izq), 
@@ -31,8 +27,6 @@ class compra {
 
     // Miembros:
     string id;
-    string categoria;
-    string precio;
     string nombre;
     int FE;              //Factor de equilibrio: Altura derecha - Altura izquierda
     
@@ -59,7 +53,7 @@ class AVL {
    AVL() : raiz(NULL), actual(NULL) {}
    ~AVL() { Podar(raiz); }
 
-   void Insertar(string idC,string cate,string prec,string nom);
+   void Insertar(string idC,string nom);
    void Borrar(string id);
    bool Buscar(string id);
    bool Vacio(compra *r) { return r==NULL; }
@@ -104,7 +98,7 @@ void AVL::Podar(compra* &compra)
    }
 }
 
-void AVL::Insertar(string idC,string cate,string prec,string nom){
+void AVL::Insertar(string idC,string nom){
     compra *padre = NULL;
 
     cout << "Insertar: " << idC << endl;
@@ -123,14 +117,14 @@ void AVL::Insertar(string idC,string cate,string prec,string nom){
         return; 
 
     if(Vacio(padre))  // Si el arbol no tiene datos el nuevo nodo será la raìz
-        raiz = new compra(idC,cate,prec,nom); 
+        raiz = new compra(idC,nom); 
 
     else if(stoi(idC) < stoi(padre->id)) {    // Si el dato es menor que el que contiene el nodo padre, va a rama izquierda
-        padre->izquierdo = new compra(idC,cate,prec,nom, padre);
+        padre->izquierdo = new compra(idC,nom, padre);
         Equilibrar(padre, IZQUIERDO, true);
     }
     else if(stoi(idC) > stoi(padre->id)) { // Si el dato es mayor que el que contiene el nodo padre, va a la derecha
-        padre->derecho =  new compra(idC,cate,prec,nom, padre);
+        padre->derecho =  new compra(idC,nom, padre);
         Equilibrar(padre, DERECHO, true);
     }
 }
@@ -368,20 +362,14 @@ void AVL::Borrar(string idB)
                 
                 //Guardar datos en auxiliares
                 aux  = actual->id;
-                aux1 = actual->categoria;
-                aux2 = actual->precio;
                 aux3 = actual->nombre;
 
                 //Reasignar datos
                 actual->id          = nodo->id;
-                actual->categoria   = nodo->categoria;
-                actual->precio      = nodo->precio;
                 actual->nombre      = nodo->nombre;
 
                 //itercambiar datos
                 nodo->id            = aux;   
-                nodo->categoria     = aux1;
-                nodo->precio        = aux2;
                 nodo->nombre        = aux3;
 
                 actual = nodo;
@@ -514,10 +502,10 @@ string AVL::getCodigoInterno(compra* nodo) {
     string aux;
 
     if(nodo->izquierdo==NULL && nodo->derecho==NULL){
-        aux="ID: "+nodo->id+"\\nNombre:"+nodo->nombre+"\\nPrecio:"+nodo->precio+"\\nCategoria:"+nodo->categoria;
+        aux="ID: "+nodo->id+"\\nNombre:"+nodo->nombre;
         etiqueta="nodo"+nodo->id+" [ label =\""+aux+"\"];\n";
     }else{
-        aux="ID: "+nodo->id+"\\nNombre:"+nodo->nombre+"\\nPrecio:"+nodo->precio+"\\nCategoria:"+nodo->categoria;
+        aux="ID: "+nodo->id+"\\nNombre:"+nodo->nombre;
         etiqueta="nodo"+nodo->id+" [ label =\"<C0>|"+aux+"|<C1>\"];\n";
     }
     if(nodo->izquierdo!=NULL){

@@ -405,34 +405,23 @@ def backtienda():
 def salir():
     exit()
 
-def comprar():
+def comprar(idP,name,pago):
     nameUser = userV.txtUS.text()
     passUser= userV.label_2.text()
-    categ = tiendaV.txtCategoria.text()
-    idAr = tiendaV.txtID.text()
     
+        
+    obj={'id':'{}'.format(idP),'pago':'{}'.format(pago),'name':'{}'.format(name),'nombre':'{}'.format(nameUser),'password':'{}'.format(passUser)}
+    res = requests.post(f'{url_Api}/compra',json=obj)
 
-    if (len(categ)==0 or len(idAr)==0):
-        tiendaV.labelWarning.setText("Debe llenar ambos campos")
+    #Verificar respuesta
+    jsonResponse = res.json()
+        
+    if jsonResponse["Message"]=="error": QMessageBox.about(tiendaV,"Alerta","Hubo un error")
     else:
-        tiendaV.labelWarning.setText("")
-        
-        obj={'id':'{}'.format(idAr),'categoria':'{}'.format(categ),'nombre':'{}'.format(nameUser),'password':'{}'.format(passUser)}
-        res = requests.post(f'{url_Api}/compra',json=obj)
-
-        #Verificar respuesta
-        jsonResponse = res.json()
-        
-        if jsonResponse["Message"]=="error": QMessageBox.about(tiendaV,"Alerta","Hubo un error")
-        elif jsonResponse["Message"]=="NEC": QMessageBox.about(tiendaV,"Alerta","No tiene dinero suficiente")
-        elif jsonResponse["Message"]=="errorID": QMessageBox.about(tiendaV,"Alerta","No se encuentra el ID")
-        elif jsonResponse["Message"]=="errorCate": QMessageBox.about(tiendaV,"Alerta","No existe la categoria")
-        else:
-            QMessageBox.about(tiendaV,"Mensaje","compra realizada")
-            tiendaV.txtCategoria.setText("")
-            tiendaV.txtID.setText("")   
-            monedas = getCoins()
-            tiendaV.labelMC.setText(monedas)
+        QMessageBox.about(tiendaV,"Mensaje","compra realizada")
+        cancelar()
+        monedas = getCoins()
+        tiendaV.labelMC.setText(monedas)
 
 def verCompras():
     nameUser = userV.txtUS.text()
@@ -479,17 +468,26 @@ def getIDuser():
     
     return jsonResponse["ID"]
 
-
 #Carrito
 def pagar():
     pagar = tiendaV.labelCarrito.text()
-    mon = getCoins()
-    verificar = int(mon)-int(pagar)
-
-    if verificar >= 0:
-        print("puede comprar")
+    
+    if pagar == "0":
+        QMessageBox.about(carritoV,"Alerta","No hay nada en la lista a comprar")
     else:
-        QMessageBox.about(carritoV,"Alerta","No tiene monedas suficientes")
+        mon = getCoins()
+        verificar = int(mon)-int(pagar)
+
+        if verificar >= 0:
+            #Recorrer json para obtener datos
+            info = hashTable.getJson()
+            data = json.loads(info)
+            size_ = len(data["data"])  
+            for i in range(size_):
+                comprar(data["data"][i]["id"],data["data"][i]["nombre"],data["data"][i]["precio"])
+            
+        else:
+            QMessageBox.about(carritoV,"Alerta","No tiene monedas suficientes")
 
 def sendCar():
 

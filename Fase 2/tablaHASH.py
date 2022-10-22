@@ -14,12 +14,13 @@ class tbHash:
         for i in range(13):
             self.tabla.append(None)
 
+    #[idUsuario,nombreProducto,precioProducto,idPrecio]
     def insertar(self,nuevo):
         self.contador+=1
         keyNew = str(nuevo[0])+str(len(nuevo[1]))
 
         indice = self.getKey(int(keyNew))
-
+        
         #Verificar si llave existe
         if self.llaveExistente(indice) == True:
             print("hay una colision")
@@ -79,7 +80,7 @@ class tbHash:
         data = "{ \"data\":["
         for i in range(len(self.tabla)):
             if self.tabla[i]!=None:
-                data+="{\"indice\":\""+str(i)+"\",\"id\":\""+self.tabla[i][2]+"\",\"nombre\":\""+self.tabla[i][1]+"\"}"
+                data+="{\"indice\":\""+str(i)+"\",\"id\":\""+self.tabla[i][2]+"\",\"nombre\":\""+self.tabla[i][1]+"\",\"precio\":\""+self.tabla[i][3]+"\"}"
                 
                 aux = i + 1
                 while aux < len(self.tabla):
@@ -154,9 +155,17 @@ class tbHash:
 # #pruebas unitarias
 # tb = tbHash()
 # tb.insertar(["3","5","p1"])
-# tb.insertar(["32","53","p23"])
+# tb.insertar(["332","53","p23"])
+# tb.insertar(["32","5","p1"])
+# tb.insertar(["326","53","p23"])
+# tb.insertar(["377","5","p1"])
+# tb.insertar(["3277","53","p23"])
+# tb.insertar(["39","5","p1"])
+# tb.insertar(["392","53","p23"])
+# tb.insertar(["3292","53","p23"])
+# tb.insertar(["30","5","p1"])
+# tb.insertar(["322","53","p23"])
 # tb.verTabla()
-# aux = tb.getJson()
-# print(aux)
+# tb.getGraph()
 
 

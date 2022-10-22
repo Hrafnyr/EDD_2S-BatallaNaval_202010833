@@ -28,7 +28,7 @@ class listaUsuarios{
         void reporteJugadas();
         string getDatos();
         
-        int nuevaCompra(string&,string&,string&,string&,string&,string&);
+        int nuevaCompra(string&,string&,string&,string&);
 
         int eliminarCuenta(string&,string&);
         string getMonedas(string& name, string& pass);
@@ -156,7 +156,7 @@ int listaUsuarios::verAVL(string& name, string& pass){
     return 0;
 } 
 
-int listaUsuarios::nuevaCompra(string& name,string& pass,string& idC,string& cate,string& precio,string& nombre){
+int listaUsuarios::nuevaCompra(string& name,string& pass,string& idC,string& nombre){
     Usuario* actual = new Usuario(); //Auxiliar
 
     actual = primero;
@@ -168,7 +168,7 @@ int listaUsuarios::nuevaCompra(string& name,string& pass,string& idC,string& cat
 			if(actual->nombre==name && actual->password==pass){
 				
                 //agregar compra
-                actual->compras->Insertar(idC,cate,precio,nombre);
+                actual->compras->Insertar(idC,nombre);
 
 				encontrado = true;
                 return 1;		

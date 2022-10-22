@@ -158,10 +158,11 @@ int main(int argc, char **argv){
         auto body = crow::json::load(req.body);
         if (!body)
             return crow::response(400, "Invalid body");
-        std::string idC, cate, price,name, user, pass,pass1,monedas;
+        std::string idC, pago, price,name, user, pass,pass1,monedas;
         try {
             idC = body["id"].s();
-            cate = body["categoria"].s();
+            pago = body["pago"].s();
+            name = body["name"].s();
             user= body["nombre"].s();
             pass = body["password"].s();
         } catch (const std::runtime_error &err) {
@@ -170,47 +171,16 @@ int main(int argc, char **argv){
 
         try {
             pass1 = SHA256::cifrar(pass) ; 
-
-            monedas = usuarioV.getMonedas(user,pass1);
-
-            //verificamos que exista el ID y la categoria
-            bool flag = categoria_.verificarExistencia(cate);
-
-            if (flag==true)
+                                   
+            int i = usuarioV.nuevaCompra(user,pass1,idC,name);
+            if (i==1)
             {
-                bool f = categoria_.verificarID(cate,idC);
-                if (f==true)
-                {
-                    name = categoria_.getNombre(cate,idC);
-                    price = categoria_.getPrecio(cate,idC);
-            
-
-                    //verificar que pueda comprar
-                    if (stoi(monedas) >= stoi(price))
-                    {
-                        
-                        int i = usuarioV.nuevaCompra(user,pass1,idC,cate,price,name);
-                        if (i==1)
-                        {
-                            usuarioV.restarMonedas(user,pass1,price);
-                            return crow::response(200,"{\"Message\":\"OK\"}");
-                        }
-                        else{
-                            return crow::response(200,"{\"Message\":\"error\"}");
-                        }   
-                    }
-                    else{
-                        return crow::response(200,"{\"Message\":\"NEC\"}"); //Not enough cash
-                    }   
-                  
-                }else{
-                    return crow::response(200,"{\"Message\":\"errorID\"}");
-                }
-                
-            }else{
-                return crow::response(200,"{\"Message\":\"errorCate\"}");
-            }     
-
+                usuarioV.restarMonedas(user,pass1,pago);
+                return crow::response(200,"{\"Message\":\"OK\"}");
+            }
+            else{
+                return crow::response(200,"{\"Message\":\"error\"}");
+            }   
         } catch (const std::runtime_error &ex) {
             return crow::response(500, "Internal Server Error");
         }
